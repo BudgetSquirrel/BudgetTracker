@@ -1,0 +1,26 @@
+Run project:
+    dotnet run ASPNETCORE_ENVIRONMENT=Development
+
+Add reference from projectA to projectB
+    dotnet add <projectA.csproj (default current)> reference <projectB.csproj>
+
+    ex. dotnet add budgettracker.web/budgettracker.web.csproj reference budgettracker.data/budgettracker.data.csproj
+    ex. dotnet add reference ../budgettracker.data/budgettracker.data.csproj (from budgettracker.web project folder)
+
+New Project:
+    dotnet new <project_type> -n <name> -o <directory>
+
+    ex. dotnet new mvc -n budgettracker.web -o budgettracker.web
+
+    See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new?tabs=netcore21
+        for project type templates
+
+New Solution:
+    dotnet new sln -n <name>
+
+    ex. dotnet new sln -n budgettracker
+
+Add projectA to Solution slnA:
+    dotnet sln <slnA> add <projectA.csproj>
+
+    ex. dotnet sln budgettracker.sln add budgettracker.data/budgettracker.data.csproj

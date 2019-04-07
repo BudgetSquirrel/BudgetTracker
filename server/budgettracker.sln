@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.data", "budge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.web", "budgettracker.web\budgettracker.web.csproj", "{D333580D-644A-4882-B36F-8E51D61007C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.devconsole", "budgettracker.devconsole\budgettracker.devconsole.csproj", "{DC80CB02-219D-4085-9B05-4DD24446C2B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Release|x64.Build.0 = Release|Any CPU
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Release|x86.Build.0 = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x64.Build.0 = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
