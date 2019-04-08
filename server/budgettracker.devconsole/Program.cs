@@ -1,5 +1,9 @@
 ﻿using System;
+using budgettracker.business;
+using budgettracker.business.Serialization;
+using budgettracker.common;
 using budgettracker.data;
+using Newtonsoft.Json;
 
 namespace budgettracker.devconsole
 {
@@ -7,11 +11,8 @@ namespace budgettracker.devconsole
     {
         static void Main(string[] args)
         {
-            Budget b = new Budget();
-            b.Name = "Test budget";
-            b.TotalBalance = 65000.56;
-            Console.WriteLine("Name: " + b.Name + " with $" + b.TotalBalance.ToString());
-            Console.WriteLine("Hello World!");
+            Budget b = BudgetStore.Get();
+            Console.WriteLine(BudgetSerialization.BudgetToJson(b));
         }
     }
 }
