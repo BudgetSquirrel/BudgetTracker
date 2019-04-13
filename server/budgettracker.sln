@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.data", "budgettracker.data\budgettracker.data.csproj", "{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Data", "budgettracker.data\BudgetTracker.Data.csproj", "{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.web", "budgettracker.web\budgettracker.web.csproj", "{D333580D-644A-4882-B36F-8E51D61007C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Web", "budgettracker.web\BudgetTracker.Web.csproj", "{D333580D-644A-4882-B36F-8E51D61007C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "budgettracker.devconsole", "budgettracker.devconsole\budgettracker.devconsole.csproj", "{DC80CB02-219D-4085-9B05-4DD24446C2B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.DevConsole", "budgettracker.devconsole\BudgetTracker.DevConsole.csproj", "{DC80CB02-219D-4085-9B05-4DD24446C2B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -58,5 +55,11 @@ Global
 		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x64.Build.0 = Release|Any CPU
 		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{DC80CB02-219D-4085-9B05-4DD24446C2B0}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0C05500-695C-4AE0-9F56-C2CCDEBEF80A}
 	EndGlobalSection
 EndGlobal
