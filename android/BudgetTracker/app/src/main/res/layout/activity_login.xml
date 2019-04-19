@@ -1,19 +1,35 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <include android:id="@+id/login_toolbar"
+             layout="@layout/main_toolbar"/>
 
-
-
-    <android.support.design.widget.NavigationView
-            android:layout_width="wrap_content"
+    <android.support.v4.widget.DrawerLayout
+            android:id="@+id/login_drawer_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:menu="@menu/login_menu"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/login_nav_header"
-            android:id="@+id/navigation_view">
+            android:layout_below="@+id/login_toolbar"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    </android.support.design.widget.NavigationView>
+        <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/login_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-</android.support.v4.widget.DrawerLayout>
+        <android.support.design.widget.NavigationView
+                android:id="@+id/login_drawer"
+                android:minWidth="280dp"
+                android:maxWidth="280dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/colorPrimaryDark"
+                app:menu="@menu/login_menu"
+                app:headerLayout="@layout/login_nav_header"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+</RelativeLayout>
