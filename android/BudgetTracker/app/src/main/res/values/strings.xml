@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Budget Tracker</string>
+
+    <!-- login activity -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
 </resources>
