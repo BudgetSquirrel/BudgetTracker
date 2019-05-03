@@ -4,10 +4,10 @@
     <item
         android:id="@+id/login_menu"
         android:icon="@drawable/ic_login"
-        android:title="Login"/>
+        android:title="@string/login"/>
     <item
         android:id="@+id/settings_menu"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"/>
+        android:title="@string/settings"/>
 
 </menu>
