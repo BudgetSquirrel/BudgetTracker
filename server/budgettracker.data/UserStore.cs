@@ -24,13 +24,13 @@ namespace budgettracker.data
         }
 
         /// <summary>
-        /// <p>
+        /// <para>
         /// Creates the user and returns whether or not it was created.
-        /// </p>
-        /// <p>
+        /// </para>
+        /// <para>
         /// If an error occurs, the errors list will be populated with the
         /// error codes for the errors which occurred.
-        /// </p>
+        /// </para>
         /// </summary>
         public bool Register(User userData, out IEnumerable<string> errors)
         {

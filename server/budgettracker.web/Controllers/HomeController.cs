@@ -1,6 +1,8 @@
 ﻿using budgettracker.common;
 using budgettracker.data;
 using budgettracker.data.Models;
+using budgettracker.business.Api;
+using budgettracker.business.Api.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using budgettracker.web.Models;
 
 namespace budgettracker.web.Controllers
@@ -17,22 +20,13 @@ namespace budgettracker.web.Controllers
     {
         public IActionResult Index()
         {
-            User user = new User {
-                Email = "ianmann56@gmail.com",
-                UserName = "ianmann56",
+            UserRequestApiContract user = new UserRequestApiContract {
+                Email = "kirkpatrickian56@gmail.com",
+                UserName = "kirkpatrickian56",
                 Password = "Saline!54"
             };
-            IEnumerable<string> userCreateErrors;
-            // UserModel user = new UserModel { UserName = Input.UserName, Email = Input.Email };
-            // var result = await _userManager.CreateAsync(user, Input.Password);
-            UserStore userStore = new UserStore(HttpContext.RequestServices);
-            Console.WriteLine(userStore);
-            bool userCreated = userStore.Register(user, out userCreateErrors);
-            foreach (string code in userCreateErrors)
-            {
-                Console.WriteLine("Here: " + code);
-            }
-            Console.WriteLine(userCreated);
+            ApiResponse userResponse = AuthenticationApi.Register(user, HttpContext.RequestServices);
+            Console.WriteLine(JsonConvert.SerializeObject(userResponse));
             ViewData["Test"] = "Hello world!";
             return View();
         }
