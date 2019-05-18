@@ -14,6 +14,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\budgettracker.business\budgettracker.business.csproj" />
     <ProjectReference Include="..\budgettracker.common\budgettracker.common.csproj" />
   </ItemGroup>
 
