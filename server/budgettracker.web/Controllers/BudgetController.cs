@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using budgettracker.business.Services;
 using System.Threading.Tasks;
-using budgettracker.business.Models;
+using budgettracker.common.Models;
 
 namespace budgettracker.web.Controllers
 {

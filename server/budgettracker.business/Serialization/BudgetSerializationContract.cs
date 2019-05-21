@@ -24,7 +24,7 @@ namespace budgettracker.business.Serialization
         /// can be assumed to have a calculated budget of the sum of all of
         /// it's direct sub-budgets (which may also have calculated budgets).
         /// </summary>
-        public double? SetAmount { get; set; }
+        public decimal? SetAmount { get; set; }
         /// <summary>
         /// <p>
         /// The amount of money that is available in this budget. This factors

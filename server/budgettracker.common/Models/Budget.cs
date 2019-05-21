@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace budgettracker.business.Models
+namespace budgettracker.common.Models
 {
     /// <summary>
     /// Will be the main budget model

@@ -1,4 +1,4 @@
-using budgettracker.common;
+using budgettracker.common.Models;
 
 namespace budgettracker.business
 {
@@ -46,15 +46,13 @@ namespace budgettracker.business
         public static double GetCalculatedBudget(Budget budget)
         {
             double calculatedBudget = 0.0;
-            if (budget.SetAmount != null)
-            {
-                calculatedBudget = (double) budget.SetAmount;
-            }
-            else if (budget.SubBudgets.Count > 0)
+            calculatedBudget = (double) budget.SetAmount;
+            
+            if (budget.SubBudgets != null)
             {
                 calculatedBudget = GetSubBudgetsTotalBudgetAmount(budget);
             }
-            // else calculatedBudget = 0.0; But this is unnecessary code.
+
             return calculatedBudget;
         }
         #endregion

@@ -1,4 +1,4 @@
-﻿using budgettracker.business.Models;
+﻿using budgettracker.common.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

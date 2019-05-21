@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using budgettracker.common;
+using budgettracker.common.Models;
 
 namespace budgettracker.business.Serialization.Factories
 {
@@ -35,7 +35,7 @@ namespace budgettracker.business.Serialization.Factories
         {
             BudgetSerializationContract contract = new BudgetSerializationContract()
             {
-                ID = budget.ID,
+                ID = budget.Id,
                 Name = budget.Name,
                 SetAmount = budget.SetAmount,
                 ActualBudget = BudgetCalculations.GetCalculatedBudget(budget),
