@@ -1,4 +1,4 @@
-namespace budgettracker.business.Api.Contracts
+namespace budgettracker.business.Api.Contracts.AuthenticationApi
 {
     public class UserRequestApiContract : IApiContract
     {

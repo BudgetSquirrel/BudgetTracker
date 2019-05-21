@@ -3,6 +3,9 @@ using budgettracker.data;
 using budgettracker.data.Models;
 using budgettracker.business.Api;
 using budgettracker.business.Api.Contracts;
+using budgettracker.business.Api.Contracts.AuthenticationApi;
+using budgettracker.business.Api.Contracts.Requests;
+using budgettracker.business.Api.Contracts.Responses;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,12 +23,19 @@ namespace budgettracker.web.Controllers
     {
         public IActionResult Index()
         {
-            UserRequestApiContract user = new UserRequestApiContract {
-                Email = "kirkpatrickian56@gmail.com",
-                UserName = "kirkpatrickian56",
-                Password = "Saline!54"
+            UserRequestApiContract userValues = new UserRequestApiContract {
+                Email = "kirkp1ia@cmich.edu",
+                UserName = "kirkp1ia",
+                Password = "password!1234"
             };
-            ApiResponse userResponse = AuthenticationApi.Register(user, HttpContext.RequestServices);
+            ApiRequest request = new ApiRequest()
+            {
+                Action = "REG_USER",
+                ArgumentsDict = new Dictionary<string, object>() {
+                    { "user-values", userValues }
+                }
+            };
+            ApiResponse userResponse = AuthenticationApi.Invoke(request, HttpContext.RequestServices);
             Console.WriteLine(JsonConvert.SerializeObject(userResponse));
             ViewData["Test"] = "Hello world!";
             return View();

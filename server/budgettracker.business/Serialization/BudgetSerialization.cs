@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using budgettracker.common;
-using budgettracker.business.Serialization.Factories;
+using budgettracker.business.Serialization.Converters;
 using Newtonsoft.Json;
 
 namespace budgettracker.business.Serialization
@@ -22,7 +22,7 @@ namespace budgettracker.business.Serialization
         /// </summary>
         public static string BudgetToJson(Budget budget)
         {
-            BudgetSerializationContract serializable = BudgetSerializationFactories.ModelToSerializationContract(budget);
+            BudgetSerializationContract serializable = BudgetSerializationConverter.ModelToSerializationContract(budget);
             String json = JsonConvert.SerializeObject(serializable, Formatting.Indented);
             return json;
         }

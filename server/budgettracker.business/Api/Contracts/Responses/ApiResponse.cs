@@ -1,7 +1,7 @@
-using budgettracker.business.Api.Contracts;
+using budgettracker.business.Api.Contracts.Responses;
 using Newtonsoft.Json;
 
-namespace budgettracker.business.Api
+namespace budgettracker.business.Api.Contracts.Responses
 {
     public class ApiResponse
     {

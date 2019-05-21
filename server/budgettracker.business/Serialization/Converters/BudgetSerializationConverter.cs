@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using budgettracker.common;
 
-namespace budgettracker.business.Serialization.Factories
+namespace budgettracker.business.Serialization.Converters
 {
-    public class BudgetSerializationFactories
+    /// <summary>
+    /// Converts a Budget object to a contract that can be serialized into
+    /// JSON. This will be used by the API layer.
+    /// </summary>
+    public class BudgetSerializationConverter
     {
         #region Private Functions
         /// <summary>
