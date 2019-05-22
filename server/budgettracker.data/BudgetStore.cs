@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using budgettracker.common;
+using budgettracker.common.Models;
 
 namespace budgettracker.data
 {

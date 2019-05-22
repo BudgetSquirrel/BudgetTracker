@@ -1,4 +1,4 @@
-namespace budgettracker.common
+namespace budgettracker.common.Models
 {
     /// <summary>
     /// Represents a user or data for a user. This may or may

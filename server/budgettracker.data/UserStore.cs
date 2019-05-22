@@ -1,4 +1,6 @@
 using budgettracker.common;
+using budgettracker.common.Models;
+using budgettracker.data.Converters;
 using budgettracker.data.Models;
 using System;
 using System.Collections.Generic;
@@ -34,12 +36,7 @@ namespace budgettracker.data
         /// </summary>
         public bool Register(User userData, out IEnumerable<string> errors)
         {
-            UserModel user = new UserModel {
-                FirstName = userData.FirstName,
-                LastName = userData.LastName,
-                UserName = userData.UserName,
-                Email = userData.Email
-            };
+            UserModel user = new UserConverter().ToDataModel(userData);
             IdentityResult result = _userManager.CreateAsync(user, userData.Password).Result;
             errors = result.Errors.Select(idError => idError.Code); // Codes may include "DuplicateUserName".
             return result.Succeeded;

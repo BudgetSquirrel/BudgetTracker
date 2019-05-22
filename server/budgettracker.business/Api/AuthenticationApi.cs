@@ -4,6 +4,7 @@ using budgettracker.business.Api.Contracts.Responses;
 using budgettracker.business.Api.Contracts.Requests;
 using budgettracker.business.Api.Converters;
 using budgettracker.common;
+using budgettracker.common.Models;
 using budgettracker.data;
 using Newtonsoft.Json;
 using System;

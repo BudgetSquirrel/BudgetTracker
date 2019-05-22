@@ -1,6 +1,7 @@
 using budgettracker.business.Api.Contracts;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.common;
+using budgettracker.common.Models;
 
 namespace budgettracker.business.Api.Converters
 {

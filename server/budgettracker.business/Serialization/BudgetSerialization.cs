@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using budgettracker.common;
+using budgettracker.common.Models;
 using budgettracker.business.Serialization.Converters;
 using Newtonsoft.Json;
 
