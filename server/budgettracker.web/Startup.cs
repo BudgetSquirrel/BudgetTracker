@@ -2,6 +2,7 @@
 using budgettracker.data;
 using budgettracker.data.Models;
 using budgettracker.web.Data;
+using budgettracker.web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
