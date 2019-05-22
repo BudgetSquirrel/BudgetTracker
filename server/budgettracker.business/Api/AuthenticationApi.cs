@@ -23,6 +23,18 @@ namespace budgettracker.business.Api
     {
         private static UserApiConverter _userApiConverter = new UserApiConverter();
 
+        /// <summary>
+        /// <p>
+        /// Main entry point to the Auth API. This takes the request and routes it to the
+        /// appropriate action function, returning the result. All requests dealing with
+        /// user accounts and authentication should be directed here.
+        /// </p>
+        /// <p>
+        /// The API actions available are as follows:
+        ///
+        /// * REG_USER: Registers a new user with the application.
+        /// </p>
+        /// </summary>
         public static ApiResponse Invoke(ApiRequest request, IServiceProvider serviceProvider)
         {
             ApiResponse response;
