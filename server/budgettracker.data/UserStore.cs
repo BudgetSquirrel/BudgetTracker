@@ -35,6 +35,8 @@ namespace budgettracker.data
         public bool Register(User userData, out IEnumerable<string> errors)
         {
             UserModel user = new UserModel {
+                FirstName = userData.FirstName,
+                LastName = userData.LastName,
                 UserName = userData.UserName,
                 Email = userData.Email
             };

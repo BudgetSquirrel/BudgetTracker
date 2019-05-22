@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace budgettracker.business.Api.Contracts.AuthenticationApi
 {
     public class UserResponseApiContract : IApiContract
