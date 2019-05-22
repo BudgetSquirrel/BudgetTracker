@@ -1,4 +1,4 @@
-using budgettracker.common;
+using budgettracker.common.Models;
 
 namespace budgettracker.business
 {

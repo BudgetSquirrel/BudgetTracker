@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace budgettracker.common
+namespace budgettracker.common.Models
 {
     public class Budget
     {
