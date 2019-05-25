@@ -21,7 +21,12 @@ namespace budgettracker.common.Models
         /// can be assumed to have a calculated balance of the sum of all of
         /// it's direct sub-balances (which may also have calculated balances).
         /// </summary>
-        public double? SetAmount { get; set; }
+        public decimal SetAmount { get; set; }
+
+        /// <summary>
+        /// The amount of days in eat budget cycle.
+        /// </summary>
+        public int Duration { get; set; }
 
         /// <summary>
         /// Will be the start date of the budget cycle

@@ -1,7 +1,6 @@
 using budgettracker.business.Api.Contracts;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.Responses;
-using budgettracker.business.Api.Contracts.Requests;
 using budgettracker.business.Api.Converters;
 using budgettracker.business.Authentication;
 using budgettracker.common;

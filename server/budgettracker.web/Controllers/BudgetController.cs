@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using budgettracker.business.Services;
-using budgettracker.common.Models;
+using budgettracker.business.Api.Contracts.BudgetApi;
+using System;
 
 namespace budgettracker.web.Controllers
 {
@@ -10,14 +11,14 @@ namespace budgettracker.web.Controllers
     {
         private readonly IBudgetService _budgetService;
 
-        public BudgetController(IBudgetService budgetService)
+        public BudgetController(IBudgetService budgetService )
         {
             _budgetService = budgetService;
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<Budget>> CreateBudget(Budget budget)
+        public async Task<ActionResult<BudgetResponseContract>> CreateBudget(BudgetResquestContract budget)
         {
             await _budgetService.CreateBudget(budget);
 

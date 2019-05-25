@@ -1,7 +1,6 @@
 using budgettracker.business.Api;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.Responses;
-using budgettracker.business.Api.Contracts.Requests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

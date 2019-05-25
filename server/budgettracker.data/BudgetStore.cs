@@ -20,7 +20,7 @@ namespace budgettracker.data
                     new Budget() {
                         Id=2,
                         Name="Rent",
-                        SetAmount=1048.0,
+                        SetAmount=1048.0M,
                         SubBudgets = new List<Budget>() {
 
                         }
@@ -28,7 +28,7 @@ namespace budgettracker.data
                     new Budget() {
                         Id=3,
                         Name="Food",
-                        SetAmount=350.0,
+                        SetAmount=350.0M,
                         SubBudgets = new List<Budget>() {
 
                         }
@@ -36,7 +36,7 @@ namespace budgettracker.data
                     new Budget() {
                         Id=4,
                         Name="Electric",
-                        SetAmount=75.0,
+                        SetAmount=75.0M,
                         SubBudgets = new List<Budget>() {
 
                         }
