@@ -2,7 +2,7 @@ using budgettracker.business.Api;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.Responses;
 using budgettracker.business.Api.Contracts.Requests;
-using Microsoft.AspNetCore.Identity;
+using GateKeeper.Cryptogrophy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,6 +23,22 @@ namespace budgettracker.web.Controllers
     [ApiController]
     public class AuthenticationApiController : ControllerBase
     {
+        [HttpGet]
+        public ApiResponse Get() {
+            Rfc2898Encryptor encryptor = new Rfc2898Encryptor();
+            byte[] salt = new byte[] {
+                0x53, 0x71, 0x75, 0x69, 0x72, 0x72, 0x65, 0x6c, 0x20, 0x50, 0x6f, 0x77, 0x65, 0x72
+            };
+            string encryptionKey = "Acorns";
+            string hi = "Hello world!";
+            string hiEncrypted = encryptor.Encrypt(hi, encryptionKey, salt);
+            string hiDecrypted = encryptor.Decrypt(hiEncrypted, encryptionKey, salt);
+
+            Console.WriteLine(hiEncrypted);
+            Console.WriteLine(hiDecrypted);
+            return new ApiResponse(hiEncrypted);
+        }
+
         [HttpPost("register")]
         public ApiResponse Register(UserRequestApiContract userValues)
         {

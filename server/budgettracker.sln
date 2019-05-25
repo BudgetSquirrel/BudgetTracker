@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "budgettracker.common", "bud
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "budgettracker.business", "budgettracker.business\budgettracker.business.csproj", "{9F576400-2C22-4FA5-AD56-77649DB78FAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GateKeeper", "GateKeeper\GateKeeper.csproj", "{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{9F576400-2C22-4FA5-AD56-77649DB78FAD}.Release|x64.Build.0 = Release|Any CPU
 		{9F576400-2C22-4FA5-AD56-77649DB78FAD}.Release|x86.ActiveCfg = Release|Any CPU
 		{9F576400-2C22-4FA5-AD56-77649DB78FAD}.Release|x86.Build.0 = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|x64.Build.0 = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Debug|x86.Build.0 = Debug|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|x64.ActiveCfg = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|x64.Build.0 = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|x86.ActiveCfg = Release|Any CPU
+		{26CA2AB5-C4E9-46EB-8209-0E6739D5A884}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

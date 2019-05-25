@@ -45,8 +45,6 @@ namespace budgettracker.web
             {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });
-
-            services.AddIdentity<UserModel, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

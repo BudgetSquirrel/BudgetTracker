@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace budgettracker.data
 {
@@ -18,11 +17,8 @@ namespace budgettracker.data
     /// </summary>
     public class UserStore
     {
-        private UserManager<UserModel> _userManager;
-
         public UserStore(IServiceProvider serviceProvider)
         {
-            _userManager = (UserManager<UserModel>) serviceProvider.GetService(typeof(UserManager<UserModel>));
         }
 
         /// <summary>
@@ -36,10 +32,8 @@ namespace budgettracker.data
         /// </summary>
         public bool Register(User userData, out IEnumerable<string> errors)
         {
-            UserModel user = new UserConverter().ToDataModel(userData);
-            IdentityResult result = _userManager.CreateAsync(user, userData.Password).Result;
-            errors = result.Errors.Select(idError => idError.Code); // Codes may include "DuplicateUserName".
-            return result.Succeeded;
+            errors = new List<string>();
+            return false;
         }
     }
 }

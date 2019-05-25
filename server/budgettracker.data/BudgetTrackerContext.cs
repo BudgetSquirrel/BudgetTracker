@@ -1,15 +1,16 @@
 using budgettracker.data.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace budgettracker.data
 {
-    public class BudgetTrackerContext : IdentityDbContext<UserModel>
+    public class BudgetTrackerContext : DbContext
     {
         public BudgetTrackerContext(DbContextOptions options)
             :base(options)
         {
             
         }
+
+        public DbSet<UserModel> Users { get; set; }
     }
 }
