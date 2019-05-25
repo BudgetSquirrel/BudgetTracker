@@ -16,9 +16,6 @@ namespace budgettracker.business.Api.Contracts.Requests
         [JsonProperty("user")]
         public UserRequestApiContract User { get; set; }
 
-        [JsonProperty("action")]
-        public string Action { get; set; }
-
         [JsonProperty("arguments")]
         public Dictionary<string, object> ArgumentsDict { get; set; }
 

@@ -25,43 +25,17 @@ namespace budgettracker.business.Api
 
         /// <summary>
         /// <p>
-        /// Main entry point to the Auth API. This takes the request and routes it to the
-        /// appropriate action function, returning the result. All requests dealing with
-        /// user accounts and authentication should be directed here.
-        /// </p>
-        /// <p>
-        /// The API actions available are as follows:
-        ///
-        /// * REG_USER: Registers a new user with the application.
-        /// </p>
-        /// </summary>
-        public static ApiResponse Invoke(ApiRequest request, IServiceProvider serviceProvider)
-        {
-            ApiResponse response;
-
-            if (request.Action == AuthApiConstants.ACTION_REGISTER_USER)
-            {
-                UserRegistrationArgumentApiContract registerUserArgs = request.Arguments<UserRegistrationArgumentApiContract>();
-                response = Register(registerUserArgs.UserValues, serviceProvider);
-            }
-            else {
-                response = new ApiResponse($"The action {request.Action} is not supported on the Authentication API");
-            }
-
-            return response;
-        }
-
-        /// <summary>
-        /// <p>
         /// Allows a user to register a new account.
         /// </p>
         /// </summary>
-        private static ApiResponse Register(UserRequestApiContract userValues, IServiceProvider serviceProvider)
+        public static ApiResponse Register(ApiRequest request, IServiceProvider serviceProvider)
         {
             UserStore userStore = new UserStore(serviceProvider);
-            User userModel = _userApiConverter.ToModel(userValues);
-            ApiResponse response;
+            UserRegistrationArgumentApiContract registerUserArgs = request.Arguments<UserRegistrationArgumentApiContract>();
             
+            User userModel = _userApiConverter.ToModel(registerUserArgs.UserValues);
+            ApiResponse response;
+
             IEnumerable<string> errors;
             if (userStore.Register(userModel, out errors))
             {
