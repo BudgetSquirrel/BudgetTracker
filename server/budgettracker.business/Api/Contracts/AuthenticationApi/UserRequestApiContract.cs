@@ -15,6 +15,9 @@ namespace budgettracker.business.Api.Contracts.AuthenticationApi
 
         [JsonProperty("password")]
         public string Password { get; set; }
+
+        [JsonProperty("password-confirm")]
+        public string PasswordConfirm { get; set; }
         
         [JsonProperty("email")]
         public string Email { get; set; }
