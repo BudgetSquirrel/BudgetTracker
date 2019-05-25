@@ -346,3 +346,6 @@ MigrationBackup/
 # Android Studio files
 encodings.xml
 vcs.xml
+
+# Misc files
+.vscode/
