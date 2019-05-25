@@ -22,11 +22,11 @@ namespace budgettracker.web.Controllers
     [ApiController]
     public class AuthenticationApiController : ControllerBase
     {
-        [HttpPost]
-        public ApiResponse Invoke(ApiRequest requestMessage)
+        [HttpPost("register")]
+        public ApiResponse Register(ApiRequest requestMessage)
         {
             IServiceProvider serviceProvider = HttpContext.RequestServices;
-            return AuthenticationApi.Invoke(requestMessage, serviceProvider);
+            return AuthenticationApi.Register(requestMessage, serviceProvider);
         }
     }
 }
