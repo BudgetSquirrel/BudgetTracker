@@ -40,7 +40,7 @@ namespace budgettracker.business.Serialization.Converters
         {
             BudgetSerializationContract contract = new BudgetSerializationContract()
             {
-                ID = budget.ID,
+                ID = budget.Id,
                 Name = budget.Name,
                 SetAmount = budget.SetAmount,
                 ActualBudget = BudgetCalculations.GetCalculatedBudget(budget),

@@ -13,12 +13,12 @@ namespace budgettracker.data
         public static Budget Get()
         {
             Budget budget = new Budget() {
-                ID=1,
+                Id=1,
                 Name="Kirkpatricks Budget",
                 SetAmount=60000,
                 SubBudgets = new List<Budget>() {
                     new Budget() {
-                        ID=2,
+                        Id=2,
                         Name="Rent",
                         SetAmount=1048.0,
                         SubBudgets = new List<Budget>() {
@@ -26,7 +26,7 @@ namespace budgettracker.data
                         }
                     },
                     new Budget() {
-                        ID=3,
+                        Id=3,
                         Name="Food",
                         SetAmount=350.0,
                         SubBudgets = new List<Budget>() {
@@ -34,7 +34,7 @@ namespace budgettracker.data
                         }
                     },
                     new Budget() {
-                        ID=4,
+                        Id=4,
                         Name="Electric",
                         SetAmount=75.0,
                         SubBudgets = new List<Budget>() {
