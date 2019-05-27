@@ -11,8 +11,7 @@ namespace budgettracker.business.Api.Converters
             {
                 Name = requestContract.Name,
                 SetAmount = requestContract.SetAmount,
-                Duration = requestContract.Duration,
-                DurationStart = requestContract.DurationStart
+                Duration = requestContract.Duration
             };
         }
 

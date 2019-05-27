@@ -1,28 +1,27 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using budgettracker.business.Services;
+using budgettracker.business.Api.Interfaces;
 using budgettracker.business.Api.Contracts.BudgetApi;
-using System;
 
 namespace budgettracker.web.Controllers
 {
     [Route("api/budget")]
-    public class BudgetController: Controller
+    public class BudgetApiController: ControllerBase
     {
-        private readonly IBudgetService _budgetService;
+        private readonly IBudgetApi _budgetApi;
 
-        public BudgetController(IBudgetService budgetService )
+        public BudgetApiController(IBudgetApi budgetApi)
         {
-            _budgetService = budgetService;
+            _budgetApi = budgetApi;
         }
 
         [HttpPost]
         [Route("create")]
         public async Task<ActionResult<BudgetResponseContract>> CreateBudget(BudgetResquestContract budget)
         {
-            await _budgetService.CreateBudget(budget);
-
-            return Ok();
+            IServiceProvider serviceProvider = HttpContext.RequestServices;
+            return await _budgetApi.CreateBudget(budget);
         }
 
     }

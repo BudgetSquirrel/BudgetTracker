@@ -1,24 +1,25 @@
 using Newtonsoft.Json;
 using System;
+using budgettracker.business.Api.Contracts.AuthenticationApi;
+
 
 namespace budgettracker.business.Api.Contracts.BudgetApi
 {
     public class BudgetResquestContract : IApiContract
     {
-        [JsonProperty("Name")]
+        [JsonProperty("user")]
+        public User
+
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("SetAmount")]
+        [JsonProperty("set-amount")]
         public decimal SetAmount { get; set; }
 
         /// <summary>
         /// Duration is handled in days
         /// </summary>
-        [JsonProperty("Duration")]
+        [JsonProperty("duration")]
         public int Duration { get; set; }
-
-        [JsonProperty("DurationStart")]
-        public DateTime DurationStart { get; set; }
-
     }
 }

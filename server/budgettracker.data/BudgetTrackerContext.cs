@@ -7,9 +7,6 @@ namespace budgettracker.data
 {
     public class BudgetTrackerContext : IdentityDbContext<UserModel>
     {
-        public BudgetTrackerContext()
-        {
-        }
 
         public BudgetTrackerContext(DbContextOptions options)
             :base(options)
