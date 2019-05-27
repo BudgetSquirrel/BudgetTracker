@@ -38,10 +38,11 @@ namespace budgettracker.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<BudgetTrackerContext, AppDbContext>(options =>
             {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });

@@ -11,7 +11,8 @@ namespace budgettracker.data.Converters
                 FirstName = businessModel.FirstName,
                 LastName = businessModel.LastName,
                 UserName = businessModel.UserName,
-                Email = businessModel.Email
+                Email = businessModel.Email,
+                PassWord = businessModel.Password
             };
             return model;
         }
@@ -22,7 +23,8 @@ namespace budgettracker.data.Converters
                 FirstName = dataModel.FirstName,
                 LastName = dataModel.LastName,
                 UserName = dataModel.UserName,
-                Email = dataModel.Email
+                Email = dataModel.Email,
+                Password = dataModel.PassWord
             };
             return model;
         }

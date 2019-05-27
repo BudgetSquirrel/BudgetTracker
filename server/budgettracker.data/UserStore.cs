@@ -1,7 +1,13 @@
 using budgettracker.common;
+using budgettracker.common.Authentication;
 using budgettracker.common.Models;
 using budgettracker.data.Converters;
 using budgettracker.data.Models;
+using GateKeeper;
+using GateKeeper.Configuration;
+using GateKeeper.Cryptogrophy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +23,26 @@ namespace budgettracker.data
     /// </summary>
     public class UserStore
     {
+        IConfiguration _appConfig;
+        IServiceProvider _serviceProvider;
+        GateKeeperConfig _gateKeeperConfig;
+
+        BudgetTrackerContext _dbContext;
+
+        UserConverter _userConverter;
+        ICryptor _cryptor;
+
         public UserStore(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
+
+            _appConfig = (IConfiguration) (_serviceProvider.GetService(typeof(IConfiguration)));
+            _gateKeeperConfig = ConfigurationReader.FromAppConfiguration(_appConfig);
+
+            _dbContext = (BudgetTrackerContext) (_serviceProvider.GetRequiredService(typeof(BudgetTrackerContext)));
+
+            _userConverter = new UserConverter();
+            _cryptor = new Rfc2898Encryptor();
         }
 
         /// <summary>
@@ -30,10 +54,30 @@ namespace budgettracker.data
         /// error codes for the errors which occurred.
         /// </para>
         /// </summary>
-        public bool Register(User userData, out IEnumerable<string> errors)
+        public bool Register(User userModel, out IEnumerable<string> errors)
         {
-            errors = new List<string>();
-            return false;
+            string encryptedPassword = _cryptor.Encrypt(userModel.Password, _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt);
+            userModel.Password = encryptedPassword;
+            int numDuplicates = _dbContext.Users.Count(user => user.UserName == userModel.UserName);
+
+            if (numDuplicates > 0)
+            {
+                errors = new List<string>() { AuthenticationConstants.ApiResponseErrorCodes.DUPLICATE_USERNAME };
+                return false;
+            }
+
+            UserModel userData = _userConverter.ToDataModel(userModel);
+            _dbContext.Users.Add(userData);
+            int recordsSaved = _dbContext.SaveChanges();
+
+            if (recordsSaved < 1)
+            {
+                errors = new List<string>() { AuthenticationConstants.ApiResponseErrorCodes.UNKNOWN };
+                return false;
+            }
+
+            errors = null;
+            return true;
         }
     }
 }

@@ -30,8 +30,10 @@ namespace budgettracker.business.Api
         /// Allows a user to register a new account.
         /// </p>
         /// </summary>
-        public static ApiResponse Register(UserRequestApiContract userValues, IServiceProvider serviceProvider)
+        public static ApiResponse Register(ApiRequest request, IServiceProvider serviceProvider)
         {
+            UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
+            UserRequestApiContract userValues = arguments.UserValues;
             UserStore userStore = new UserStore(serviceProvider);
             User userModel = _userApiConverter.ToModel(userValues);
             ApiResponse response;
