@@ -1,3 +1,4 @@
+using budgettracker.business.Api;
 ﻿using budgettracker.common;
 using budgettracker.data;
 using budgettracker.data.Models;
@@ -46,6 +47,9 @@ namespace budgettracker.web
             {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddScoped<AuthenticationApi>();
+            services.AddScoped<UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

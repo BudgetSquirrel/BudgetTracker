@@ -24,18 +24,23 @@ namespace budgettracker.business.Api
     /// </summary>
     public class AuthenticationApi
     {
-        private static UserApiConverter _userApiConverter = new UserApiConverter();
+        UserApiConverter _userApiConverter = new UserApiConverter();
+        UserRepository _userRepository;
+
+        public AuthenticationApi(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         /// <summary>
         /// <p>
         /// Allows a user to register a new account.
         /// </p>
         /// </summary>
-        public static ApiResponse Register(ApiRequest request, IServiceProvider serviceProvider)
+        public ApiResponse Register(ApiRequest request)
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
             UserRequestApiContract userValues = arguments.UserValues;
-            UserStore userStore = new UserStore(serviceProvider);
             User userModel = _userApiConverter.ToModel(userValues);
             ApiResponse response;
 
@@ -48,7 +53,7 @@ namespace budgettracker.business.Api
                 response = new ApiResponse(String.Join(";", errors.ToArray()));
                 return response;
             }
-            if (userStore.Register(userModel, out errors))
+            if (_userRepository.Register(userModel, out errors))
             {
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
@@ -66,15 +71,14 @@ namespace budgettracker.business.Api
         /// Authenticates the user, returning it in the response if authorized.
         /// </p>
         /// </summary>
-        public static ApiResponse Authenticate(ApiRequest request, IServiceProvider serviceProvider)
+        public ApiResponse Authenticate(ApiRequest request)
         {
             LoginArgumentsApiContract arguments = request.Arguments<LoginArgumentsApiContract>();
             UserRequestApiContract userValues = arguments.Credentials;
-            UserStore userStore = new UserStore(serviceProvider);
             ApiResponse response;
 
             try {
-                User authenticatedUser = userStore.Authenticate(userValues.UserName, userValues.Password);
+                User authenticatedUser = _userRepository.Authenticate(userValues.UserName, userValues.Password);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }

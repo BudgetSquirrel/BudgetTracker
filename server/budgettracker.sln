@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Data", "budge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Web", "budgettracker.web\BudgetTracker.Web.csproj", "{D333580D-644A-4882-B36F-8E51D61007C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.DevConsole", "budgettracker.devconsole\BudgetTracker.DevConsole.csproj", "{DC80CB02-219D-4085-9B05-4DD24446C2B0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "budgettracker.common", "budgettracker.common\budgettracker.common.csproj", "{B9392B4E-BE9F-4490-A2EB-425AEA7D73E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "budgettracker.business", "budgettracker.business\budgettracker.business.csproj", "{9F576400-2C22-4FA5-AD56-77649DB78FAD}"
