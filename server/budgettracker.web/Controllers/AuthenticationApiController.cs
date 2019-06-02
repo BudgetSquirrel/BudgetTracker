@@ -29,5 +29,12 @@ namespace budgettracker.web.Controllers
             IServiceProvider serviceProvider = HttpContext.RequestServices;
             return AuthenticationApi.Register(request, serviceProvider);
         }
+
+        [HttpPost("authenticate")]
+        public ApiResponse Authenticate(ApiRequest request)
+        {
+            IServiceProvider serviceProvider = HttpContext.RequestServices;
+            return AuthenticationApi.Authenticate(request, serviceProvider);
+        }
     }
 }
