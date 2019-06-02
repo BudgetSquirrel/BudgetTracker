@@ -10,8 +10,9 @@ namespace budgettracker.data.Converters
             UserModel model = new UserModel() {
                 FirstName = businessModel.FirstName,
                 LastName = businessModel.LastName,
-                UserName = businessModel.UserName,
-                Email = businessModel.Email
+                UserName = businessModel.Username,
+                Email = businessModel.Email,
+                PassWord = businessModel.Password
             };
             return model;
         }
@@ -21,8 +22,9 @@ namespace budgettracker.data.Converters
             User model = new User() {
                 FirstName = dataModel.FirstName,
                 LastName = dataModel.LastName,
-                UserName = dataModel.UserName,
-                Email = dataModel.Email
+                Username = dataModel.UserName,
+                Email = dataModel.Email,
+                Password = dataModel.PassWord
             };
             return model;
         }

@@ -2,7 +2,7 @@ using budgettracker.business.Api;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.Responses;
 using budgettracker.business.Api.Contracts.Requests;
-using Microsoft.AspNetCore.Identity;
+using GateKeeper.Cryptogrophy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,10 +24,17 @@ namespace budgettracker.web.Controllers
     public class AuthenticationApiController : ControllerBase
     {
         [HttpPost("register")]
-        public ApiResponse Register(UserRequestApiContract userValues)
+        public ApiResponse Register(ApiRequest request)
         {
             IServiceProvider serviceProvider = HttpContext.RequestServices;
-            return AuthenticationApi.Register(userValues, serviceProvider);
+            return AuthenticationApi.Register(request, serviceProvider);
+        }
+
+        [HttpPost("authenticate")]
+        public ApiResponse Authenticate(ApiRequest request)
+        {
+            IServiceProvider serviceProvider = HttpContext.RequestServices;
+            return AuthenticationApi.Authenticate(request, serviceProvider);
         }
     }
 }
