@@ -6,6 +6,9 @@ using budgettracker.data.Models;
 using GateKeeper;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
+using GateKeeper.Exceptions;
+using GateKeeper.Models;
+using GateKeeper.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,7 +24,7 @@ namespace budgettracker.data
     /// data model so that the business layer doesn't have to worry about
     /// the data storage implementation.
     /// </summary>
-    public class UserStore
+    public class UserStore : IUserRepository<User>
     {
         IConfiguration _appConfig;
         IServiceProvider _serviceProvider;
@@ -46,6 +49,22 @@ namespace budgettracker.data
         }
 
         /// <summary>
+        /// Returns the user that has the given username or null if
+        /// it doesn't exist. The password on the user returned in this
+        /// will be encrypted.
+        /// </summary>
+        public User GetByUsername(string username)
+        {
+            UserModel userData = _dbContext.Users.Where(u => u.UserName == username).SingleOrDefault();
+            if (userData == null)
+            {
+                return null;
+            }
+            User user = _userConverter.ToBusinessModel(userData);
+            return user;
+        }
+
+        /// <summary>
         /// <para>
         /// Creates the user and returns whether or not it was created.
         /// </para>
@@ -58,7 +77,7 @@ namespace budgettracker.data
         {
             string encryptedPassword = _cryptor.Encrypt(userModel.Password, _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt);
             userModel.Password = encryptedPassword;
-            int numDuplicates = _dbContext.Users.Count(user => user.UserName == userModel.UserName);
+            int numDuplicates = _dbContext.Users.Count(user => user.UserName == userModel.Username);
 
             if (numDuplicates > 0)
             {
@@ -78,6 +97,17 @@ namespace budgettracker.data
 
             errors = null;
             return true;
+        }
+
+        /// <summary>
+        /// Authenticates the user login, returning that user if authorized. Otherwise,
+        /// this will throw a <see cref="AuthenticationException" />.
+        /// </summary>
+        public User Authenticate(string username, string passwordGuess)
+        {
+            User authenticatedUser = Authentication.Authenticate(username, passwordGuess,
+                                    this, _cryptor, _gateKeeperConfig);
+            return authenticatedUser;
         }
     }
 }

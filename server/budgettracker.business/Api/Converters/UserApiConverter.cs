@@ -13,7 +13,7 @@ namespace budgettracker.business.Api.Converters
             User user = new User() {
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,
-                UserName = contract.UserName,
+                Username = contract.UserName,
                 Password = contract.Password,
                 Email = contract.Email
             };
@@ -25,7 +25,7 @@ namespace budgettracker.business.Api.Converters
             User user = new User() {
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,
-                UserName = contract.UserName,
+                Username = contract.UserName,
                 Email = contract.Email
             };
             return user;
@@ -36,7 +36,7 @@ namespace budgettracker.business.Api.Converters
             UserRequestApiContract contract = new UserRequestApiContract() {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserName = model.UserName,
+                UserName = model.Username,
                 Password = model.Password,
                 Email = model.Email
             };
@@ -48,7 +48,7 @@ namespace budgettracker.business.Api.Converters
             UserResponseApiContract contract = new UserResponseApiContract() {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                UserName = model.UserName,
+                UserName = model.Username,
                 Email = model.Email
             };
             return contract;
