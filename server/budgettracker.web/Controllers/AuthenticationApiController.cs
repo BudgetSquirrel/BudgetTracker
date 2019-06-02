@@ -23,18 +23,23 @@ namespace budgettracker.web.Controllers
     [ApiController]
     public class AuthenticationApiController : ControllerBase
     {
+        AuthenticationApi _authApi;
+
+        public AuthenticationApiController(AuthenticationApi authApi)
+        {
+            _authApi = authApi;
+        }
+
         [HttpPost("register")]
         public ApiResponse Register(ApiRequest request)
         {
-            IServiceProvider serviceProvider = HttpContext.RequestServices;
-            return AuthenticationApi.Register(request, serviceProvider);
+            return _authApi.Register(request);
         }
 
         [HttpPost("authenticate")]
         public ApiResponse Authenticate(ApiRequest request)
         {
-            IServiceProvider serviceProvider = HttpContext.RequestServices;
-            return AuthenticationApi.Authenticate(request, serviceProvider);
+            return _authApi.Authenticate(request);
         }
     }
 }

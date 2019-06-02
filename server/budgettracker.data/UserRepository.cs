@@ -24,7 +24,7 @@ namespace budgettracker.data
     /// data model so that the business layer doesn't have to worry about
     /// the data storage implementation.
     /// </summary>
-    public class UserStore : IUserRepository<User>
+    public class UserRepository : IUserRepository<User>
     {
         IConfiguration _appConfig;
         IServiceProvider _serviceProvider;
@@ -35,14 +35,11 @@ namespace budgettracker.data
         UserConverter _userConverter;
         ICryptor _cryptor;
 
-        public UserStore(IServiceProvider serviceProvider)
+        public UserRepository(BudgetTrackerContext dbContext, IConfiguration appConfig)
         {
-            _serviceProvider = serviceProvider;
+            _gateKeeperConfig = ConfigurationReader.FromAppConfiguration(appConfig);
 
-            _appConfig = (IConfiguration) (_serviceProvider.GetService(typeof(IConfiguration)));
-            _gateKeeperConfig = ConfigurationReader.FromAppConfiguration(_appConfig);
-
-            _dbContext = (BudgetTrackerContext) (_serviceProvider.GetRequiredService(typeof(BudgetTrackerContext)));
+            _dbContext = dbContext;
 
             _userConverter = new UserConverter();
             _cryptor = new Rfc2898Encryptor();
