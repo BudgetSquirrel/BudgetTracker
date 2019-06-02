@@ -88,5 +88,12 @@ namespace budgettracker.business.Api
             }
             return response;
         }
+
+        public ApiResponse DeleteUser(ApiRequest request)
+        {
+            UserRequestApiContract user = request.User;
+            ApiResponse response;
+            return null;
+        }
     }
 }

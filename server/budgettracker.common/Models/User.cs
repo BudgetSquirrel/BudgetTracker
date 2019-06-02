@@ -1,4 +1,5 @@
 using GateKeeper.Models;
+using System;
 
 namespace budgettracker.common.Models
 {
@@ -13,5 +14,6 @@ namespace budgettracker.common.Models
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public DateTime? DateDeleted { get; set; }
     }
 }
