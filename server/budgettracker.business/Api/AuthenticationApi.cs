@@ -8,6 +8,7 @@ using budgettracker.common;
 using budgettracker.common.Authentication;
 using budgettracker.common.Models;
 using budgettracker.data;
+using budgettracker.data.Repositories;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
