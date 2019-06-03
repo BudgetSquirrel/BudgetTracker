@@ -7,7 +7,7 @@ using budgettracker.business.Authentication;
 using budgettracker.common;
 using budgettracker.common.Authentication;
 using budgettracker.common.Models;
-using budgettracker.data;
+using budgettracker.data.Repositories;
 using GateKeeper.Exceptions;
 using Newtonsoft.Json;
 using System;
