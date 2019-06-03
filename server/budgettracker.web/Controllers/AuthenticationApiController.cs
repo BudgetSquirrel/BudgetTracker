@@ -39,7 +39,7 @@ namespace budgettracker.web.Controllers
         [HttpPost("authenticate")]
         public ApiResponse Authenticate(ApiRequest request)
         {
-            return _authApi.Authenticate(request);
+            return _authApi.AuthenticateUser(request);
         }
     }
 }

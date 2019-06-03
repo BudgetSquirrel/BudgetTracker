@@ -8,7 +8,10 @@ using budgettracker.common;
 using budgettracker.common.Authentication;
 using budgettracker.common.Models;
 using budgettracker.data;
+using GateKeeper.Configuration;
+using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,14 +25,16 @@ namespace budgettracker.business.Api
     /// this API, one can register new users, login, logout and more.
     /// </p>
     /// </summary>
-    public class AuthenticationApi
+    public class AuthenticationApi : ApiBase<User>
     {
-        UserApiConverter _userApiConverter = new UserApiConverter();
-        UserRepository _userRepository;
+        UserApiConverter _userApiConverter;
 
-        public AuthenticationApi(UserRepository userRepository)
+        public AuthenticationApi(UserRepository userRepository,
+            IConfiguration appConfig)
+            : base(userRepository, new Rfc2898Encryptor(),
+                    ConfigurationReader.FromAppConfiguration(appConfig))
         {
-            _userRepository = userRepository;
+            _userApiConverter = new UserApiConverter();
         }
 
         /// <summary>
@@ -53,7 +58,7 @@ namespace budgettracker.business.Api
                 response = new ApiResponse(String.Join(";", errors.ToArray()));
                 return response;
             }
-            if (_userRepository.Register(userModel, out errors))
+            if (((UserRepository) _userRepository).Register(userModel, out errors))
             {
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
@@ -71,14 +76,12 @@ namespace budgettracker.business.Api
         /// Authenticates the user, returning it in the response if authorized.
         /// </p>
         /// </summary>
-        public ApiResponse Authenticate(ApiRequest request)
+        public ApiResponse AuthenticateUser(ApiRequest request)
         {
-            LoginArgumentsApiContract arguments = request.Arguments<LoginArgumentsApiContract>();
-            UserRequestApiContract userValues = arguments.Credentials;
             ApiResponse response;
 
             try {
-                User authenticatedUser = _userRepository.Authenticate(userValues.UserName, userValues.Password);
+                User authenticatedUser = Authenticate(request);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }
