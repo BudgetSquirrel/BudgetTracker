@@ -26,8 +26,6 @@ namespace budgettracker.data.Repositories
     /// </summary>
     public class UserRepository : IUserRepository<User>
     {
-        IConfiguration _appConfig;
-        IServiceProvider _serviceProvider;
         GateKeeperConfig _gateKeeperConfig;
 
         BudgetTrackerContext _dbContext;
@@ -94,17 +92,6 @@ namespace budgettracker.data.Repositories
 
             errors = null;
             return true;
-        }
-
-        /// <summary>
-        /// Authenticates the user login, returning that user if authorized. Otherwise,
-        /// this will throw a <see cref="AuthenticationException" />.
-        /// </summary>
-        public User Authenticate(string username, string passwordGuess)
-        {
-            User authenticatedUser = Authentication.Authenticate(username, passwordGuess,
-                                    this, _cryptor, _gateKeeperConfig);
-            return authenticatedUser;
         }
     }
 }
