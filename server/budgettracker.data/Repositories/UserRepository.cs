@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace budgettracker.data
+namespace budgettracker.data.Repositories
 {
     /// <summary>
     /// Contains logic to perform CRUD operations on users. This acts as a

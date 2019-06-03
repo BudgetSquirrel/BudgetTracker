@@ -1,6 +1,9 @@
 using budgettracker.business.Api;
-﻿using budgettracker.common;
+using budgettracker.business.Api.Interfaces;
+using budgettracker.common;
 using budgettracker.data;
+using budgettracker.data.Repositories;
+using budgettracker.data.Repositories.Interfaces;
 using budgettracker.data.Models;
 using budgettracker.web.Data;
 using budgettracker.web.Models;
@@ -39,6 +42,8 @@ namespace budgettracker.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+           
+
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -50,6 +55,9 @@ namespace budgettracker.web
 
             services.AddScoped<AuthenticationApi>();
             services.AddScoped<UserRepository>();
+
+            services.AddScoped<IBudgetRepository, BudgetRepository>();
+            services.AddScoped<IBudgetApi, BudgetApi>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
