@@ -4,17 +4,24 @@ using budgettracker.business.Api.Interfaces;
 using budgettracker.data.Repositories.Interfaces;
 using budgettracker.common.Models;
 
+using GateKeeper.Configuration;
+using GateKeeper.Cryptogrophy;
+
+using Microsoft.Extensions.Configuration;
+
 using System;
 using System.Threading.Tasks;
 
 namespace budgettracker.business.Api
 {
-    public class BudgetApi : IBudgetApi
+    public class BudgetApi : IBudgetApi, ApiBase<User>
     {
 
         private readonly IBudgetRepository _budgetRepository;
 
-        public BudgetApi(IBudgetRepository budgetRepository)
+        public BudgetApi(IBudgetRepository budgetRepository, IConfiguration appConfig)
+            : base(budgetRepository, new Rfc2898Encryptor(),
+                    ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _budgetRepository = budgetRepository;
         }

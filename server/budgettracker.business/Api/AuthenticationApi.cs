@@ -86,6 +86,7 @@ namespace budgettracker.business.Api
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }
+            // This should be caught in the Controller and return Forbid() Also noticed we need to be return IActionResult from our Controllers
             catch (AuthenticationException)
             {
                 response = new ApiResponse("Those credentials could not be authorized.");

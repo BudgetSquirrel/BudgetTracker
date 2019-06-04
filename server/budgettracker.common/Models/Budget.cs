@@ -8,7 +8,7 @@ namespace budgettracker.common.Models
         /// <summary>
         /// Unique numeric identifier for this <see cref="Budget" />.
         /// </summary>
-        public int ID { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// English, user friendly identifier for this <see cref="Budget" />.
         /// </summary>
@@ -19,7 +19,18 @@ namespace budgettracker.common.Models
         /// can be assumed to have a calculated balance of the sum of all of
         /// it's direct sub-balances (which may also have calculated balances).
         /// </summary>
-        public double? SetAmount { get; set; }
+        public decimal? SetAmount { get; set; }
+
+        /// <summary>
+        /// The duration the budget will be per cycle in days.
+        /// </summary>
+        public int Duration { get; set; }
+
+        /// <summary>
+        /// The last start date of the budget's cycle need to determine when the 
+        /// current budget will end and the next one will be begin
+        /// </summary>
+        public DateTime BudgetStart { get; set; }
 
         /// <summary>
         /// <p>
