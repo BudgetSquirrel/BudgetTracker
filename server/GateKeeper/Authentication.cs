@@ -24,14 +24,11 @@ namespace GateKeeper
                 throw new AuthenticationException(AuthenticationException.REASON_USER_NOT_FOUND);
             }
             string realPassword = cryptor.Decrypt(user.Password, gateKeeperConfig.EncryptionKey, gateKeeperConfig.Salt);
-            if (passwordGuess == realPassword)
-            {
-                return user;
-            }
-            else
+            if (passwordGuess != realPassword)
             {
                 throw new AuthenticationException(AuthenticationException.REASON_WRONG_PASSWORD);
             }
+            return user;
         }
     }
 }
