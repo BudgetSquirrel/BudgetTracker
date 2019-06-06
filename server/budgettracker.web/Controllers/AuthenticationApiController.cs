@@ -41,5 +41,11 @@ namespace budgettracker.web.Controllers
         {
             return _authApi.AuthenticateUser(request);
         }
+
+        [HttpPost("delete")]
+        public ApiResponse DeleteUser(ApiRequest request)
+        {
+            return _authApi.DeleteUser(request);
+        }
     }
 }

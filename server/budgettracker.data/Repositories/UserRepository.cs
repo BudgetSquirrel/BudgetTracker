@@ -44,13 +44,38 @@ namespace budgettracker.data.Repositories
         }
 
         /// <summary>
+        /// <p>
+        /// Fetches all users from the database that have not been deleted. These
+        /// are the active users.
+        /// </p>
+        /// </summary>
+        public List<User> GetActiveUsers()
+        {
+            List<UserModel> userData = GetActiveUserFromDb().ToList();
+            List<User> userModels = _userConverter.ToBusinessModels(userData);
+            return userModels;
+        }
+
+        /// <summary>
+        /// <p>
+        /// Fetches all users from the database that have not been deleted. These
+        /// are the active users.
+        /// </p>
+        /// </summary>
+        private IQueryable<UserModel> GetActiveUserFromDb()
+        {
+            IQueryable<UserModel> users = _dbContext.Users.Where(u => !u.DateDeleted.HasValue);
+            return users;
+        }
+
+        /// <summary>
         /// Returns the user that has the given username or null if
         /// it doesn't exist. The password on the user returned in this
         /// will be encrypted.
         /// </summary>
         public User GetByUsername(string username)
         {
-            UserModel userData = _dbContext.Users.Where(u => u.UserName == username).SingleOrDefault();
+            UserModel userData = GetActiveUserFromDb().Where(u => u.UserName == username).SingleOrDefault();
             if (userData == null)
             {
                 return null;
@@ -72,7 +97,7 @@ namespace budgettracker.data.Repositories
         {
             string encryptedPassword = _cryptor.Encrypt(userModel.Password, _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt);
             userModel.Password = encryptedPassword;
-            int numDuplicates = _dbContext.Users.Count(user => user.UserName == userModel.Username);
+            int numDuplicates = GetActiveUserFromDb().Count(user => user.UserName == userModel.Username);
 
             if (numDuplicates > 0)
             {
@@ -92,6 +117,13 @@ namespace budgettracker.data.Repositories
 
             errors = null;
             return true;
+        }
+
+        public void Delete(int userId)
+        {
+            UserModel user = GetActiveUserFromDb().Where(u => u.Id == userId).Single();
+            user.DateDeleted = DateTime.Now;
+            _dbContext.SaveChanges();
         }
     }
 }

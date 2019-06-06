@@ -95,9 +95,19 @@ namespace budgettracker.business.Api
 
         public ApiResponse DeleteUser(ApiRequest request)
         {
-            UserRequestApiContract user = request.User;
             ApiResponse response;
-            return null;
+
+            User authenticatedUser = Authenticate(request);
+            try
+            {
+                ((UserRepository) _userRepository).Delete(authenticatedUser.Id);
+                response = new ApiResponse();
+            }
+            catch (InvalidOperationException)
+            {
+                response = new ApiResponse("Could not find the specified user.");
+            }
+            return response;
         }
     }
 }
