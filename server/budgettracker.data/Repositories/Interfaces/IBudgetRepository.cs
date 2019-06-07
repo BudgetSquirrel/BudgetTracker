@@ -7,9 +7,9 @@ namespace budgettracker.data.Repositories.Interfaces
     {
         /// <summary>
         /// <p>
-        /// Saves the new budget to the database will return nothing but 
-        /// will throw exceptions if something fails will be caught in 
-        /// BudgetApi.cs
+        /// Saves the new budget to the database will return nothing
+        /// but will throw exceptions if something fails will be caught in 
+        /// <see cref="BudgetApi"/>
         /// </p>
         /// </summary>
         /// <param name="budget"><see cref="Budget"/></param>

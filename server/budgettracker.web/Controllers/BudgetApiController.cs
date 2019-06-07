@@ -5,6 +5,9 @@ using budgettracker.business.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Threading.Tasks;
+using System.Security.Authentication;
+using System;
+using budgettracker.business.Api.Contracts.BudgetApi;
 
 namespace budgettracker.web.Controllers
 {
@@ -21,9 +24,26 @@ namespace budgettracker.web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ApiResponse> CreateBudget(ApiRequest request)
+        public async Task<IActionResult> CreateBudget(ApiRequest request)
         {
-            return await _budgetApi.CreateBudget(request);
+            if(!request.Arguments<CreateBudgetRequestContract>().IsValid())
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                return Ok(await _budgetApi.CreateBudget(request));    
+            }
+            catch (Exception ex) when (ex.InnerException is AuthenticationException)
+            {
+                if (ex is AuthenticationException) 
+                {
+                    return Forbid();
+                }
+                // We should consider logging the exception here. 
+                return StatusCode(500);
+            }            
         }
     }
 }

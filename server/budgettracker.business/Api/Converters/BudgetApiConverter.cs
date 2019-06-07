@@ -30,7 +30,15 @@ namespace budgettracker.business.Api.Converters
 
         public CreateBudgetResponseContract ToResponseContract(Budget model)
         {
-            throw new System.NotImplementedException();
+            return new CreateBudgetResponseContract()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                SetAmount = model.SetAmount,
+                Duration = model.Duration,
+                BudgetStart = model.BudgetStart,
+                ParentBudgetId = model.ParentBudgetId
+            };
         }
     }
 }

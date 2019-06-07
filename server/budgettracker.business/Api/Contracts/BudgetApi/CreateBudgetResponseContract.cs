@@ -6,7 +6,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
     public class CreateBudgetResponseContract : IApiContract {
 
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -19,5 +19,9 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
 
         [JsonProperty("budget-start")]
         public DateTime BudgetStart { get; set; }
+
+        [JsonProperty("parent-budget-id")]
+        public Guid ParentBudgetId { get; set; }
+
     }
 }

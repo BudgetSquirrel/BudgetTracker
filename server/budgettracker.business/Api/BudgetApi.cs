@@ -11,16 +11,21 @@ using Microsoft.Extensions.Configuration;
 
 using System;
 using System.Threading.Tasks;
+using budgettracker.data.Repositories;
+using budgettracker.business.Api.Converters;
+using budgettracker.business.Api.Contracts.BudgetApi;
 
 namespace budgettracker.business.Api
 {
-    public class BudgetApi : IBudgetApi, ApiBase<User>
+    public class BudgetApi :  ApiBase<User>, IBudgetApi
     {
 
         private readonly IBudgetRepository _budgetRepository;
 
-        public BudgetApi(IBudgetRepository budgetRepository, IConfiguration appConfig)
-            : base(budgetRepository, new Rfc2898Encryptor(),
+        private readonly BudgetApiConverter _budgetConverter;
+
+        public BudgetApi(IBudgetRepository budgetRepository, IConfiguration appConfig, UserRepository userRepository)
+            : base(userRepository, new Rfc2898Encryptor(),
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _budgetRepository = budgetRepository;
@@ -28,13 +33,13 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            // Authenticate the User here
-
-            // Convert request buget to Common Budget model
-            await _budgetRepository.CreateBudget(new Budget());
+            Authenticate(request);           
             
-            // Return something else
-            return new ApiResponse("Not Implemented");
+            await _budgetRepository.CreateBudget(_budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>()));
+
+            CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(_budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>()));
+
+            return new ApiResponse(response);
         }
     }
 }

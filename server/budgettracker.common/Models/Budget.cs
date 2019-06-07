@@ -19,7 +19,7 @@ namespace budgettracker.common.Models
         /// can be assumed to have a calculated balance of the sum of all of
         /// it's direct sub-balances (which may also have calculated balances).
         /// </summary>
-        public decimal? SetAmount { get; set; }
+        public decimal SetAmount { get; set; }
 
         /// <summary>
         /// The duration the budget will be per cycle in days.
@@ -33,19 +33,9 @@ namespace budgettracker.common.Models
         public DateTime BudgetStart { get; set; }
 
         /// <summary>
-        /// <p>
-        /// All <see cref="Budget" /> that are contained within this
-        /// <see cref="Budget" />.
-        /// </p>
-        /// <p>
-        /// These should not have a summed <see cref="Budget.SetAmount" />
-        /// that is higher than this <see cref="Budget" />'s
-        /// <see cref="Budget.SetAmount" />' unless this
-        /// <see cref="Budget.SetAmount" /> is null. Then this
-        /// <see cref="Budget.SetAmount" /> is calculated from that sum.
-        /// </p>
+        /// The parent budget's id, if null then this budget is considered the root budget
         /// </summary>
-        public List<Budget> SubBudgets { get; set; }
+        public Guid ParentBudgetId { get; set; }
 
         public override string ToString()
         {
