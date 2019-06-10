@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace budgettracker.business.Api
 {
@@ -77,12 +78,12 @@ namespace budgettracker.business.Api
         /// Authenticates the user, returning it in the response if authorized.
         /// </p>
         /// </summary>
-        public ApiResponse AuthenticateUser(ApiRequest request)
+        public async Task<ApiResponse> AuthenticateUser(ApiRequest request)
         {
             ApiResponse response;
 
             try {
-                User authenticatedUser = Authenticate(request);
+                User authenticatedUser = await Authenticate(request);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }
@@ -93,14 +94,14 @@ namespace budgettracker.business.Api
             return response;
         }
 
-        public ApiResponse DeleteUser(ApiRequest request)
+        public async Task<ApiResponse> DeleteUser(ApiRequest request)
         {
             ApiResponse response;
 
-            User authenticatedUser = Authenticate(request);
+            User authenticatedUser = await Authenticate(request);
             try
             {
-                ((UserRepository) _userRepository).Delete(authenticatedUser.Id);
+                await ((UserRepository) _userRepository).Delete(authenticatedUser.Id);
                 response = new ApiResponse();
             }
             catch (InvalidOperationException)
