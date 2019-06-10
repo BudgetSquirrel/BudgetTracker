@@ -21,7 +21,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         public DateTime BudgetStart { get; set; }
 
         [JsonProperty("parent-budget-id")]
-        public Guid ParentBudgetId { get; set; }
+        public Guid? ParentBudgetId { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 using budgettracker.common.Models;
 using budgettracker.data.Converters;
+using budgettracker.data.Exceptions;
 using budgettracker.data.Models;
 using budgettracker.data.Repositories.Interfaces;
 using System;
@@ -31,7 +32,7 @@ namespace budgettracker.data.Repositories
 
                 if(recordSaved != 1) 
                 {
-                    throw new Exception("Created " + recordSaved + " budget(s) when only 1 should have been created");
+                    throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
                 }
             }            
         }

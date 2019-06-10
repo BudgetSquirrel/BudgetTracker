@@ -35,7 +35,7 @@ namespace budgettracker.common.Models
         /// <summary>
         /// The parent budget's id, if null then this budget is considered the root budget
         /// </summary>
-        public Guid ParentBudgetId { get; set; }
+        public Guid? ParentBudgetId { get; set; }
 
         public override string ToString()
         {

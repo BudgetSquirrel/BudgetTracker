@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using budgettracker.data.Repositories;
 using budgettracker.business.Api.Converters;
 using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.data.Exceptions;
 
 namespace budgettracker.business.Api
 {
@@ -29,15 +30,27 @@ namespace budgettracker.business.Api
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _budgetRepository = budgetRepository;
+            _budgetConverter = new BudgetApiConverter();
         }
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
             Authenticate(request);           
             
-            await _budgetRepository.CreateBudget(_budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>()));
+            Budget newBudget = _budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>());
 
-            CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(_budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>()));
+            newBudget.Id = Guid.NewGuid();
+            newBudget.BudgetStart = new DateTime();
+
+            try
+            {
+            await _budgetRepository.CreateBudget(newBudget);
+            }
+            catch (RepositoryException ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+            CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
         }

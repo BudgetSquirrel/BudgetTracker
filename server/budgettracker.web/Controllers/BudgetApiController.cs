@@ -42,7 +42,7 @@ namespace budgettracker.web.Controllers
                     return Forbid();
                 }
                 // We should consider logging the exception here. 
-                return StatusCode(500);
+                return StatusCode(503);
             }            
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace budgettracker.business.Api.Contracts.BudgetApi
@@ -21,14 +22,13 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         /// this will be null. This string is converted to guid later. </p>
         /// </summary>
         [JsonProperty("parent-id")]
-        public string ParentId { get; set; }
+        public Guid? ParentBudgetId { get; set; }
 
         public bool IsValid()
         {
             return this.Name == null || 
                 this.SetAmount == 0M || 
-                this.Duration == 0 ||
-                this.ParentId == null;
+                this.Duration == 0;
             
         }
     }

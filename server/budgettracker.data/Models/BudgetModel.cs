@@ -9,7 +9,7 @@ namespace budgettracker.data.Models
         public decimal SetAmount { get; set; }
         public int Duration { get; set; }
         public DateTime BudgetStart { get; set; }
-        public Guid ParentBudgetId { get; set; }
+        public Guid? ParentBudgetId { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

@@ -10,11 +10,10 @@ namespace budgettracker.business.Api.Converters
         {
             return new Budget()
             {
-                Id = Guid.NewGuid(),
                 Name = requestContract.Name,
                 SetAmount = requestContract.SetAmount,
                 Duration = requestContract.Duration,
-                BudgetStart = new DateTime(),
+                ParentBudgetId = requestContract.ParentBudgetId
             };
         }
 
