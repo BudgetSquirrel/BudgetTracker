@@ -23,13 +23,5 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         /// </summary>
         [JsonProperty("parent-id")]
         public Guid? ParentBudgetId { get; set; }
-
-        public bool IsValid()
-        {
-            return this.Name == null || 
-                this.SetAmount == 0M || 
-                this.Duration == 0;
-            
-        }
     }
 }

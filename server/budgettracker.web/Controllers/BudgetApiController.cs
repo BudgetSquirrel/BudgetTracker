@@ -26,23 +26,13 @@ namespace budgettracker.web.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateBudget(ApiRequest request)
         {
-            if(!request.Arguments<CreateBudgetRequestContract>().IsValid())
-            {
-                return BadRequest();
-            }
-
             try
             {
-                return Ok(await _budgetApi.CreateBudget(request));    
+                return new JsonResult(await _budgetApi.CreateBudget(request));    
             }
-            catch (Exception ex) when (ex.InnerException is AuthenticationException)
+            catch (AuthenticationException) 
             {
-                if (ex is AuthenticationException) 
-                {
-                    return Forbid();
-                }
-                // We should consider logging the exception here. 
-                return StatusCode(503);
+                return Forbid();
             }            
         }
     }

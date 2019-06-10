@@ -15,6 +15,7 @@ using budgettracker.data.Repositories;
 using budgettracker.business.Api.Converters;
 using budgettracker.business.Api.Contracts.BudgetApi;
 using budgettracker.data.Exceptions;
+using budgettracker.common;
 
 namespace budgettracker.business.Api
 {
@@ -36,20 +37,28 @@ namespace budgettracker.business.Api
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
             Authenticate(request);           
-            
-            Budget newBudget = _budgetConverter.ToModel(request.Arguments<CreateBudgetRequestContract>());
+
+            CreateBudgetRequestContract budgetRequest = request.Arguments<CreateBudgetRequestContract>();
+
+            Budget newBudget = _budgetConverter.ToModel(budgetRequest);
+
+            if(!Validation.IsCreateBudgetRequestValid(budgetRequest))
+            {
+                return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
+            }
 
             newBudget.Id = Guid.NewGuid();
             newBudget.BudgetStart = new DateTime();
 
             try
             {
-            await _budgetRepository.CreateBudget(newBudget);
+                await _budgetRepository.CreateBudget(newBudget);
             }
             catch (RepositoryException ex)
             {
                 return new ApiResponse(ex.Message);
             }
+
             CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
