@@ -5,6 +5,9 @@ using budgettracker.business.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Threading.Tasks;
+using System.Security.Authentication;
+using System;
+using budgettracker.business.Api.Contracts.BudgetApi;
 
 namespace budgettracker.web.Controllers
 {
@@ -21,9 +24,16 @@ namespace budgettracker.web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ApiResponse> CreateBudget(ApiRequest request)
+        public async Task<IActionResult> CreateBudget(ApiRequest request)
         {
-            return await _budgetApi.CreateBudget(request);
+            try
+            {
+                return new JsonResult(await _budgetApi.CreateBudget(request));    
+            }
+            catch (AuthenticationException) 
+            {
+                return Forbid();
+            }            
         }
     }
 }

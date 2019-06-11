@@ -1,5 +1,4 @@
 using budgettracker.common;
-using budgettracker.common.Authentication;
 using budgettracker.common.Models;
 using budgettracker.data.Converters;
 using budgettracker.data.Models;
@@ -76,7 +75,7 @@ namespace budgettracker.data.Repositories
 
             if (numDuplicates > 0)
             {
-                errors = new List<string>() { AuthenticationConstants.ApiResponseErrorCodes.DUPLICATE_USERNAME };
+                errors = new List<string>() { Constants.Authentication.ApiResponseErrorCodes.DUPLICATE_USERNAME };
                 return false;
             }
 
@@ -86,7 +85,7 @@ namespace budgettracker.data.Repositories
 
             if (recordsSaved < 1)
             {
-                errors = new List<string>() { AuthenticationConstants.ApiResponseErrorCodes.UNKNOWN };
+                errors = new List<string>() { Constants.Authentication.ApiResponseErrorCodes.UNKNOWN };
                 return false;
             }
 
