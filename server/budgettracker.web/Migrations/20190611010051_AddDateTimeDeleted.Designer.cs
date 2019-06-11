@@ -9,7 +9,7 @@ using budgettracker.web.Data;
 namespace budgettracker.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190602233900_AddDateTimeDeleted")]
+    [Migration("20190611010051_AddDateTimeDeleted")]
     partial class AddDateTimeDeleted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,28 @@ namespace budgettracker.web.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+
+            modelBuilder.Entity("budgettracker.data.Models.BudgetModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("BudgetStart");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("Duration");
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid?>("ParentBudgetId");
+
+                    b.Property<decimal>("SetAmount");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Budgets");
+                });
 
             modelBuilder.Entity("budgettracker.data.Models.UserModel", b =>
                 {

@@ -3,9 +3,8 @@ using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.Responses;
 using budgettracker.business.Api.Contracts.Requests;
 using budgettracker.business.Api.Converters;
-using budgettracker.business.Authentication;
+using budgettracker.business;
 using budgettracker.common;
-using budgettracker.common.Authentication;
 using budgettracker.common.Models;
 using budgettracker.data;
 using budgettracker.data.Repositories;
@@ -52,10 +51,10 @@ namespace budgettracker.business.Api
             ApiResponse response;
 
             IEnumerable<string> errors = null;
-            if (!AccountValidation.IsAccountRegistrationRequestValid(userValues))
+            if (!Validation.IsAccountRegistrationRequestValid(userValues))
             {
                 errors = new List<string>() {
-                    AuthenticationConstants.ApiResponseErrorCodes.PASSWORD_CONFIRM_INCORRECT
+                    Constants.Authentication.ApiResponseErrorCodes.PASSWORD_CONFIRM_INCORRECT
                 };
                 response = new ApiResponse(String.Join(";", errors.ToArray()));
                 return response;
@@ -87,6 +86,7 @@ namespace budgettracker.business.Api
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }
+            // This should be caught in the Controller and return Forbid() Also noticed we need to be return IActionResult from our Controllers
             catch (AuthenticationException)
             {
                 response = new ApiResponse("Those credentials could not be authorized.");
@@ -97,8 +97,17 @@ namespace budgettracker.business.Api
         public async Task<ApiResponse> DeleteUser(ApiRequest request)
         {
             ApiResponse response;
+            User authenticatedUser;
 
-            User authenticatedUser = await Authenticate(request);
+            try
+            {
+                authenticatedUser = await Authenticate(request);
+            }
+            catch(AuthenticationException)
+            {
+                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.USER_NOT_FOUND);
+                return response;
+            }
             try
             {
                 await ((UserRepository) _userRepository).Delete(authenticatedUser.Id);

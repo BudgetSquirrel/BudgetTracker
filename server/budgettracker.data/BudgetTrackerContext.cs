@@ -12,5 +12,6 @@ namespace budgettracker.data
         }
 
         public DbSet<UserModel> Users { get; set; }
+        public DbSet<BudgetModel> Budgets { get; set; }
     }
 }
