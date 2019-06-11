@@ -349,3 +349,6 @@ vcs.xml
 
 # Misc files
 .vscode/
+
+# DB File
+*.db
