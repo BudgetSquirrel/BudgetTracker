@@ -1,6 +1,7 @@
 using System;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
-using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
+using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
 
 namespace budgettracker.business
 {
@@ -23,8 +24,16 @@ namespace budgettracker.business
 
         public static bool IsCreateBudgetRequestValid(CreateBudgetRequestContract arguments)
         {
-            Console.WriteLine(arguments.Name + " " + arguments.SetAmount + " " + arguments.Duration);
             return arguments.Name != null &&
+                arguments.SetAmount != 0M && 
+                arguments.Duration != 0;
+                 
+        }
+
+        public static bool IsUpdateBudgetRequestValid(UpdateBudgetRequestContract arguments)
+        {
+            return arguments.Id != null &&
+                arguments.Name != null &&
                 arguments.SetAmount != 0M && 
                 arguments.Duration != 0;
                  

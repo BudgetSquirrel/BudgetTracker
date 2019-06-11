@@ -1,10 +1,10 @@
 using budgettracker.common.Models;
-using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
 using System;
 
-namespace budgettracker.business.Api.Converters
+namespace budgettracker.business.Api.Converters.BudgetConverters
 {
-    public class BudgetApiConverter : IApiConverter<Budget, CreateBudgetRequestContract, CreateBudgetResponseContract>
+    public class CreateBudgetApiConverter : IApiConverter<Budget, CreateBudgetRequestContract, CreateBudgetResponseContract>
     {
         public Budget ToModel(CreateBudgetRequestContract requestContract)
         {

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace budgettracker.business.Api.Contracts.BudgetApi
+namespace budgettracker.business.Api.Contracts.BudgetApi.CreateBudget
 {
     public class CreateBudgetArgumentApiContract : IApiContract
     {

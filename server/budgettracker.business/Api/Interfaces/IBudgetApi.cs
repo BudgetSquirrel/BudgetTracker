@@ -14,6 +14,16 @@ namespace budgettracker.business.Api.Interfaces
         /// </p>
         /// </summary>
         /// <param name="request"> <see cref="ApiRequest"/> </param>
+        /// <returns> Returns: <see cref="ApiResponse" /> </returns>
         Task<ApiResponse> CreateBudget(ApiRequest request);
+
+        /// <summary>
+        /// <p>
+        ///
+        /// </p>
+        /// </summary>
+        /// <param name="request"> <see cref="ApiRequest"/> </param>
+        /// <returns> Returns: <see cref="ApiResponse" /> </returns>
+        Task<ApiResponse> UpdateBudget(ApiRequest request);
     }
 }

@@ -22,7 +22,7 @@ namespace budgettracker.common.Models
         public decimal SetAmount { get; set; }
 
         /// <summary>
-        /// The duration the budget will be per cycle in days.
+        /// The duration the budget will be per cycle in months.
         /// </summary>
         public int Duration { get; set; }
 

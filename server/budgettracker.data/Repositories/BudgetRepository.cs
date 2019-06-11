@@ -4,6 +4,7 @@ using budgettracker.data.Exceptions;
 using budgettracker.data.Models;
 using budgettracker.data.Repositories.Interfaces;
 using System;
+using System.Linq;
 using System.Data.Common;
 using System.Threading.Tasks;
 
@@ -30,12 +31,35 @@ namespace budgettracker.data.Repositories
                 await _dbContext.Budgets.AddAsync(newBudget);
                 int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved != 1) 
+                if(recordSaved < 1) 
                 {
                     throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
                 }
             }
             return _budgetConverter.ToBusinessModel(newBudget);  
+        }
+
+        public async Task<Budget> UpdateBudget(Budget budget)
+        {
+            BudgetModel oldBudget;
+            using (_dbContext)
+            {
+                oldBudget = _dbContext.Budgets.SingleOrDefault(x => x.Id == budget.Id);
+
+                oldBudget.Name = budget.Name;
+                oldBudget.SetAmount = budget.SetAmount;
+                oldBudget.Duration = budget.Duration;
+                oldBudget.BudgetStart = budget.BudgetStart;
+                oldBudget.ParentBudgetId = budget.ParentBudgetId;
+
+                int recordSaved = await _dbContext.SaveChangesAsync();
+
+                if(recordSaved < 1) 
+                {
+                    throw new RepositoryException("Updated " + recordSaved + " budget(s) when only 1 should have been created");
+                }
+            }
+            return _budgetConverter.ToBusinessModel(oldBudget);  
         }
     }
 }

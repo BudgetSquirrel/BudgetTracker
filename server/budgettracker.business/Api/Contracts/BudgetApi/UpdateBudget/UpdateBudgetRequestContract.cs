@@ -1,9 +1,12 @@
 using System;
 using Newtonsoft.Json;
 
-namespace budgettracker.business.Api.Contracts.BudgetApi
+namespace budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget
 {
-    public class CreateBudgetRequestContract : IApiContract {
+    public class UpdateBudgetRequestContract : IApiContract {
+
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -16,6 +19,9 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         /// </summary>    
         [JsonProperty("duration")]
         public int Duration { get; set; }
+
+        [JsonProperty("budget-start")]
+        public DateTime BudgetStart { get; set; }
 
         /// <summary>
         /// <p> The guid the of the parent budget, if the budget is the 'root' 
