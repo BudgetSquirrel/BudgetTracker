@@ -7,12 +7,12 @@ namespace budgettracker.data.Repositories.Interfaces
     {
         /// <summary>
         /// <p>
-        /// Saves the new budget to the database will return nothing
-        /// but will throw exceptions if something fails will be caught in 
+        /// Saves the new budget to the database will return the newly created budget 
+        /// model but will throw exceptions if something fails will be caught in 
         /// <see cref="BudgetApi"/>
         /// </p>
         /// </summary>
         /// <param name="budget"><see cref="Budget"/></param>
-        Task CreateBudget(Budget budget);
+        Task<Budget> CreateBudget(Budget budget);
     }
 }

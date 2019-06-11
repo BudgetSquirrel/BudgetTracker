@@ -21,7 +21,7 @@ namespace budgettracker.data.Repositories
             _budgetConverter = new BudgetConverter();
         }
 
-        public async Task CreateBudget(Budget budget)
+        public async Task<Budget> CreateBudget(Budget budget)
         {
             BudgetModel newBudget = _budgetConverter.ToDataModel(budget);
 
@@ -34,7 +34,8 @@ namespace budgettracker.data.Repositories
                 {
                     throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
                 }
-            }            
+            }
+            return _budgetConverter.ToBusinessModel(newBudget);  
         }
     }
 }

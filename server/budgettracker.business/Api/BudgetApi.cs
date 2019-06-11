@@ -38,21 +38,20 @@ namespace budgettracker.business.Api
         {
             Authenticate(request);           
 
-            CreateBudgetRequestContract budgetRequest = request.Arguments<CreateBudgetRequestContract>();
+            CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
-            Budget newBudget = _budgetConverter.ToModel(budgetRequest);
+            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValue);
 
-            if(!Validation.IsCreateBudgetRequestValid(budgetRequest))
+            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValue))
             {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
 
-            newBudget.Id = Guid.NewGuid();
-            newBudget.BudgetStart = new DateTime();
+            newBudget.BudgetStart = DateTime.Now;
 
             try
             {
-                await _budgetRepository.CreateBudget(newBudget);
+                newBudget = await _budgetRepository.CreateBudget(newBudget);
             }
             catch (RepositoryException ex)
             {

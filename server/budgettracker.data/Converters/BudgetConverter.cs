@@ -7,7 +7,15 @@ namespace budgettracker.data.Converters
     {
         public Budget ToBusinessModel(BudgetModel dataModel)
         {
-            throw new System.NotImplementedException();
+            return new Budget()
+            {
+                Id = dataModel.Id,
+                Name = dataModel.Name,
+                SetAmount = dataModel.SetAmount,
+                Duration = dataModel.Duration,
+                BudgetStart = dataModel.BudgetStart,
+                ParentBudgetId = dataModel.ParentBudgetId
+            };
         }
 
         public BudgetModel ToDataModel(Budget businessObject)

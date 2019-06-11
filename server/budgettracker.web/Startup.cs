@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace budgettracker.web
 {
@@ -41,7 +42,6 @@ namespace budgettracker.web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
            
 
             services.AddSingleton<IConfiguration>(Configuration);
@@ -57,7 +57,12 @@ namespace budgettracker.web
             services.AddScoped<UserRepository>();
 
             services.AddScoped<IBudgetRepository, BudgetRepository>();
-            services.AddScoped<IBudgetApi, BudgetApi>(); 
+            services.AddScoped<IBudgetApi, BudgetApi>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,12 +83,24 @@ namespace budgettracker.web
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+
         }
     }
 }
