@@ -21,7 +21,7 @@ namespace budgettracker.web.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DurrationType");
+                    b.Property<string>("DurationType");
 
                     b.Property<int>("EndDayOfMonth");
 
@@ -47,7 +47,7 @@ namespace budgettracker.web.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("Duration");
+                    b.Property<Guid>("DurationId");
 
                     b.Property<string>("Name");
 
@@ -56,6 +56,8 @@ namespace budgettracker.web.Migrations
                     b.Property<decimal>("SetAmount");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DurationId");
 
                     b.ToTable("Budgets");
                 });
@@ -78,6 +80,14 @@ namespace budgettracker.web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("budgettracker.data.Models.BudgetModel", b =>
+                {
+                    b.HasOne("budgettracker.data.Models.BudgetDurationModel", "Duration")
+                        .WithMany("Budgets")
+                        .HasForeignKey("DurationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
