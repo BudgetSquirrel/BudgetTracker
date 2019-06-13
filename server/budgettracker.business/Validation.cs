@@ -23,7 +23,6 @@ namespace budgettracker.business
 
         public static bool IsCreateBudgetRequestValid(CreateBudgetRequestContract arguments)
         {
-            Console.WriteLine(arguments.Name + " " + arguments.SetAmount + " " + arguments.Duration);
             return arguments.Name != null &&
                 arguments.SetAmount != 0M && 
                 arguments.Duration != 0;
