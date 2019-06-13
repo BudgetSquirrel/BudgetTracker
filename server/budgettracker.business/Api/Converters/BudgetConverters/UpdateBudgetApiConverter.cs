@@ -1,11 +1,10 @@
 using budgettracker.common.Models;
 using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
-using System;
 
 namespace budgettracker.business.Api.Converters.BudgetConverters
 {
-    public class UpdateBudgetApiConverter : IApiConverter<Budget, UpdateBudgetRequestContract, UpdateBudgetResponseContract>
-    {        public Budget ToModel(UpdateBudgetRequestContract requestContract)
+    public class UpdateBudgetApiConverter
+    {        public static Budget ToModel(UpdateBudgetRequestContract requestContract)
         {
             return new Budget()
             {
@@ -18,17 +17,17 @@ namespace budgettracker.business.Api.Converters.BudgetConverters
             };
         }
 
-        public Budget ToModel(UpdateBudgetResponseContract responseContract)
+        public static Budget ToModel(UpdateBudgetResponseContract responseContract)
         {
             throw new System.NotImplementedException();
         }
 
-        public UpdateBudgetRequestContract ToRequestContract(Budget model)
+        public static UpdateBudgetRequestContract ToRequestContract(Budget model)
         {
             throw new System.NotImplementedException();
         }
 
-        public UpdateBudgetResponseContract ToResponseContract(Budget model)
+        public static UpdateBudgetResponseContract ToResponseContract(Budget model)
         {
             return new UpdateBudgetResponseContract()
             {

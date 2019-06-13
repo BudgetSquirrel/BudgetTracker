@@ -46,6 +46,11 @@ namespace budgettracker.data.Repositories
             {
                 oldBudget = _dbContext.Budgets.SingleOrDefault(x => x.Id == budget.Id);
 
+                if(oldBudget == null) 
+                {
+                    throw new RepositoryException("No Budget with the id: " + budget.Id + " was found.");
+                }
+
                 oldBudget.Name = budget.Name;
                 oldBudget.SetAmount = budget.SetAmount;
                 oldBudget.Duration = budget.Duration;
@@ -59,6 +64,7 @@ namespace budgettracker.data.Repositories
                     throw new RepositoryException("Updated " + recordSaved + " budget(s) when only 1 should have been created");
                 }
             }
+
             return _budgetConverter.ToBusinessModel(oldBudget);  
         }
     }

@@ -17,7 +17,6 @@ using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
 using budgettracker.data.Exceptions;
 using budgettracker.common;
 using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
-using budgettracker.business.Api.Converters;
 
 namespace budgettracker.business.Api
 {
@@ -26,16 +25,11 @@ namespace budgettracker.business.Api
 
         private readonly IBudgetRepository _budgetRepository;
 
-        private readonly CreateBudgetApiConverter _createBudgetConverter;
-        private readonly UpdateBudgetApiConverter _updateBudgetConverter;
-
         public BudgetApi(IBudgetRepository budgetRepository, IConfiguration appConfig, UserRepository userRepository)
             : base(userRepository, new Rfc2898Encryptor(),
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _budgetRepository = budgetRepository;
-            _createBudgetConverter = new CreateBudgetApiConverter();
-            _updateBudgetConverter = new UpdateBudgetApiConverter();
         }
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
@@ -44,7 +38,7 @@ namespace budgettracker.business.Api
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
-            Budget newBudget = _createBudgetConverter.ToModel(budgetRequest.BudgetValue);
+            Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValue);
 
             if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValue))
             {
@@ -62,7 +56,7 @@ namespace budgettracker.business.Api
                 return new ApiResponse(ex.Message);
             }
 
-            CreateBudgetResponseContract response = _createBudgetConverter.ToResponseContract(newBudget);
+            CreateBudgetResponseContract response = CreateBudgetApiConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
@@ -73,7 +67,7 @@ namespace budgettracker.business.Api
 
             UpdateBudgetArgumentApiContract budgetRequest = request.Arguments<UpdateBudgetArgumentApiContract>();
 
-            Budget newBudget = _updateBudgetConverter.ToModel(budgetRequest.BudgetValue);
+            Budget newBudget = UpdateBudgetApiConverter.ToModel(budgetRequest.BudgetValue);
 
             if(!Validation.IsUpdateBudgetRequestValid(budgetRequest.BudgetValue))
             {
@@ -82,14 +76,14 @@ namespace budgettracker.business.Api
 
             try
             {
-                newBudget = await _budgetRepository.CreateBudget(newBudget);
+                newBudget = await _budgetRepository.UpdateBudget(newBudget);
             }
             catch (RepositoryException ex)
             {
                 return new ApiResponse(ex.Message);
             }
 
-            CreateBudgetResponseContract response = _createBudgetConverter.ToResponseContract(newBudget);
+            UpdateBudgetResponseContract response = UpdateBudgetApiConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
