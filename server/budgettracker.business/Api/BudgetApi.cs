@@ -36,17 +36,16 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            Authenticate(request);           
+            Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
-            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValue);
-
-            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValue))
+            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValues))
             {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
 
+            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValues);
             newBudget.BudgetStart = DateTime.Now;
 
             try

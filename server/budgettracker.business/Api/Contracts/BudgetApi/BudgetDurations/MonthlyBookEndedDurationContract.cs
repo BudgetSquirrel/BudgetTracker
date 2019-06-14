@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
 {
     /// <summary>
@@ -15,6 +17,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
         /// like so: (January 3rd, February 3rd, March 3rd and so on).
         /// </p>
         /// </summary>
+        [JsonProperty("start-day-of-month")]
         public int StartDayOfMonth { get; set; }
 
         /// <summary>
@@ -24,6 +27,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
         /// so: (January 28th, February 28th, March 28th and so on).
         /// </p>
         /// </summary>
+        [JsonProperty("end-day-of-month")]
         public int EndDayOfMonth { get; set; }
 
         /// <summary>
@@ -41,6 +45,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
         /// start date will simply be set to February 28th.
         /// </p>
         /// </summary>
+        [JsonProperty("rollover-start-date-on-small-months")]
         public bool RolloverStartDateOnSmallMonths { get; set; }
 
         /// <summary>
@@ -58,6 +63,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
         /// end date will simply be set to February 28th.
         /// </p>
         /// </summary>
+        [JsonProperty("rollover-end-date-on-small-months")]
         public bool RolloverEndDateOnSmallMonths { get; set; }
     }
 }

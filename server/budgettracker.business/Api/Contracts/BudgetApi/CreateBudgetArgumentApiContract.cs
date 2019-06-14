@@ -4,7 +4,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
 {
     public class CreateBudgetArgumentApiContract : IApiContract
     {
-        [JsonProperty("budget-value")]
-        public CreateBudgetRequestContract BudgetValue { get; set; }
+        [JsonProperty("budget-values")]
+        public CreateBudgetRequestContract BudgetValues { get; set; }
     }
 }

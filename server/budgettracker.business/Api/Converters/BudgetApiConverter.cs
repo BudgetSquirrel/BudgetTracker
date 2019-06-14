@@ -1,5 +1,8 @@
+using budgettracker.common.Exceptions;
 using budgettracker.common.Models;
+using budgettracker.common.Models.BudgetDurations;
 using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
 using System;
 
 namespace budgettracker.business.Api.Converters
@@ -12,7 +15,7 @@ namespace budgettracker.business.Api.Converters
             {
                 Name = requestContract.Name,
                 SetAmount = requestContract.SetAmount,
-                Duration = requestContract.Duration,
+                Duration = GetBudgetDuration(requestContract.Duration),
                 ParentBudgetId = requestContract.ParentBudgetId
             };
         }
@@ -34,10 +37,72 @@ namespace budgettracker.business.Api.Converters
                 Id = model.Id,
                 Name = model.Name,
                 SetAmount = model.SetAmount,
-                Duration = model.Duration,
+                Duration = GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,
                 ParentBudgetId = model.ParentBudgetId
             };
+        }
+
+        private BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        {
+            BudgetDurationBase durationModel = null;
+            if (durationContract is MonthlyBookEndedDurationContract)
+            {
+                MonthlyBookEndedDurationContract castedContract = (MonthlyBookEndedDurationContract) durationContract;
+                durationModel = new MonthlyBookEndedDuration()
+                {
+                    Id = castedContract.Id,
+                    StartDayOfMonth = castedContract.StartDayOfMonth,
+                    EndDayOfMonth = castedContract.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = castedContract.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = castedContract.RolloverEndDateOnSmallMonths,
+                };
+            }
+            else if (durationContract is MonthlyDaySpanDurationContract)
+            {
+                MonthlyDaySpanDurationContract castedContract = (MonthlyDaySpanDurationContract) durationContract;
+                durationModel = new MonthlyDaySpanDuration()
+                {
+                    Id = castedContract.Id,
+                    NumDays = castedContract.NumDays
+                };
+            }
+            else
+            {
+                throw new ConversionException(durationContract.GetType(), typeof(BudgetDurationBase), $"Duration class '{durationContract.GetType().ToString()}' not supported class.");
+            }
+            return durationModel;
+        }
+
+        private BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        {
+            BudgetDurationBaseContract durationContract = null;
+            if (durationModel is MonthlyBookEndedDuration)
+            {
+                MonthlyBookEndedDuration castedModel = (MonthlyBookEndedDuration) durationModel;
+                durationContract = new MonthlyBookEndedDurationContract()
+                {
+                    Id = castedModel.Id,
+                    StartDayOfMonth = castedModel.StartDayOfMonth,
+                    EndDayOfMonth = castedModel.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = castedModel.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = castedModel.RolloverEndDateOnSmallMonths,
+                };
+            }
+            else if (durationModel is MonthlyDaySpanDuration)
+            {
+                MonthlyDaySpanDuration castedModel = (MonthlyDaySpanDuration) durationModel;
+                durationContract = new MonthlyDaySpanDurationContract()
+                {
+                    Id = castedModel.Id,
+                    NumDays = castedModel.NumDays
+                };
+            }
+            else
+            {
+                throw new ConversionException(durationModel.GetType(), typeof(BudgetDurationBaseContract), $"Duration class '{durationModel.GetType().ToString()}' not supported class.");
+            }
+            return durationContract;
         }
     }
 }

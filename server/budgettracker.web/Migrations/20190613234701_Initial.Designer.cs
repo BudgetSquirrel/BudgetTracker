@@ -9,8 +9,8 @@ using budgettracker.web.Data;
 namespace budgettracker.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190612221405_AddBudgetDurationModel")]
-    partial class AddBudgetDurationModel
+    [Migration("20190613234701_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -18,7 +18,7 @@ namespace budgettracker.data.Models
     /// </p>
     /// <p>
     /// - A Date to date durration: These durrations start and end on specified
-    /// days of the month. If the end date is smaller than the start date, then
+    /// days of the month. If the end date is <= than the start date, then
     /// it is assumed that it is a date in the next month after the start date.
     /// In the case where either of those dates don't exist on the month
     /// (Ex. Leap years), this durration can be configured to do one of the
@@ -49,7 +49,7 @@ namespace budgettracker.data.Models
         /// class <see cref="budgettracker.data.DataConstants.BudgetDuration" />
         /// </p>
         /// </summary>
-        public string DurrationType { get; set; }
+        public string DurationType { get; set; }
 
         public List<BudgetModel> Budgets { get; set; }
 

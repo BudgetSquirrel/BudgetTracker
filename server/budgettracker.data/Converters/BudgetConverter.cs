@@ -1,3 +1,4 @@
+using budgettracker.common.Exceptions;
 using budgettracker.common.Models;
 using budgettracker.common.Models.BudgetDurations;
 using budgettracker.data;
@@ -49,10 +50,43 @@ namespace budgettracker.data.Converters
             else if (durationObject is MonthlyDaySpanDuration)
             {
                 MonthlyDaySpanDuration spanDuration = (MonthlyDaySpanDuration) durationObject;
-                durationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN;
+                dataModel.DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN;
                 dataModel.NumDays = spanDuration.NumDays;
             }
+            else
+            {
+                throw new ConversionException(durationObject.GetType(), typeof(BudgetDurationModel), $"Duration class '{durationObject.GetType().ToString()}' not supported class.");
+            }
             return dataModel;
+        }
+
+        private BudgetDurationBase GetBudgetDuration(BudgetDurationModel dataModel)
+        {
+            BudgetDurationBase durationObject;
+            if (dataModel.DurationType == DataConstants.BudgetDuration.TYPE_MONTHLY_BOOKENDS)
+            {
+                durationObject = new MonthlyBookEndedDuration()
+                {
+                    Id = dataModel.Id,
+                    StartDayOfMonth = dataModel.StartDayOfMonth,
+                    EndDayOfMonth = dataModel.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = dataModel.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = dataModel.RolloverEndDateOnSmallMonths
+                };
+            }
+            else if (dataModel.DurationType == DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN)
+            {
+                durationObject = new MonthlyDaySpanDuration()
+                {
+                    Id = dataModel.Id,
+                    NumDays = dataModel.NumDays
+                };
+            }
+            else
+            {
+                throw new ConversionException(dataModel.GetType(), typeof(BudgetDurationBase), $"DurationType '{dataModel.DurationType}' not supported type.");
+            }
+            return durationObject;
         }
     }
 }
