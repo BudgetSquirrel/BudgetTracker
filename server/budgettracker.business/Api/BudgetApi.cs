@@ -45,8 +45,6 @@ namespace budgettracker.business.Api
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
 
-            newBudget.BudgetStart = DateTime.Now;
-
             try
             {
                 newBudget = await _budgetRepository.CreateBudget(newBudget);
