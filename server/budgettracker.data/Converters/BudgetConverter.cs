@@ -51,7 +51,7 @@ namespace budgettracker.data.Converters
             {
                 MonthlyDaySpanDuration spanDuration = (MonthlyDaySpanDuration) durationObject;
                 dataModel.DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN;
-                dataModel.NumDays = spanDuration.NumDays;
+                dataModel.NumberDays = spanDuration.NumberDays;
             }
             else
             {
@@ -79,7 +79,7 @@ namespace budgettracker.data.Converters
                 durationObject = new MonthlyDaySpanDuration()
                 {
                     Id = dataModel.Id,
-                    NumDays = dataModel.NumDays
+                    NumberDays = dataModel.NumberDays
                 };
             }
             else

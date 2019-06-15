@@ -48,23 +48,23 @@ namespace budgettracker.business.Api.Converters
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
             {
-                MonthlyBookEndedDurationContract castedContract = (MonthlyBookEndedDurationContract) durationContract;
+                MonthlyBookEndedDurationContract bookEndDurationContract = (MonthlyBookEndedDurationContract) durationContract;
                 durationModel = new MonthlyBookEndedDuration()
                 {
-                    Id = castedContract.Id,
-                    StartDayOfMonth = castedContract.StartDayOfMonth,
-                    EndDayOfMonth = castedContract.EndDayOfMonth,
-                    RolloverStartDateOnSmallMonths = castedContract.RolloverStartDateOnSmallMonths,
-                    RolloverEndDateOnSmallMonths = castedContract.RolloverEndDateOnSmallMonths,
+                    Id = bookEndDurationContract.Id,
+                    StartDayOfMonth = bookEndDurationContract.StartDayOfMonth,
+                    EndDayOfMonth = bookEndDurationContract.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = bookEndDurationContract.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = bookEndDurationContract.RolloverEndDateOnSmallMonths,
                 };
             }
             else if (durationContract is MonthlyDaySpanDurationContract)
             {
-                MonthlyDaySpanDurationContract castedContract = (MonthlyDaySpanDurationContract) durationContract;
+                MonthlyDaySpanDurationContract daySpanDurationContract = (MonthlyDaySpanDurationContract) durationContract;
                 durationModel = new MonthlyDaySpanDuration()
                 {
-                    Id = castedContract.Id,
-                    NumDays = castedContract.NumDays
+                    Id = daySpanDurationContract.Id,
+                    NumberDays = daySpanDurationContract.NumberDays
                 };
             }
             else
@@ -79,23 +79,23 @@ namespace budgettracker.business.Api.Converters
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)
             {
-                MonthlyBookEndedDuration castedModel = (MonthlyBookEndedDuration) durationModel;
+                MonthlyBookEndedDuration bookEndDurationModel = (MonthlyBookEndedDuration) durationModel;
                 durationContract = new MonthlyBookEndedDurationContract()
                 {
-                    Id = castedModel.Id,
-                    StartDayOfMonth = castedModel.StartDayOfMonth,
-                    EndDayOfMonth = castedModel.EndDayOfMonth,
-                    RolloverStartDateOnSmallMonths = castedModel.RolloverStartDateOnSmallMonths,
-                    RolloverEndDateOnSmallMonths = castedModel.RolloverEndDateOnSmallMonths,
+                    Id = bookEndDurationModel.Id,
+                    StartDayOfMonth = bookEndDurationModel.StartDayOfMonth,
+                    EndDayOfMonth = bookEndDurationModel.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = bookEndDurationModel.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = bookEndDurationModel.RolloverEndDateOnSmallMonths,
                 };
             }
             else if (durationModel is MonthlyDaySpanDuration)
             {
-                MonthlyDaySpanDuration castedModel = (MonthlyDaySpanDuration) durationModel;
+                MonthlyDaySpanDuration daySpanDurationModel = (MonthlyDaySpanDuration) durationModel;
                 durationContract = new MonthlyDaySpanDurationContract()
                 {
-                    Id = castedModel.Id,
-                    NumDays = castedModel.NumDays
+                    Id = daySpanDurationModel.Id,
+                    NumberDays = daySpanDurationModel.NumberDays
                 };
             }
             else

@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
 {
     public class MonthlyDaySpanDurationContract : BudgetDurationBaseContract
@@ -7,6 +9,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations
         /// Specifies the number of days that this budget will span.
         /// </p>
         /// </summary>
-        public int NumDays { get; set; }
+        [JsonProperty("number-days")]
+        public int NumberDays { get; set; }
     }
 }

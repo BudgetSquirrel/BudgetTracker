@@ -28,7 +28,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
                 {
                     return JsonConvert.DeserializeObject<MonthlyBookEndedDurationContract>(durationSerialized);
                 }
-                else if (DurationTemp.ContainsKey("num-days"))
+                else if (DurationTemp.ContainsKey("number-days"))
                 {
                     return JsonConvert.DeserializeObject<MonthlyDaySpanDurationContract>(durationSerialized);
                 }

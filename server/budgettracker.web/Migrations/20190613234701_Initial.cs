@@ -17,7 +17,7 @@ namespace budgettracker.web.Migrations
                     EndDayOfMonth = table.Column<int>(nullable: false),
                     RolloverStartDateOnSmallMonths = table.Column<bool>(nullable: false),
                     RolloverEndDateOnSmallMonths = table.Column<bool>(nullable: false),
-                    NumDays = table.Column<int>(nullable: false)
+                    NumberDays = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

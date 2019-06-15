@@ -29,7 +29,7 @@ namespace budgettracker.business
                 IsCreateBudgetDurationRequestValid(arguments.Duration);
         }
 
-        public static bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseContract contract)
+        private static bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseContract contract)
         {
             if (contract == null)
             {
@@ -47,7 +47,7 @@ namespace budgettracker.business
             else if (contract is MonthlyDaySpanDurationContract)
             {
                 MonthlyDaySpanDurationContract casted = (MonthlyDaySpanDurationContract) contract;
-                if (casted.NumDays < 1)
+                if (casted.NumberDays < 1)
                     return false;
                 return true;
             }

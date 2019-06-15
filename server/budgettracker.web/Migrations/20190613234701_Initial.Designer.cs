@@ -27,7 +27,7 @@ namespace budgettracker.web.Migrations
 
                     b.Property<int>("EndDayOfMonth");
 
-                    b.Property<int>("NumDays");
+                    b.Property<int>("NumberDays");
 
                     b.Property<bool>("RolloverEndDateOnSmallMonths");
 
