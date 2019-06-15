@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using budgettracker.data.Repositories;
 using budgettracker.business.Api.Converters;
 using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.DeleteBudgets;
 using budgettracker.data.Exceptions;
 using budgettracker.common;
 
@@ -36,7 +37,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            Authenticate(request);           
+            Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
@@ -61,6 +62,26 @@ namespace budgettracker.business.Api
             CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
+        }
+
+        public async Task<ApiResponse> DeleteBudgets(ApiRequest request)
+        {
+            Authenticate(request);
+
+            ApiResponse response = null;
+
+            DeleteBudgetArgumentsApiContract deleteArgs = request.Arguments<DeleteBudgetArgumentsApiContract>();
+            try
+            {
+                await _budgetRepository.DeleteBudgets(deleteArgs.BudgetIds);
+                response = new ApiResponse();
+            }
+            catch (RepositoryException e)
+            {
+                response = new ApiResponse(e.Message);
+            }
+
+            return response;
         }
     }
 }
