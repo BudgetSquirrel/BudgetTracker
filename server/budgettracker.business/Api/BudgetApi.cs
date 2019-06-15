@@ -46,7 +46,6 @@ namespace budgettracker.business.Api
             }
 
             Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValues);
-            newBudget.BudgetStart = DateTime.Now;
 
             try
             {

@@ -16,7 +16,8 @@ namespace budgettracker.business.Api.Converters
                 Name = requestContract.Name,
                 SetAmount = requestContract.SetAmount,
                 Duration = GetBudgetDuration(requestContract.Duration),
-                ParentBudgetId = requestContract.ParentBudgetId
+                ParentBudgetId = requestContract.ParentBudgetId,
+                BudgetStart = requestContract.BudgetStart ?? new DateTime()
             };
         }
 

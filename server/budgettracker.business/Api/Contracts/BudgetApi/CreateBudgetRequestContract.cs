@@ -40,6 +40,14 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         }
 
         /// <summary>
+        /// <p>
+        /// Allows the user to set a start time, if null the start time will be today.
+        /// </p>
+        /// </summary>
+        [JsonProperty("budget-start")]
+        public DateTime? BudgetStart { get; set; }
+
+        /// <summary>
         /// <p> The guid the of the parent budget, if the budget is the 'root'
         /// this will be null. This string is converted to guid later. </p>
         /// </summary>
