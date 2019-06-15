@@ -15,7 +15,7 @@ namespace budgettracker.web.Controllers
     [ApiController]
     public class BudgetApiController : ControllerBase
     {
-        
+
         private readonly IBudgetApi _budgetApi;
 
         public BudgetApiController(IBudgetApi budgetApi)
@@ -28,12 +28,25 @@ namespace budgettracker.web.Controllers
         {
             try
             {
-                return new JsonResult(await _budgetApi.CreateBudget(request));    
+                return new JsonResult(await _budgetApi.CreateBudget(request));
             }
-            catch (AuthenticationException) 
+            catch (AuthenticationException)
             {
                 return Forbid();
-            }            
+            }
+        }
+
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteBudgets(ApiRequest request)
+        {
+            try
+            {
+                return new JsonResult(await _budgetApi.DeleteBudgets(request));    
+            }
+            catch (AuthenticationException)
+            {
+                return Forbid();
+            }
         }
     }
 }
