@@ -1,7 +1,9 @@
 using budgettracker.common.Models;
 using budgettracker.data.Models;
+using System;
+using System.Collections.Generic;
 
-namespace budgettracker.data.Converters 
+namespace budgettracker.data.Converters
 {
     public class BudgetConverter : IConverter<Budget, BudgetModel>
     {
@@ -18,9 +20,14 @@ namespace budgettracker.data.Converters
             };
         }
 
+        public List<Budget> ToBusinessModels(List<BudgetModel> dataModels)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public BudgetModel ToDataModel(Budget businessObject)
         {
-            return new BudgetModel() 
+            return new BudgetModel()
             {
                 Id = businessObject.Id,
                 Name = businessObject.Name,
@@ -29,6 +36,11 @@ namespace budgettracker.data.Converters
                 BudgetStart = businessObject.BudgetStart,
                 ParentBudgetId = businessObject.ParentBudgetId
             };
+        }
+
+        public List<BudgetModel> ToDataModels(List<Budget> businessModels)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

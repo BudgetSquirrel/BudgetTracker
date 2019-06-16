@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace budgettracker.data.Converters
 {
     /// <summary>
@@ -12,11 +14,20 @@ namespace budgettracker.data.Converters
         /// <summary>
         /// <p>
         /// Converts a domain representation of an object to its
-        /// data representation that can matches the schema of the
+        /// data representation that matches the schema of the
         /// model in the database exactly.
         /// </p>
         /// </summary>
         D ToDataModel(B businessObject);
+
+        /// <summary>
+        /// <p>
+        /// Converts the domain representations of the objects to their
+        /// data representations that matche the schema of the
+        /// model in the database exactly.
+        /// </p>
+        /// </summary>
+        List<D> ToDataModels(List<B> businessModels);
 
         /// <summary>
         /// <p>
@@ -25,5 +36,13 @@ namespace budgettracker.data.Converters
         /// </p>
         /// </summary>
         B ToBusinessModel(D dataModel);
+
+        /// <summary>
+        /// <p>
+        /// Converts a data representations of the objects to their
+        /// domain representations as POCOs.
+        /// </p>
+        /// </summary>
+        List<B> ToBusinessModels(List<D> dataModels);
     }
 }

@@ -37,7 +37,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            Authenticate(request);
+            await Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
@@ -64,7 +64,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> DeleteBudgets(ApiRequest request)
         {
-            Authenticate(request);
+            await Authenticate(request);
 
             ApiResponse response = null;
 
