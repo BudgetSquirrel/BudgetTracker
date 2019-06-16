@@ -8,6 +8,7 @@ using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
 using GateKeeper.Models;
 using GateKeeper.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -43,13 +44,38 @@ namespace budgettracker.data.Repositories
         }
 
         /// <summary>
+        /// <p>
+        /// Fetches all users from the database that have not been deleted. These
+        /// are the active users.
+        /// </p>
+        /// </summary>
+        public async Task<List<User>> GetActiveUsers()
+        {
+            List<UserModel> userData = await GetActiveUserFromDb().ToListAsync();
+            List<User> userModels = _userConverter.ToBusinessModels(userData);
+            return userModels;
+        }
+
+        /// <summary>
+        /// <p>
+        /// Fetches all users from the database that have not been deleted. These
+        /// are the active users.
+        /// </p>
+        /// </summary>
+        private IQueryable<UserModel> GetActiveUserFromDb()
+        {
+            IQueryable<UserModel> users = _dbContext.Users.Where(u => !u.DateDeleted.HasValue);
+            return users;
+        }
+
+        /// <summary>
         /// Returns the user that has the given username or null if
         /// it doesn't exist. The password on the user returned in this
         /// will be encrypted.
         /// </summary>
-        public User GetByUsername(string username)
+        public async Task<User> GetByUsername(string username)
         {
-            UserModel userData = _dbContext.Users.Where(u => u.UserName == username).SingleOrDefault();
+            UserModel userData = await GetActiveUserFromDb().Where(u => u.UserName == username).SingleOrDefaultAsync();
             if (userData == null)
             {
                 return null;
@@ -71,7 +97,7 @@ namespace budgettracker.data.Repositories
         {
             string encryptedPassword = _cryptor.Encrypt(userModel.Password, _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt);
             userModel.Password = encryptedPassword;
-            int numDuplicates = _dbContext.Users.Count(user => user.UserName == userModel.Username);
+            int numDuplicates = GetActiveUserFromDb().Count(user => user.UserName == userModel.Username);
 
             if (numDuplicates > 0)
             {
@@ -91,6 +117,13 @@ namespace budgettracker.data.Repositories
 
             errors = null;
             return true;
+        }
+
+        public async Task Delete(int userId)
+        {
+            UserModel user = await GetActiveUserFromDb().Where(u => u.Id == userId).SingleAsync();
+            user.DateDeleted = DateTime.Now;
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

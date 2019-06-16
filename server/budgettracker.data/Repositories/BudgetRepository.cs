@@ -36,7 +36,7 @@ namespace budgettracker.data.Repositories
 
                 if(recordSaved < 1) 
                 {
-                    throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
+                    throw new RepositoryException("Could not save budget to database");
                 }
             }
             return _budgetConverter.ToBusinessModel(newBudget);

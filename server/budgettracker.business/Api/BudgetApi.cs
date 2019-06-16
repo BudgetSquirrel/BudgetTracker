@@ -34,16 +34,16 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            Authenticate(request);
+            await Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
-            Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValue);
-
-            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValue))
+            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValues))
             {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
+
+            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValues);
 
             try
             {
@@ -88,7 +88,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> DeleteBudgets(ApiRequest request)
         {
-            Authenticate(request);
+            await Authenticate(request);
 
             ApiResponse response = null;
 

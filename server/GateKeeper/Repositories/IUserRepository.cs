@@ -1,4 +1,5 @@
 using GateKeeper.Models;
+using System.Threading.Tasks;
 
 namespace GateKeeper.Repositories
 {
@@ -9,6 +10,6 @@ namespace GateKeeper.Repositories
         /// it doesn't exist. The password on the user returned in this
         /// will be encrypted.
         /// </summary>
-        U GetByUsername(string username);
+        Task<U> GetByUsername(string username);
     }
 }

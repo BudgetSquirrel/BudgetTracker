@@ -5,6 +5,7 @@ using GateKeeper.Cryptogrophy;
 using GateKeeper.Models;
 using GateKeeper.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace budgettracker.business.Api
 {
@@ -27,9 +28,9 @@ namespace budgettracker.business.Api
         /// Authenticates the user login, returning that user if authorized. Otherwise,
         /// this will throw a <see cref="AuthenticationException" />.
         /// </summary>
-        public U Authenticate(ApiRequest request)
+        public async Task<U> Authenticate(ApiRequest request)
         {
-            U user = GateKeeper.Authentication.Authenticate(request.User.UserName, request.User.Password,
+            U user = await GateKeeper.Authentication.Authenticate(request.User.UserName, request.User.Password,
                 _userRepository, _cryptor, _gateKeeperConfig);
             return user;
         }

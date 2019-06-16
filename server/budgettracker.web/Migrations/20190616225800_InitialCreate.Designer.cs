@@ -9,14 +9,36 @@ using budgettracker.web.Data;
 namespace budgettracker.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190611001718_CreateBudgetModel")]
-    partial class CreateBudgetModel
+    [Migration("20190616225800_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
+
+            modelBuilder.Entity("budgettracker.data.Models.BudgetDurationModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("DurationType");
+
+                    b.Property<int>("EndDayOfMonth");
+
+                    b.Property<int>("NumberDays");
+
+                    b.Property<bool>("RolloverEndDateOnSmallMonths");
+
+                    b.Property<bool>("RolloverStartDateOnSmallMonths");
+
+                    b.Property<int>("StartDayOfMonth");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetDurations");
+                });
 
             modelBuilder.Entity("budgettracker.data.Models.BudgetModel", b =>
                 {
@@ -27,7 +49,7 @@ namespace budgettracker.web.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("Duration");
+                    b.Property<Guid>("DurationId");
 
                     b.Property<string>("Name");
 
@@ -37,6 +59,8 @@ namespace budgettracker.web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DurationId");
+
                     b.ToTable("Budgets");
                 });
 
@@ -44,6 +68,8 @@ namespace budgettracker.web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DateDeleted");
 
                     b.Property<string>("Email");
 
@@ -58,6 +84,14 @@ namespace budgettracker.web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("budgettracker.data.Models.BudgetModel", b =>
+                {
+                    b.HasOne("budgettracker.data.Models.BudgetDurationModel", "Duration")
+                        .WithMany("Budgets")
+                        .HasForeignKey("DurationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

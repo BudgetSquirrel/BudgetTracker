@@ -14,7 +14,7 @@ namespace budgettracker.business.Api.Contracts.Responses
         /// </summary>
         public ApiResponse()
         {}
-            
+
         public ApiResponse(IApiContract data)
         {
             Response = data;
