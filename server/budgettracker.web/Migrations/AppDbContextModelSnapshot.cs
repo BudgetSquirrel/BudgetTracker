@@ -40,7 +40,7 @@ namespace budgettracker.web.Migrations
 
             modelBuilder.Entity("budgettracker.data.Models.UserModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Email");

@@ -60,6 +60,7 @@ namespace budgettracker.business.Api
             }
             if (((UserRepository) _userRepository).Register(userModel, out errors))
             {
+                userModel = _userRepository.GetByUsername(userModel.Username);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
             }

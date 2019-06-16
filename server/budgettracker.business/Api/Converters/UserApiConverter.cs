@@ -23,6 +23,7 @@ namespace budgettracker.business.Api.Converters
         public User ToModel(UserResponseApiContract contract)
         {
             User user = new User() {
+                Id = contract.Id,
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,
                 Username = contract.UserName,
@@ -46,6 +47,7 @@ namespace budgettracker.business.Api.Converters
         public UserResponseApiContract ToResponseContract(User model)
         {
             UserResponseApiContract contract = new UserResponseApiContract() {
+                Id = model.Id,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.Username,
