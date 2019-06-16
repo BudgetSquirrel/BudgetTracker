@@ -41,7 +41,20 @@ namespace budgettracker.web.Controllers
         {
             try
             {
-                return new JsonResult(await _budgetApi.DeleteBudgets(request));    
+                return new JsonResult(await _budgetApi.DeleteBudgets(request));
+            }
+            catch (AuthenticationException)
+            {
+                return Forbid();
+            }
+        }
+
+        [HttpPost("roots")]
+        public async Task<IActionResult> GetRootBudget(ApiRequest request)
+        {
+            try
+            {
+                return new JsonResult(await _budgetApi.GetRootBudgets(request));
             }
             catch (AuthenticationException)
             {

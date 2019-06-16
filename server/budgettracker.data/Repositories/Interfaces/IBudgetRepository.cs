@@ -27,5 +27,13 @@ namespace budgettracker.data.Repositories.Interfaces
         /// </p>
         /// </summary>
         Task DeleteBudgets(List<Guid> Ids);
+
+        /// <summary>
+        /// <p>
+        /// Fetches all root budgets for the given user. A root budget is one
+        /// that has no parent budget.
+        /// </p>
+        /// </summary>
+        Task<IEnumerable<Budget>> GetRootBudgets(Guid userId);
     }
 }

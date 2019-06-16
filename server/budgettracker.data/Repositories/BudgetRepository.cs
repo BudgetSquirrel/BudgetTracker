@@ -61,5 +61,14 @@ namespace budgettracker.data.Repositories
                 throw new RepositoryException("NOT_DELETED:" + errorIds);
             }
         }
+
+        public async Task<IEnumerable<Budget>> GetRootBudgets(Guid userId)
+        {
+            List<BudgetModel> rootBudgets = await _dbContext.Budgets.Where(b => b.OwnerId == userId).ToListAsync();
+            // Have to do this outside of query because EF can't do null checks.
+            rootBudgets = rootBudgets.Where(b => b.ParentBudgetId == null).ToList();
+            List<Budget> rootBudgetsBusinessModels = BudgetConverter.ToBusinessModels(rootBudgets);
+            return rootBudgetsBusinessModels;
+        }
     }
 }

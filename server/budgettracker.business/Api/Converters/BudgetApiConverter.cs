@@ -1,6 +1,7 @@
 using budgettracker.common.Models;
 using budgettracker.business.Api.Contracts.BudgetApi;
 using System;
+using System.Collections.Generic;
 
 namespace budgettracker.business.Api.Converters
 {
@@ -39,6 +40,29 @@ namespace budgettracker.business.Api.Converters
                 BudgetStart = model.BudgetStart,
                 ParentBudgetId = model.ParentBudgetId
             };
+        }
+
+        public static BudgetResponseContract ToGeneralResponseContract(Budget model)
+        {
+            return new BudgetResponseContract()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                SetAmount = model.SetAmount,
+                Duration = model.Duration,
+                BudgetStart = model.BudgetStart,
+                ParentBudgetId = model.ParentBudgetId
+            };
+        }
+
+        public static List<BudgetResponseContract> ToGeneralResponseContracts(List<Budget> budgets)
+        {
+            List<BudgetResponseContract> responseContracts = new List<BudgetResponseContract>();
+            foreach (Budget budget in budgets)
+            {
+                responseContracts.Add(ToGeneralResponseContract(budget));
+            }
+            return responseContracts;
         }
     }
 }

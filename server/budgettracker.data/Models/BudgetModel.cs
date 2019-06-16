@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace budgettracker.data.Models
 {
-    public class BudgetModel 
+    public class BudgetModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -11,5 +12,8 @@ namespace budgettracker.data.Models
         public DateTime BudgetStart { get; set; }
         public Guid? ParentBudgetId { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public Guid OwnerId { get; set; }
+        public UserModel Owner { get; set; }
     }
 }
