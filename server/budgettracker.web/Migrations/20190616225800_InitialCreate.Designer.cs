@@ -9,8 +9,8 @@ using budgettracker.web.Data;
 namespace budgettracker.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190613234701_Initial")]
-    partial class Initial
+    [Migration("20190616225800_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,6 +68,8 @@ namespace budgettracker.web.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("DateDeleted");
 
                     b.Property<string>("Email");
 

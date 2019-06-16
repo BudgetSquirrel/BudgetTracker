@@ -2,13 +2,14 @@ namespace budgettracker.common
 {
     public class Constants
     {
-        public class Authentication 
+        public class Authentication
         {
             public static class ApiResponseErrorCodes
             {
                 public static string PASSWORD_CONFIRM_INCORRECT = "PASSWORD_CONFIRM_INCORRECT";
                 public static string DUPLICATE_USERNAME = "DUPLICATE_USERNAME";
                 public static string UNKNOWN = "UNKNOWN";
+                public static string USER_NOT_FOUND = "USER_NOT_FOUND";
             }
         }
 

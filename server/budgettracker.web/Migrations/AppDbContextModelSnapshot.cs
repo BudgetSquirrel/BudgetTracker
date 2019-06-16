@@ -67,6 +67,8 @@ namespace budgettracker.web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime?>("DateDeleted");
+
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");

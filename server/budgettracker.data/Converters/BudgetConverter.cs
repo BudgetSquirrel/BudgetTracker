@@ -3,6 +3,8 @@ using budgettracker.common.Models;
 using budgettracker.common.Models.BudgetDurations;
 using budgettracker.data;
 using budgettracker.data.Models;
+using System;
+using System.Collections.Generic;
 
 namespace budgettracker.data.Converters
 {
@@ -19,6 +21,11 @@ namespace budgettracker.data.Converters
                 BudgetStart = dataModel.BudgetStart,
                 ParentBudgetId = dataModel.ParentBudgetId
             };
+        }
+
+        public List<Budget> ToBusinessModels(List<BudgetModel> dataModels)
+        {
+            throw new System.NotImplementedException();
         }
 
         public BudgetModel ToDataModel(Budget businessObject)
@@ -87,6 +94,11 @@ namespace budgettracker.data.Converters
                 throw new ConversionException(dataModel.GetType(), typeof(BudgetDurationBase), $"DurationType '{dataModel.DurationType}' not supported type.");
             }
             return durationObject;
+        }
+        
+        public List<BudgetModel> ToDataModels(List<Budget> businessModels)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
