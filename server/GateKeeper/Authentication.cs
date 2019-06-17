@@ -3,6 +3,7 @@ using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
 using GateKeeper.Models;
 using GateKeeper.Repositories;
+using System.Threading.Tasks;
 
 namespace GateKeeper
 {
@@ -14,11 +15,11 @@ namespace GateKeeper
         /// is the same as the un-encrypted password from the user retrieved in the
         /// repository.
         /// </summary>
-        public static U Authenticate<U>(string username, string passwordGuess,
+        public static async Task<U> Authenticate<U>(string username, string passwordGuess,
             IUserRepository<U> userRepository, ICryptor cryptor,
             GateKeeperConfig gateKeeperConfig) where U : IUser
         {
-            U user = userRepository.GetByUsername(username);
+            U user = await userRepository.GetByUsername(username);
             if (user == null)
             {
                 throw new AuthenticationException(AuthenticationException.REASON_USER_NOT_FOUND);

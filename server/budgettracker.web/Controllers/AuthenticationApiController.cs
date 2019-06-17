@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace budgettracker.web.Controllers
 {
@@ -31,15 +32,21 @@ namespace budgettracker.web.Controllers
         }
 
         [HttpPost("register")]
-        public ApiResponse Register(ApiRequest request)
+        public async Task<ApiResponse> Register(ApiRequest request)
         {
-            return _authApi.Register(request);
+            return await _authApi.Register(request);
         }
 
         [HttpPost("authenticate")]
-        public ApiResponse Authenticate(ApiRequest request)
+        public async Task<ApiResponse> Authenticate(ApiRequest request)
         {
-            return _authApi.AuthenticateUser(request);
+            return await _authApi.AuthenticateUser(request);
+        }
+
+        [HttpPost("delete")]
+        public async Task<ApiResponse> DeleteUser(ApiRequest request)
+        {
+            return await _authApi.DeleteUser(request);
         }
     }
 }

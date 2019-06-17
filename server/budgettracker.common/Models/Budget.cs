@@ -1,3 +1,4 @@
+using budgettracker.common.Models.BudgetDurations;
 ﻿using System;
 using System.Collections.Generic;
 
@@ -24,10 +25,10 @@ namespace budgettracker.common.Models
         /// <summary>
         /// The duration the budget will be per cycle in days.
         /// </summary>
-        public int Duration { get; set; }
+        public BudgetDurationBase Duration { get; set; }
 
         /// <summary>
-        /// The last start date of the budget's cycle need to determine when the 
+        /// The last start date of the budget's cycle need to determine when the
         /// current budget will end and the next one will be begin
         /// </summary>
         public DateTime BudgetStart { get; set; }

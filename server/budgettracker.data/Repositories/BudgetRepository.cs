@@ -33,9 +33,9 @@ namespace budgettracker.data.Repositories
                 await _dbContext.Budgets.AddAsync(newBudget);
                 int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved != 1)
+                if(recordSaved < 1)
                 {
-                    throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
+                    throw new RepositoryException("Could not save budget to database");
                 }
             }
             return _budgetConverter.ToBusinessModel(newBudget);
