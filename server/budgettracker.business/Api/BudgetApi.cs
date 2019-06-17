@@ -43,7 +43,7 @@ namespace budgettracker.business.Api
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
 
-            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValues);
+            Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
 
             try
             {
@@ -61,7 +61,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> UpdateBudget(ApiRequest request)
         {
-            Authenticate(request);           
+            await Authenticate(request);
 
             UpdateBudgetArgumentApiContract budgetRequest = request.Arguments<UpdateBudgetArgumentApiContract>();
 

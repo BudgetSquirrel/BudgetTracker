@@ -7,7 +7,8 @@ using budgettracker.common.Exceptions;
 namespace budgettracker.business.Api.Converters.BudgetConverters
 {
     public class UpdateBudgetApiConverter
-    {        public static Budget ToModel(UpdateBudgetRequestContract requestContract)
+    {
+        public static Budget ToModel(UpdateBudgetRequestContract requestContract)
         {
             return new Budget()
             {
@@ -39,11 +40,11 @@ namespace budgettracker.business.Api.Converters.BudgetConverters
                 SetAmount = model.SetAmount,
                 Duration = GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,
-                ParentBudgetId = model.ParentBudgetId,    
+                ParentBudgetId = model.ParentBudgetId,
             };
         }
 
-        private BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        private static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
         {
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
@@ -74,7 +75,7 @@ namespace budgettracker.business.Api.Converters.BudgetConverters
             return durationModel;
         }
 
-        private BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        private static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
         {
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)

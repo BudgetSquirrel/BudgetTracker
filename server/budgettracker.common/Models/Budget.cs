@@ -10,7 +10,7 @@ namespace budgettracker.common.Models
         /// Unique numeric identifier for this <see cref="Budget" />.
         /// </summary>
         public Guid Id { get; set; }
-        
+
         /// <summary>
         /// English, user friendly identifier for this <see cref="Budget" />.
         /// </summary>
@@ -27,7 +27,7 @@ namespace budgettracker.common.Models
         /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
-        public BudgetDurationModel Duration { get; set; }
+        public BudgetDurationBase Duration { get; set; }
 
         /// <summary>
         /// The last start date of the budget's cycle need to determine when the

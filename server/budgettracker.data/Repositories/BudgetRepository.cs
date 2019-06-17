@@ -1,4 +1,6 @@
 using budgettracker.common.Models;
+using budgettracker.common.Models.BudgetDurations;
+using budgettracker.data;
 using budgettracker.data.Converters;
 using budgettracker.data.Exceptions;
 using budgettracker.data.Models;
@@ -34,7 +36,7 @@ namespace budgettracker.data.Repositories
                 await _dbContext.Budgets.AddAsync(newBudget);
                 int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved < 1) 
+                if(recordSaved < 1)
                 {
                     throw new RepositoryException("Could not save budget to database");
                 }
@@ -68,28 +70,61 @@ namespace budgettracker.data.Repositories
             BudgetModel oldBudget;
             using (_dbContext)
             {
-                oldBudget = _dbContext.Budgets.SingleOrDefault(x => x.Id == budget.Id);
+                oldBudget = await _dbContext.Budgets
+                                    .SingleOrDefaultAsync(x => x.Id == budget.Id);
 
-                if(oldBudget == null) 
+                if(oldBudget == null)
                 {
                     throw new RepositoryException("No Budget with the id: " + budget.Id + " was found.");
                 }
 
+                BudgetDurationModel oldDuration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == oldBudget.DurationId);
+
                 oldBudget.Name = budget.Name;
                 oldBudget.SetAmount = budget.SetAmount;
-                oldBudget.Duration = budget.Duration;
                 oldBudget.BudgetStart = budget.BudgetStart;
                 oldBudget.ParentBudgetId = budget.ParentBudgetId;
 
+                BudgetDurationModel newDuration = GetBudgetDurationUpdated(oldDuration, budget.Duration);
+
                 int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved < 1) 
+                if(recordSaved < 1)
                 {
                     throw new RepositoryException("Updated " + recordSaved + " budget(s) when only 1 should have been created");
                 }
             }
 
-            return _budgetConverter.ToBusinessModel(oldBudget);  
+            return _budgetConverter.ToBusinessModel(oldBudget);
+        }
+
+        private BudgetDurationModel GetBudgetDurationUpdated(BudgetDurationModel original, BudgetDurationBase newBudget)
+        {
+            if (newBudget is MonthlyBookEndedDuration)
+            {
+                MonthlyBookEndedDuration newBookendDuration = (MonthlyBookEndedDuration) newBudget;
+                original.DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_BOOKENDS;
+                original.StartDayOfMonth = newBookendDuration.StartDayOfMonth;
+                original.EndDayOfMonth = newBookendDuration.EndDayOfMonth;
+                original.RolloverStartDateOnSmallMonths = newBookendDuration.RolloverStartDateOnSmallMonths;
+                original.RolloverEndDateOnSmallMonths = newBookendDuration.RolloverEndDateOnSmallMonths;
+                original.NumberDays = -1;
+            }
+            else if (newBudget is MonthlyDaySpanDuration)
+            {
+                MonthlyDaySpanDuration newDayspanDuration = (MonthlyDaySpanDuration) newBudget;
+                original.DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN;
+                original.StartDayOfMonth = -1;
+                original.EndDayOfMonth = -1;
+                original.RolloverStartDateOnSmallMonths = false;
+                original.RolloverEndDateOnSmallMonths = false;
+                original.NumberDays = newDayspanDuration.NumberDays;
+            }
+            else
+            {
+                throw new RepositoryException($"The Budget duration type {newBudget.GetType().ToString()} is not a supported type.");
+            }
+            return original;
         }
     }
 }

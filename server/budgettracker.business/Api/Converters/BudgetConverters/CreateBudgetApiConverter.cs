@@ -45,7 +45,7 @@ namespace budgettracker.business.Api.Converters.BudgetConverters
             };
         }
 
-        private BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        private static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
         {
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
@@ -76,7 +76,7 @@ namespace budgettracker.business.Api.Converters.BudgetConverters
             return durationModel;
         }
 
-        private BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        private static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
         {
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)
