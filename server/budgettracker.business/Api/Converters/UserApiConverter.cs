@@ -49,7 +49,7 @@ namespace budgettracker.business.Api.Converters
         public UserResponseApiContract ToResponseContract(User model)
         {
             UserResponseApiContract contract = new UserResponseApiContract() {
-                Id = model.Id,
+                Id = model.Id.Value,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 UserName = model.Username,

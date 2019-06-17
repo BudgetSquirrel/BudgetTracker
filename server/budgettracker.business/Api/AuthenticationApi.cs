@@ -43,7 +43,7 @@ namespace budgettracker.business.Api
         /// Allows a user to register a new account.
         /// </p>
         /// </summary>
-        public ApiResponse Register(ApiRequest request)
+        public async Task<ApiResponse> Register(ApiRequest request)
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
             UserRequestApiContract userValues = arguments.UserValues;
@@ -61,6 +61,7 @@ namespace budgettracker.business.Api
             }
             if (((UserRepository) _userRepository).Register(userModel, out errors))
             {
+                userModel = await _userRepository.GetByUsername(userModel.Username);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
             }
@@ -110,7 +111,7 @@ namespace budgettracker.business.Api
             }
             try
             {
-                await ((UserRepository) _userRepository).Delete(authenticatedUser.Id);
+                await ((UserRepository) _userRepository).Delete(authenticatedUser.Id.Value);
                 response = new ApiResponse();
             }
             catch (InvalidOperationException)

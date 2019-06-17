@@ -32,9 +32,9 @@ namespace budgettracker.web.Controllers
         }
 
         [HttpPost("register")]
-        public ApiResponse Register(ApiRequest request)
+        public async Task<ApiResponse> Register(ApiRequest request)
         {
-            return _authApi.Register(request);
+            return await _authApi.Register(request);
         }
 
         [HttpPost("authenticate")]

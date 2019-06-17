@@ -9,7 +9,7 @@ namespace budgettracker.data.Converters
         public UserModel ToDataModel(User businessModel)
         {
             UserModel model = new UserModel() {
-                Id = businessModel.Id,
+                Id = businessModel.Id.GetValueOrDefault(),
                 FirstName = businessModel.FirstName,
                 LastName = businessModel.LastName,
                 UserName = businessModel.Username,

@@ -1,11 +1,12 @@
 using Newtonsoft.Json;
+using System;
 
 namespace budgettracker.business.Api.Contracts.AuthenticationApi
 {
     public class UserRequestApiContract : IApiContract
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Guid? Id { get; set; }
 
         [JsonProperty("first-name")]
         public string FirstName { get; set; }

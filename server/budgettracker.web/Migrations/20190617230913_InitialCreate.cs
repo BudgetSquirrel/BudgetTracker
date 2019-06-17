@@ -28,8 +28,7 @@ namespace budgettracker.web.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     PassWord = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),

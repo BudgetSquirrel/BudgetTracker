@@ -119,7 +119,7 @@ namespace budgettracker.data.Repositories
             return true;
         }
 
-        public async Task Delete(int userId)
+        public async Task Delete(Guid userId)
         {
             UserModel user = await GetActiveUserFromDb().Where(u => u.Id == userId).SingleAsync();
             user.DateDeleted = DateTime.Now;
