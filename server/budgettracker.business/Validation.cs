@@ -1,4 +1,3 @@
-using System;
 using budgettracker.business.Api.Contracts.AuthenticationApi;
 using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
 using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;

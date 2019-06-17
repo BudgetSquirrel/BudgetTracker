@@ -1,4 +1,5 @@
 using System;
+using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
 using Newtonsoft.Json;
 
 namespace budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget
@@ -18,7 +19,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget
         /// <p> The duration of the budget cycle in days.</p>
         /// </summary>    
         [JsonProperty("duration")]
-        public int Duration { get; set; }
+        public BudgetDurationBaseContract Duration { get; set; }
 
         [JsonProperty("budget-start")]
         public DateTime BudgetStart { get; set; }

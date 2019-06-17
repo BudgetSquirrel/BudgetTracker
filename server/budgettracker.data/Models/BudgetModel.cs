@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace budgettracker.data.Models
@@ -15,6 +13,7 @@ namespace budgettracker.data.Models
         public DateTime CreatedDate { get; set; }
 
         public Guid DurationId { get; set; }
+        
         [ForeignKey("DurationId")]
         public BudgetDurationModel Duration { get; set; }
     }

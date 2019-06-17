@@ -10,10 +10,12 @@ namespace budgettracker.common.Models
         /// Unique numeric identifier for this <see cref="Budget" />.
         /// </summary>
         public Guid Id { get; set; }
+        
         /// <summary>
         /// English, user friendly identifier for this <see cref="Budget" />.
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// The amount of money that is available in this budget. If this is
         /// null, then it is assumed that this has sub-budgets. This budget then
@@ -25,7 +27,7 @@ namespace budgettracker.common.Models
         /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
-        public BudgetDurationBase Duration { get; set; }
+        public BudgetDurationModel Duration { get; set; }
 
         /// <summary>
         /// The last start date of the budget's cycle need to determine when the
