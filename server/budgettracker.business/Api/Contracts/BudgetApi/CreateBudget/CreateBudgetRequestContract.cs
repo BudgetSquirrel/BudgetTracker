@@ -15,7 +15,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi.CreateBudget
         public decimal SetAmount { get; set; }
 
         /// <summary>
-        /// <p> The duration of the budget cycle in days.</p>
+        /// <p> The duration of the budget cycle in days or months.</p>
         /// </summary>
         [JsonProperty("duration")]
         public JObject DurationTemp { get; set; }
