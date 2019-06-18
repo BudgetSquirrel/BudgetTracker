@@ -16,29 +16,27 @@ namespace budgettracker.data.Repositories
     {
 
         private readonly BudgetTrackerContext _dbContext;
-        private readonly BudgetConverter _budgetConverter;
 
         public BudgetRepository(BudgetTrackerContext dbContext)
         {
             _dbContext = dbContext;
-            _budgetConverter = new BudgetConverter();
         }
 
         public async Task<Budget> CreateBudget(Budget budget)
         {
-            BudgetModel newBudget = _budgetConverter.ToDataModel(budget);
+            BudgetModel newBudget = BudgetConverter.ToDataModel(budget);
 
             using (_dbContext)
             {
                 await _dbContext.Budgets.AddAsync(newBudget);
                 int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved != 1)
+                if(recordSaved < 1)
                 {
-                    throw new RepositoryException("Created " + recordSaved + " budget(s) when only 1 should have been created");
+                    throw new RepositoryException("Could not save budget to database");
                 }
             }
-            return _budgetConverter.ToBusinessModel(newBudget);
+            return BudgetConverter.ToBusinessModel(newBudget);
         }
 
         public async Task DeleteBudgets(List<Guid> Ids)
@@ -62,13 +60,23 @@ namespace budgettracker.data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Budget>> GetRootBudgets(Guid userId)
+        public async Task<List<Budget>> GetRootBudgets(Guid userId)
         {
             List<BudgetModel> rootBudgets = await _dbContext.Budgets.Where(b => b.OwnerId == userId).ToListAsync();
             // Have to do this outside of query because EF can't do null checks.
             rootBudgets = rootBudgets.Where(b => b.ParentBudgetId == null).ToList();
+            foreach (BudgetModel budgetModel in rootBudgets)
+            {
+                budgetModel.Duration = await LoadDurationForBudget(budgetModel);
+            }
             List<Budget> rootBudgetsBusinessModels = BudgetConverter.ToBusinessModels(rootBudgets);
             return rootBudgetsBusinessModels;
+        }
+
+        public async Task<BudgetDurationModel> LoadDurationForBudget(BudgetModel budget)
+        {
+            BudgetDurationModel duration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == budget.DurationId);
+            return duration;
         }
     }
 }

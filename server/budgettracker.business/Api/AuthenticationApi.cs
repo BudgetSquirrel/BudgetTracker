@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace budgettracker.business.Api
 {
@@ -42,7 +43,7 @@ namespace budgettracker.business.Api
         /// Allows a user to register a new account.
         /// </p>
         /// </summary>
-        public ApiResponse Register(ApiRequest request)
+        public async Task<ApiResponse> Register(ApiRequest request)
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
             UserRequestApiContract userValues = arguments.UserValues;
@@ -60,6 +61,7 @@ namespace budgettracker.business.Api
             }
             if (((UserRepository) _userRepository).Register(userModel, out errors))
             {
+                userModel = await _userRepository.GetByUsername(userModel.Username);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
             }
@@ -76,12 +78,12 @@ namespace budgettracker.business.Api
         /// Authenticates the user, returning it in the response if authorized.
         /// </p>
         /// </summary>
-        public ApiResponse AuthenticateUser(ApiRequest request)
+        public async Task<ApiResponse> AuthenticateUser(ApiRequest request)
         {
             ApiResponse response;
 
             try {
-                User authenticatedUser = Authenticate(request);
+                User authenticatedUser = await Authenticate(request);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
                 response = new ApiResponse(responseData);
             }
@@ -89,6 +91,32 @@ namespace budgettracker.business.Api
             catch (AuthenticationException)
             {
                 response = new ApiResponse("Those credentials could not be authorized.");
+            }
+            return response;
+        }
+
+        public async Task<ApiResponse> DeleteUser(ApiRequest request)
+        {
+            ApiResponse response;
+            User authenticatedUser;
+
+            try
+            {
+                authenticatedUser = await Authenticate(request);
+            }
+            catch(AuthenticationException)
+            {
+                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.USER_NOT_FOUND);
+                return response;
+            }
+            try
+            {
+                await ((UserRepository) _userRepository).Delete(authenticatedUser.Id.Value);
+                response = new ApiResponse();
+            }
+            catch (InvalidOperationException)
+            {
+                response = new ApiResponse("Could not find the specified user.");
             }
             return response;
         }

@@ -1,3 +1,4 @@
+using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         public decimal SetAmount { get; set; }
 
         [JsonProperty("duration")]
-        public int Duration { get; set; }
+        public BudgetDurationBaseContract Duration { get; set; }
 
         [JsonProperty("budget-start")]
         public DateTime BudgetStart { get; set; }

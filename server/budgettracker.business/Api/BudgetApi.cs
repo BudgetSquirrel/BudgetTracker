@@ -26,28 +26,26 @@ namespace budgettracker.business.Api
 
         private readonly IBudgetRepository _budgetRepository;
 
-        private readonly BudgetApiConverter _budgetConverter;
-
         public BudgetApi(IBudgetRepository budgetRepository, IConfiguration appConfig, UserRepository userRepository)
             : base(userRepository, new Rfc2898Encryptor(),
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _budgetRepository = budgetRepository;
-            _budgetConverter = new BudgetApiConverter();
         }
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            Authenticate(request);
+            User user = await Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
-            Budget newBudget = _budgetConverter.ToModel(budgetRequest.BudgetValue);
-
-            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValue))
+            if(!Validation.IsCreateBudgetRequestValid(budgetRequest.BudgetValues))
             {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
+
+            Budget newBudget = BudgetApiConverter.ToModel(budgetRequest.BudgetValues);
+            newBudget.Owner = user;
 
             try
             {
@@ -58,14 +56,14 @@ namespace budgettracker.business.Api
                 return new ApiResponse(ex.Message);
             }
 
-            CreateBudgetResponseContract response = _budgetConverter.ToResponseContract(newBudget);
+            BudgetResponseContract response = BudgetApiConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
 
         public async Task<ApiResponse> DeleteBudgets(ApiRequest request)
         {
-            Authenticate(request);
+            await Authenticate(request);
 
             ApiResponse response = null;
 
@@ -85,13 +83,17 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> GetRootBudgets(ApiRequest request)
         {
-            User user = Authenticate(request);
+            User user = await Authenticate(request);
             ApiResponse response;
 
-            List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id);
+            List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id.Value);
             List<BudgetResponseContract> rootBudgetContracts = BudgetApiConverter.ToGeneralResponseContracts(rootBudgets);
+            BudgetListResponseContract responseData = new BudgetListResponseContract()
+            {
+                Budgets = rootBudgetContracts
+            };
 
-            response = new ApiResponse(rootBudgetContracts);
+            response = new ApiResponse(responseData);
             return response;
         }
     }

@@ -34,6 +34,6 @@ namespace budgettracker.data.Repositories.Interfaces
         /// that has no parent budget.
         /// </p>
         /// </summary>
-        Task<IEnumerable<Budget>> GetRootBudgets(Guid userId);
+        Task<List<Budget>> GetRootBudgets(Guid userId);
     }
 }
