@@ -31,16 +31,14 @@ namespace budgettracker.data.Repositories
         {
             BudgetModel newBudget = _budgetConverter.ToDataModel(budget);
 
-            using (_dbContext)
-            {
-                await _dbContext.Budgets.AddAsync(newBudget);
-                int recordSaved = await _dbContext.SaveChangesAsync();
+            await _dbContext.Budgets.AddAsync(newBudget);
+            int recordSaved = await _dbContext.SaveChangesAsync();
 
-                if(recordSaved < 1)
-                {
-                    throw new RepositoryException("Could not save budget to database");
-                }
+            if(recordSaved < 1)
+            {
+                throw new RepositoryException("Could not save budget to database");
             }
+
             return _budgetConverter.ToBusinessModel(newBudget);
         }
 
@@ -68,32 +66,29 @@ namespace budgettracker.data.Repositories
         public async Task<Budget> UpdateBudget(Budget budget)
         {
             BudgetModel oldBudget;
-            using (_dbContext)
+
+            oldBudget = await _dbContext.Budgets.SingleOrDefaultAsync(x => x.Id == budget.Id);
+
+            if(oldBudget == null)
             {
-                oldBudget = await _dbContext.Budgets
-                                    .SingleOrDefaultAsync(x => x.Id == budget.Id);
-
-                if(oldBudget == null)
-                {
-                    throw new RepositoryException("No Budget with the id: " + budget.Id + " was found.");
-                }
-
-                BudgetDurationModel oldDuration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == oldBudget.DurationId);
-
-                oldBudget.Name = budget.Name;
-                oldBudget.SetAmount = budget.SetAmount;
-                oldBudget.BudgetStart = budget.BudgetStart;
-                oldBudget.ParentBudgetId = budget.ParentBudgetId;
-
-                BudgetDurationModel newDuration = GetBudgetDurationUpdated(oldDuration, budget.Duration);
-
-                int recordSaved = await _dbContext.SaveChangesAsync();
-
-                if(recordSaved < 1)
-                {
-                    throw new RepositoryException("Updated " + recordSaved + " budget(s) when only 1 should have been created");
-                }
+                throw new RepositoryException("No Budget with the id: " + budget.Id + " was found.");
             }
+
+            BudgetDurationModel oldDuration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == oldBudget.DurationId);
+
+            oldBudget.Name = budget.Name;
+            oldBudget.SetAmount = budget.SetAmount;
+            oldBudget.BudgetStart = budget.BudgetStart;
+            oldBudget.ParentBudgetId = budget.ParentBudgetId;
+
+            BudgetDurationModel newDuration = GetBudgetDurationUpdated(oldDuration, budget.Duration);
+
+            int recordSaved = await _dbContext.SaveChangesAsync();
+
+            if(recordSaved < 1)
+            {
+                throw new RepositoryException("Updated " + recordSaved + " budget(s) when only 1 should have been created");
+            }            
 
             return _budgetConverter.ToBusinessModel(oldBudget);
         }
