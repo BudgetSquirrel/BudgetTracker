@@ -1,50 +1,50 @@
-using budgettracker.common.Exceptions;
 using budgettracker.common.Models;
+using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
 using budgettracker.common.Models.BudgetDurations;
-using budgettracker.business.Api.Contracts.BudgetApi;
 using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
-using System;
+using budgettracker.common.Exceptions;
 
-namespace budgettracker.business.Api.Converters
+namespace budgettracker.business.Api.Converters.BudgetConverters
 {
-    public class BudgetApiConverter : IApiConverter<Budget, CreateBudgetRequestContract, CreateBudgetResponseContract>
+    public class UpdateBudgetApiConverter
     {
-        public Budget ToModel(CreateBudgetRequestContract requestContract)
+        public static Budget ToModel(UpdateBudgetRequestContract requestContract)
         {
             return new Budget()
             {
+                Id = requestContract.Id,
                 Name = requestContract.Name,
                 SetAmount = requestContract.SetAmount,
                 Duration = GetBudgetDuration(requestContract.Duration),
                 ParentBudgetId = requestContract.ParentBudgetId,
-                BudgetStart = requestContract.BudgetStart ?? new DateTime()
+                BudgetStart = requestContract.BudgetStart
             };
         }
 
-        public Budget ToModel(CreateBudgetResponseContract responseContract)
+        public static Budget ToModel(UpdateBudgetResponseContract responseContract)
         {
             throw new System.NotImplementedException();
         }
 
-        public CreateBudgetRequestContract ToRequestContract(Budget model)
+        public static UpdateBudgetRequestContract ToRequestContract(Budget model)
         {
             throw new System.NotImplementedException();
         }
 
-        public CreateBudgetResponseContract ToResponseContract(Budget model)
+        public static UpdateBudgetResponseContract ToResponseContract(Budget model)
         {
-            return new CreateBudgetResponseContract()
+            return new UpdateBudgetResponseContract()
             {
                 Id = model.Id,
                 Name = model.Name,
                 SetAmount = model.SetAmount,
                 Duration = GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,
-                ParentBudgetId = model.ParentBudgetId
+                ParentBudgetId = model.ParentBudgetId,
             };
         }
 
-        private BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        private static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
         {
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
@@ -75,7 +75,7 @@ namespace budgettracker.business.Api.Converters
             return durationModel;
         }
 
-        private BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        private static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
         {
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)

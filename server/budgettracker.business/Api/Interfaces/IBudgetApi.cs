@@ -14,10 +14,19 @@ namespace budgettracker.business.Api.Interfaces
         /// </p>
         /// </summary>
         /// <param name="request"> <see cref="ApiRequest"/> </param>
+        /// <returns> Returns: <see cref="ApiResponse" /> </returns>
         Task<ApiResponse> CreateBudget(ApiRequest request);
 
         /// <summary>
         /// <p>
+        /// Will update the the given budget to the required values and returns the updated budget or
+        /// an error message if an exception is thrown.
+        /// </p>
+        /// </summary>
+        /// <param name="request"> <see cref="ApiRequest"/> </param>
+        /// <returns> Returns: <see cref="ApiResponse" /> </returns>
+        Task<ApiResponse> UpdateBudget(ApiRequest request);
+
         /// Deletes all Budgets that match the given ids. All ids that do not
         /// match a Budget record or couldn't be deleted will be returned in an
         /// error message. All budgets that can be deleted will be deleted

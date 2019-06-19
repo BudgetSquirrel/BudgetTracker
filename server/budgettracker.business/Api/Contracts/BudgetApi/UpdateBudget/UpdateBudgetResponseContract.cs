@@ -1,10 +1,12 @@
-using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
 using System;
+
+using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
+
 using Newtonsoft.Json;
 
-namespace budgettracker.business.Api.Contracts.BudgetApi
+namespace budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget
 {
-    public class CreateBudgetResponseContract : IApiContract {
+    public class UpdateBudgetResponseContract : IApiContract {
 
         [JsonProperty("id")]
         public Guid Id { get; set; }

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 
-namespace budgettracker.business.Api.Contracts.BudgetApi
+namespace budgettracker.business.Api.Contracts.BudgetApi.CreateBudget
 {
     public class CreateBudgetRequestContract : IApiContract {
 
@@ -15,7 +15,7 @@ namespace budgettracker.business.Api.Contracts.BudgetApi
         public decimal SetAmount { get; set; }
 
         /// <summary>
-        /// <p> The duration of the budget cycle in days.</p>
+        /// <p> The duration of the budget cycle in days or months.</p>
         /// </summary>
         [JsonProperty("duration")]
         public JObject DurationTemp { get; set; }
