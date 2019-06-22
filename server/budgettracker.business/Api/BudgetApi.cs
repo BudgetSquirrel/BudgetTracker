@@ -17,6 +17,7 @@ using GateKeeper.Cryptogrophy;
 using Microsoft.Extensions.Configuration;
 
 using System.Threading.Tasks;
+using budgettracker.business.Api.Contracts.BudgetApi.GetBudget;
 
 namespace budgettracker.business.Api
 {
@@ -104,6 +105,27 @@ namespace budgettracker.business.Api
             }
 
             return response;
+        }
+
+        public async Task<ApiResponse> GetBudget(ApiRequest request)
+        {
+            await Authenticate(request);
+
+            GetBudgetArgumentApiContract getBudget = request.Arguments<GetBudgetArgumentApiContract>();
+
+            ApiResponse response = new ApiResponse();
+
+            try
+            {
+                Budget retrievedBudget = await _budgetRepository.GetBudget(getBudget.BudgetValues.Id);                
+                response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
+            }
+            catch (RepositoryException ex)
+            {
+                response.Error = ex.Message;
+            }
+
+            return response
         }
     }
 }

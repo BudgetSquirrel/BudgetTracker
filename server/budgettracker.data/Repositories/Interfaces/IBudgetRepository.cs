@@ -34,5 +34,12 @@ namespace budgettracker.data.Repositories.Interfaces
         /// </p>
         /// </summary>
         Task DeleteBudgets(List<Guid> Ids);
+
+        /// <summary>
+        /// <p>
+        /// Will return a single budget based off the given id
+        /// </p>
+        /// </summary>
+        Task<Budget> GetBudget(Guid id);
     }
 }

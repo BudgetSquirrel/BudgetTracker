@@ -63,6 +63,19 @@ namespace budgettracker.data.Repositories
             }
         }
 
+        public async Task<Budget> GetBudget(Guid id)
+        {
+            BudgetModel budget = await _dbContext.Budgets.Where(x => x.Id == id).FirstAsync();
+            if (budget == null) 
+            {
+                throw new RepositoryException("Was not able to find a budget with the id " + id);
+            }
+            else 
+            {
+                return _budgetConverter.ToBusinessModel(budget);
+            }
+        }
+
         public async Task<Budget> UpdateBudget(Budget budget)
         {
             BudgetModel oldBudget;
