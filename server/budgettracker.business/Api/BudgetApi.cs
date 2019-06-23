@@ -125,7 +125,7 @@ namespace budgettracker.business.Api
                 response.Error = ex.Message;
             }
 
-            return response
+            return response;
         }
     }
 }
