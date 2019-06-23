@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace budgettracker.data.Models
 {
@@ -11,5 +12,7 @@ namespace budgettracker.data.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateDeleted { get; set; }
+
+        public List<BudgetModel> Budgets { get; set; }
     }
 }

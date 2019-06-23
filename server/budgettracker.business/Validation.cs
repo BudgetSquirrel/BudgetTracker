@@ -61,7 +61,32 @@ namespace budgettracker.business
                 arguments.Name != null &&
                 arguments.SetAmount != 0M &&
                 arguments.Duration != null
-                && arguments.Duration.Id != default(Guid);
+                && IsUpdateBudgetDurationRequestValid(arguments.Duration);
+        }
+
+        private static bool IsUpdateBudgetDurationRequestValid(BudgetDurationBaseContract contract)
+        {
+            if (contract == null)
+            {
+                return false;
+            }
+            if (contract is MonthlyBookEndedDurationContract)
+            {
+                MonthlyBookEndedDurationContract casted = (MonthlyBookEndedDurationContract) contract;
+                if (casted.StartDayOfMonth < 1 || casted.StartDayOfMonth > 31)
+                    return false;
+                else if (casted.EndDayOfMonth < 1 || casted.EndDayOfMonth > 31)
+                    return false;
+                return true;
+            }
+            else if (contract is MonthlyDaySpanDurationContract)
+            {
+                MonthlyDaySpanDurationContract casted = (MonthlyDaySpanDurationContract) contract;
+                if (casted.NumberDays < 1)
+                    return false;
+                return true;
+            }
+            else return false;
         }
     }
 }

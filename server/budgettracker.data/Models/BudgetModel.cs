@@ -12,6 +12,10 @@ namespace budgettracker.data.Models
         public Guid? ParentBudgetId { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public Guid OwnerId { get; set; }
+        [ForeignKey("OwnerId")]
+        public UserModel Owner { get; set; }
+        
         public Guid DurationId { get; set; }
         
         [ForeignKey("DurationId")]
