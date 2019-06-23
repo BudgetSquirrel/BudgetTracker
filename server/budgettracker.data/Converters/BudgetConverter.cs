@@ -8,27 +8,35 @@ using System.Collections.Generic;
 
 namespace budgettracker.data.Converters
 {
-    public class BudgetConverter : IConverter<Budget, BudgetModel>
+    public class BudgetConverter
     {
-        public Budget ToBusinessModel(BudgetModel dataModel)
+        public static Budget ToBusinessModel(BudgetModel dataModel)
         {
-            return new Budget()
+            Budget budget = new Budget()
             {
                 Id = dataModel.Id,
                 Name = dataModel.Name,
                 SetAmount = dataModel.SetAmount,
                 Duration = GetBudgetDuration(dataModel.Duration),
                 BudgetStart = dataModel.BudgetStart,
-                ParentBudgetId = dataModel.ParentBudgetId
+                ParentBudgetId = dataModel.ParentBudgetId,
+                Owner = GetOwnerForBudget(dataModel),
             };
+            return budget;
         }
 
-        public List<Budget> ToBusinessModels(List<BudgetModel> dataModels)
+        public static List<Budget> ToBusinessModels(List<BudgetModel> dataModels)
         {
-            throw new System.NotImplementedException();
+            List<Budget> businessConversions = new List<Budget>();
+            foreach (BudgetModel data in dataModels)
+            {
+                Budget budget = BudgetConverter.ToBusinessModel(data);
+                businessConversions.Add(budget);
+            }
+            return businessConversions;
         }
 
-        public BudgetModel ToDataModel(Budget businessObject)
+        public static BudgetModel ToDataModel(Budget businessObject)
         {
             return new BudgetModel()
             {
@@ -37,11 +45,24 @@ namespace budgettracker.data.Converters
                 SetAmount = businessObject.SetAmount,
                 Duration = GetBudgetDuration(businessObject.Duration),
                 BudgetStart = businessObject.BudgetStart,
-                ParentBudgetId = businessObject.ParentBudgetId
+                ParentBudgetId = businessObject.ParentBudgetId,
+                Owner = GetOwnerForBudget(businessObject),
+                OwnerId = businessObject.Owner == null ? default(Guid) : businessObject.Owner.Id.Value,
             };
         }
 
-        private BudgetDurationModel GetBudgetDuration(BudgetDurationBase durationObject)
+        public static List<BudgetModel> ToDataModels(List<Budget> businessModels)
+        {
+            List<BudgetModel> dataConversions = new List<BudgetModel>();
+            foreach (Budget budgetObect in businessModels)
+            {
+                BudgetModel data = BudgetConverter.ToDataModel(budgetObect);
+                dataConversions.Add(data);
+            }
+            return dataConversions;
+        }
+
+        private static BudgetDurationModel GetBudgetDuration(BudgetDurationBase durationObject)
         {
             BudgetDurationModel dataModel = new BudgetDurationModel();
             dataModel.Id = durationObject.Id;
@@ -67,7 +88,7 @@ namespace budgettracker.data.Converters
             return dataModel;
         }
 
-        private BudgetDurationBase GetBudgetDuration(BudgetDurationModel dataModel)
+        private static BudgetDurationBase GetBudgetDuration(BudgetDurationModel dataModel)
         {
             BudgetDurationBase durationObject;
             if (dataModel.DurationType == DataConstants.BudgetDuration.TYPE_MONTHLY_BOOKENDS)
@@ -95,10 +116,31 @@ namespace budgettracker.data.Converters
             }
             return durationObject;
         }
-        
-        public List<BudgetModel> ToDataModels(List<Budget> businessModels)
+
+        private static User GetOwnerForBudget(BudgetModel dataModel)
         {
-            throw new System.NotImplementedException();
+            User owner = null;
+            if (dataModel.Owner == null)
+            {
+                owner = new User()
+                {
+                    Id = dataModel.OwnerId
+                };
+            }
+            else
+            {
+                owner = new UserConverter().ToBusinessModel(dataModel.Owner);
+            }
+            return owner;
+        }
+
+        private static UserModel GetOwnerForBudget(Budget businessObject)
+        {
+            UserModel owner = null;
+            if (businessObject.Owner != null) {
+                owner = new UserConverter().ToDataModel(businessObject.Owner);
+            }
+            return owner;
         }
     }
 }

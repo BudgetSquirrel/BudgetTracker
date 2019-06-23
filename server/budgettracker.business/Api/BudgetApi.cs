@@ -9,6 +9,7 @@ using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
 using budgettracker.business.Api.Contracts.BudgetApi.DeleteBudgets;
 using budgettracker.data.Exceptions;
 using budgettracker.common;
+using budgettracker.business.Api.Contracts.BudgetApi;
 using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
 
 using GateKeeper.Configuration;
@@ -16,6 +17,8 @@ using GateKeeper.Cryptogrophy;
 
 using Microsoft.Extensions.Configuration;
 
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace budgettracker.business.Api
@@ -34,7 +37,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
-            await Authenticate(request);
+            User user = await Authenticate(request);
 
             CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
 
@@ -44,6 +47,7 @@ namespace budgettracker.business.Api
             }
 
             Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
+            newBudget.Owner = user;
 
             try
             {
@@ -103,6 +107,22 @@ namespace budgettracker.business.Api
                 response = new ApiResponse(e.Message);
             }
 
+            return response;
+        }
+
+        public async Task<ApiResponse> GetRootBudgets(ApiRequest request)
+        {
+            User user = await Authenticate(request);
+            ApiResponse response;
+
+            List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id.Value);
+            List<BudgetResponseContract> rootBudgetContracts = GeneralBudgetApiConverter.ToGeneralResponseContracts(rootBudgets);
+            BudgetListResponseContract responseData = new BudgetListResponseContract()
+            {
+                Budgets = rootBudgetContracts
+            };
+
+            response = new ApiResponse(responseData);
             return response;
         }
     }

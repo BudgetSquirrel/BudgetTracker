@@ -40,6 +40,11 @@ namespace budgettracker.common.Models
         /// </summary>
         public Guid? ParentBudgetId { get; set; }
 
+        /// <summary>
+        /// The user that owns this budget.
+        /// </summary>
+        public User Owner { get; set; }
+
         public override string ToString()
         {
             string str = this.Name + " ($" + this.SetAmount.ToString() + ")";

@@ -34,5 +34,13 @@ namespace budgettracker.business.Api.Interfaces
         /// </p>
         /// </summary>
         Task<ApiResponse> DeleteBudgets(ApiRequest request);
+
+        /// <summary>
+        /// <p>
+        /// Fetches all root budgets for the given user. A root budget is one
+        /// that has no parent budget.
+        /// </p>
+        /// </summary>
+        Task<ApiResponse> GetRootBudgets(ApiRequest request);
     }
 }

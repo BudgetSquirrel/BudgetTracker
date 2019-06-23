@@ -9,7 +9,7 @@ using budgettracker.web.Data;
 namespace budgettracker.web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190617230913_InitialCreate")]
+    [Migration("20190617234233_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,8 @@ namespace budgettracker.web.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid>("OwnerId");
+
                     b.Property<Guid?>("ParentBudgetId");
 
                     b.Property<decimal>("SetAmount");
@@ -60,6 +62,8 @@ namespace budgettracker.web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DurationId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Budgets");
                 });
@@ -91,6 +95,11 @@ namespace budgettracker.web.Migrations
                     b.HasOne("budgettracker.data.Models.BudgetDurationModel", "Duration")
                         .WithMany("Budgets")
                         .HasForeignKey("DurationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("budgettracker.data.Models.UserModel", "Owner")
+                        .WithMany("Budgets")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
