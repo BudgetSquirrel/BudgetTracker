@@ -2,40 +2,17 @@ using budgettracker.common.Exceptions;
 using budgettracker.common.Models;
 using budgettracker.common.Models.BudgetDurations;
 using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
 using budgettracker.business.Api.Contracts.BudgetApi.BudgetDurations;
+
 using System;
 using System.Collections.Generic;
 
-namespace budgettracker.business.Api.Converters
+namespace budgettracker.business.Api.Converters.BudgetConverters
 {
-    public class BudgetApiConverter
+    public class GeneralBudgetApiConverter
     {
-        public static Budget ToModel(CreateBudgetRequestContract requestContract)
-        {
-            return new Budget()
-            {
-                Name = requestContract.Name,
-                SetAmount = requestContract.SetAmount,
-                Duration = GetBudgetDuration(requestContract.Duration),
-                ParentBudgetId = requestContract.ParentBudgetId,
-                BudgetStart = requestContract.BudgetStart ?? new DateTime()
-            };
-        }
-
-        public static BudgetResponseContract ToResponseContract(Budget model)
-        {
-            return new BudgetResponseContract()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                SetAmount = model.SetAmount,
-                Duration = GetBudgetDuration(model.Duration),
-                BudgetStart = model.BudgetStart,
-                ParentBudgetId = model.ParentBudgetId
-            };
-        }
-
-        private static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        public static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
         {
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
@@ -66,7 +43,7 @@ namespace budgettracker.business.Api.Converters
             return durationModel;
         }
 
-        private static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        public static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
         {
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)

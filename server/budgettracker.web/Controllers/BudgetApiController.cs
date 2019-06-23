@@ -61,5 +61,18 @@ namespace budgettracker.web.Controllers
                 return Forbid();
             }
         }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateBudget(ApiRequest request)
+        {
+            try
+            {
+                return new JsonResult(await _budgetApi.UpdateBudget(request));    
+            }
+            catch (AuthenticationException) 
+            {
+                return Forbid();
+            }            
+        }
     }
 }

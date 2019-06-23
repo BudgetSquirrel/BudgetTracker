@@ -3,6 +3,14 @@ using budgettracker.business.Api.Contracts.Responses;
 using budgettracker.business.Api.Interfaces;
 using budgettracker.data.Repositories.Interfaces;
 using budgettracker.common.Models;
+using budgettracker.data.Repositories;
+using budgettracker.business.Api.Converters.BudgetConverters;
+using budgettracker.business.Api.Contracts.BudgetApi.CreateBudget;
+using budgettracker.business.Api.Contracts.BudgetApi.DeleteBudgets;
+using budgettracker.data.Exceptions;
+using budgettracker.common;
+using budgettracker.business.Api.Contracts.BudgetApi;
+using budgettracker.business.Api.Contracts.BudgetApi.UpdateBudget;
 
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
@@ -12,12 +20,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using budgettracker.data.Repositories;
-using budgettracker.business.Api.Converters;
-using budgettracker.business.Api.Contracts.BudgetApi;
-using budgettracker.business.Api.Contracts.BudgetApi.DeleteBudgets;
-using budgettracker.data.Exceptions;
-using budgettracker.common;
 
 namespace budgettracker.business.Api
 {
@@ -44,7 +46,7 @@ namespace budgettracker.business.Api
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
 
-            Budget newBudget = BudgetApiConverter.ToModel(budgetRequest.BudgetValues);
+            Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
             newBudget.Owner = user;
 
             try
@@ -56,7 +58,34 @@ namespace budgettracker.business.Api
                 return new ApiResponse(ex.Message);
             }
 
-            BudgetResponseContract response = BudgetApiConverter.ToResponseContract(newBudget);
+            CreateBudgetResponseContract response = CreateBudgetApiConverter.ToResponseContract(newBudget);
+
+            return new ApiResponse(response);
+        }
+
+        public async Task<ApiResponse> UpdateBudget(ApiRequest request)
+        {
+            await Authenticate(request);
+
+            UpdateBudgetArgumentApiContract budgetRequest = request.Arguments<UpdateBudgetArgumentApiContract>();
+
+            Budget newBudget = UpdateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
+
+            if(!Validation.IsUpdateBudgetRequestValid(budgetRequest.BudgetValues))
+            {
+                return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
+            }
+
+            try
+            {
+                newBudget = await _budgetRepository.UpdateBudget(newBudget);
+            }
+            catch (RepositoryException ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+
+            UpdateBudgetResponseContract response = UpdateBudgetApiConverter.ToResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
@@ -87,7 +116,7 @@ namespace budgettracker.business.Api
             ApiResponse response;
 
             List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id.Value);
-            List<BudgetResponseContract> rootBudgetContracts = BudgetApiConverter.ToGeneralResponseContracts(rootBudgets);
+            List<BudgetResponseContract> rootBudgetContracts = GeneralBudgetApiConverter.ToGeneralResponseContracts(rootBudgets);
             BudgetListResponseContract responseData = new BudgetListResponseContract()
             {
                 Budgets = rootBudgetContracts
