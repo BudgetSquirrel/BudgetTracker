@@ -128,6 +128,8 @@ namespace budgettracker.business.Api
             {
                 response.Error = ex.Message;
             }
+
+            return response;
         }
 
         public async Task<ApiResponse> GetRootBudgets(ApiRequest request)
@@ -145,5 +147,5 @@ namespace budgettracker.business.Api
             response = new ApiResponse(responseData);
             return response;
         }
-    }
+    }    
 }
