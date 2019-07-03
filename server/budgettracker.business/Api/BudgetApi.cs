@@ -113,7 +113,7 @@ namespace budgettracker.business.Api
 
         public async Task<ApiResponse> GetBudget(ApiRequest request)
         {
-            await Authenticate(request);
+            User user = await Authenticate(request);
 
             GetBudgetArgumentApiContract getBudget = request.Arguments<GetBudgetArgumentApiContract>();
 
@@ -121,7 +121,13 @@ namespace budgettracker.business.Api
 
             try
             {
-                Budget retrievedBudget = await _budgetRepository.GetBudget(getBudget.BudgetValues.Id);                
+                Budget retrievedBudget = await _budgetRepository.GetBudget(getBudget.BudgetValues.Id);
+
+                if (retrievedBudget.Owner.Id != user.Id) 
+                {
+                    throw new RepositoryException("Retrieve a budget with invalid user Id.");
+                }
+
                 response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
             }
             catch (RepositoryException ex)
