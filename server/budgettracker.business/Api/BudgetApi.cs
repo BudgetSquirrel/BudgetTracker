@@ -125,7 +125,7 @@ namespace budgettracker.business.Api
 
                 if (retrievedBudget.Owner.Id != user.Id) 
                 {
-                    throw new RepositoryException("Retrieve a budget with invalid user Id.");
+                    throw new RepositoryException("Retrieved a budget with invalid user Id.");
                 }
 
                 response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
