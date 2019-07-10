@@ -45,6 +45,11 @@ namespace BudgetTracker.Common.Models
         /// </summary>
         public User Owner { get; set; }
 
+        /// <summary>
+        /// Budgets that are children of this budget.
+        /// </summary>
+        public List<Budget> SubBudgets { get; set; }
+
         public override string ToString()
         {
             string str = this.Name + " ($" + this.SetAmount.ToString() + ")";

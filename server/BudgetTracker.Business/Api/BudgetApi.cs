@@ -5,6 +5,7 @@ using BudgetTracker.Data.Repositories.Interfaces;
 using BudgetTracker.Common.Models;
 using BudgetTracker.Data.Repositories;
 using BudgetTracker.Business.Api.Converters.BudgetConverters;
+using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetTree;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
 using BudgetTracker.Data.Exceptions;
@@ -121,12 +122,7 @@ namespace BudgetTracker.Business.Api
 
             try
             {
-                Budget retrievedBudget = await _budgetRepository.GetBudget(getBudget.BudgetValues.Id);
-
-                if (retrievedBudget.Owner.Id != user.Id) 
-                {
-                    throw new RepositoryException("The authenticated user does not have permission to view this budget.");
-                }
+                Budget retrievedBudget = GetBudgetOrErrorIfUnauthorized(getBudget.BudgetValues.Id, user.Id);
 
                 response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
             }
@@ -153,5 +149,38 @@ namespace BudgetTracker.Business.Api
             response = new ApiResponse(responseData);
             return response;
         }
-    }    
+
+        public Task<ApiResponse> FetchBudgetTree(ApiRequest request)
+        {
+            User user = await Authenticate(request);
+            ApiResponse response;
+
+            Guid rootBudgetId = request.Arguments<FetchBudgetTreeArgumentsApiContract>();
+
+            try
+            {
+                Budget rootBudget = GetBudgetOrErrorIfUnauthorized(rootBudgetId, user.Id);
+
+                await _budgetRepository.LoadBudgetTree(rootBudget);
+            }
+            catch (RepositoryException ex)
+            {
+                response.Error = ex.Message;
+            }
+
+            return response;
+        }
+
+        private async Task<Budget> GetBudgetOrErrorIfUnauthorized(Guid budgetId, Guid userId)
+        {
+            Budget retrievedBudget = await _budgetRepository.GetBudget(budgetId);
+
+            if (retrievedBudget.Owner.Id != userId)
+            {
+                throw new RepositoryException("The authenticated user does not have permission to view this budget.");
+            }
+
+            return retrievedBudget;
+        }
+    }
 }
