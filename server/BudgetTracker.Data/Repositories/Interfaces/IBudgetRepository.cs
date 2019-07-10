@@ -37,6 +37,13 @@ namespace BudgetTracker.Data.Repositories.Interfaces
 
         /// <summary>
         /// <p>
+        /// Will return a single budget based off the given id
+        /// </p>
+        /// </summary>
+        Task<Budget> GetBudget(Guid id);
+
+        /// <summary>
+        /// <p>
         /// Fetches all root budgets for the given user. A root budget is one
         /// that has no parent budget.
         /// </p>

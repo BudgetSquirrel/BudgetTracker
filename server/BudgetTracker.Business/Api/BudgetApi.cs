@@ -20,6 +20,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using budgettracker.business.Api.Contracts.BudgetApi.GetBudget;
 
 namespace BudgetTracker.Business.Api
 {
@@ -110,6 +111,33 @@ namespace BudgetTracker.Business.Api
             return response;
         }
 
+        public async Task<ApiResponse> GetBudget(ApiRequest request)
+        {
+            User user = await Authenticate(request);
+
+            GetBudgetArgumentApiContract getBudget = request.Arguments<GetBudgetArgumentApiContract>();
+
+            ApiResponse response = new ApiResponse();
+
+            try
+            {
+                Budget retrievedBudget = await _budgetRepository.GetBudget(getBudget.BudgetValues.Id);
+
+                if (retrievedBudget.Owner.Id != user.Id) 
+                {
+                    throw new RepositoryException("The authenticated user does not have permission to view this budget.");
+                }
+
+                response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
+            }
+            catch (RepositoryException ex)
+            {
+                response.Error = ex.Message;
+            }
+
+            return response;
+        }
+
         public async Task<ApiResponse> GetRootBudgets(ApiRequest request)
         {
             User user = await Authenticate(request);
@@ -125,5 +153,5 @@ namespace BudgetTracker.Business.Api
             response = new ApiResponse(responseData);
             return response;
         }
-    }
+    }    
 }

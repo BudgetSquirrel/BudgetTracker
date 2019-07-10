@@ -27,6 +27,8 @@ namespace BudgetTracker.Business.Api.Interfaces
         /// <returns> Returns: <see cref="ApiResponse" /> </returns>
         Task<ApiResponse> UpdateBudget(ApiRequest request);
 
+        /// <summary>
+        /// <p>
         /// Deletes all Budgets that match the given ids. All ids that do not
         /// match a Budget record or couldn't be deleted will be returned in an
         /// error message. All budgets that can be deleted will be deleted
@@ -34,6 +36,13 @@ namespace BudgetTracker.Business.Api.Interfaces
         /// </p>
         /// </summary>
         Task<ApiResponse> DeleteBudgets(ApiRequest request);
+
+        /// <summary>
+        /// <p>
+        /// Will retrieve the a single budget by it's id.
+        /// </p>
+        /// </summary>
+        Task<ApiResponse> GetBudget(ApiRequest request);
 
         /// <summary>
         /// <p>
