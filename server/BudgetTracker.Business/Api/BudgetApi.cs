@@ -5,23 +5,24 @@ using BudgetTracker.Data.Repositories.Interfaces;
 using BudgetTracker.Common.Models;
 using BudgetTracker.Data.Repositories;
 using BudgetTracker.Business.Api.Converters.BudgetConverters;
+using BudgetTracker.Business.Api.Contracts.BudgetApi;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetTree;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
+using BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget;
+using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
 using BudgetTracker.Data.Exceptions;
 using BudgetTracker.Common;
-using BudgetTracker.Business.Api.Contracts.BudgetApi;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
 
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
 
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using budgettracker.business.Api.Contracts.BudgetApi.GetBudget;
 
 namespace BudgetTracker.Business.Api
 {
@@ -122,9 +123,16 @@ namespace BudgetTracker.Business.Api
 
             try
             {
-                Budget retrievedBudget = GetBudgetOrErrorIfUnauthorized(getBudget.BudgetValues.Id, user.Id);
+                Budget retrievedBudget = await GetBudgetIfAuthorized(getBudget.BudgetValues.Id, user.Id.Value);
 
-                response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
+                if (retrievedBudget != null)
+                {
+                    response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
+                }
+                else
+                {
+                    response.Error = "Could not find the requested budget for this user";
+                }
             }
             catch (RepositoryException ex)
             {
@@ -150,34 +158,43 @@ namespace BudgetTracker.Business.Api
             return response;
         }
 
-        public Task<ApiResponse> FetchBudgetTree(ApiRequest request)
+        public async Task<ApiResponse> FetchBudgetTree(ApiRequest request)
         {
             User user = await Authenticate(request);
-            ApiResponse response;
+            ApiResponse response = null;
 
-            Guid rootBudgetId = request.Arguments<FetchBudgetTreeArgumentsApiContract>();
+            Guid rootBudgetId = request.Arguments<FetchBudgetTreeArgumentsApiContract>().RootBudgetId;
 
             try
             {
-                Budget rootBudget = GetBudgetOrErrorIfUnauthorized(rootBudgetId, user.Id);
+                Budget rootBudget = await GetBudgetIfAuthorized(rootBudgetId, user.Id.Value);
 
-                await _budgetRepository.LoadBudgetTree(rootBudget);
+                if (rootBudget != null)
+                {
+                    await _budgetRepository.LoadSubBudgets(rootBudget, true);
+                    BudgetResponseContract responseContract = GeneralBudgetApiConverter.ToGeneralResponseContract(rootBudget);
+                    response = new ApiResponse(responseContract);
+                }
+                else
+                {
+                    response = new ApiResponse("Could not find the requested budget for this user");
+                }
             }
             catch (RepositoryException ex)
             {
-                response.Error = ex.Message;
+                response = new ApiResponse(ex.Message);
             }
 
             return response;
         }
 
-        private async Task<Budget> GetBudgetOrErrorIfUnauthorized(Guid budgetId, Guid userId)
+        private async Task<Budget> GetBudgetIfAuthorized(Guid budgetId, Guid userId)
         {
             Budget retrievedBudget = await _budgetRepository.GetBudget(budgetId);
 
             if (retrievedBudget.Owner.Id != userId)
             {
-                throw new RepositoryException("The authenticated user does not have permission to view this budget.");
+                return null;
             }
 
             return retrievedBudget;

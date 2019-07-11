@@ -4,7 +4,7 @@ using System;
 
 namespace BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetTree
 {
-    public class FetchBudgetTreeArgumentsApiContract : ApiContract
+    public class FetchBudgetTreeArgumentsApiContract : IApiContract
     {
         [JsonProperty("root-budget-id")]
         public Guid RootBudgetId { get; set; }

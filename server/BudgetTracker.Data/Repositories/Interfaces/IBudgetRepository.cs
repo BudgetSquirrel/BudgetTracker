@@ -52,10 +52,15 @@ namespace BudgetTracker.Data.Repositories.Interfaces
 
         /// <summary>
         /// <p>
-        /// Fetches the entire tree of sub budgets for the given root budget and
-        /// attaches them to that root budget's SubBudgets property.
+        /// Fetches all sub-budgets for the given budget and attaches them to
+        /// that root budget's SubBudgets property.
+        /// </p>
+        /// <p>
+        /// If recursive is true, this will load the sub-budgets for each of
+        /// THOSE sub-budgets and so on and so on until the entire sub-budget
+        /// tree of the given budget has been loaded.
         /// </p>
         /// </summary>
-        Task LoadBudgetTree(Budget rootBudget);
+        Task LoadSubBudgets(Budget budget, bool recursive=false);
     }
 }

@@ -67,12 +67,12 @@ namespace BudgetTracker.Web.Controllers
         {
             try
             {
-                return new JsonResult(await _budgetApi.UpdateBudget(request));    
+                return new JsonResult(await _budgetApi.UpdateBudget(request));
             }
-            catch (AuthenticationException) 
+            catch (AuthenticationException)
             {
                 return Forbid();
-            }            
+            }
         }
 
         [HttpPost("get")]
@@ -80,12 +80,25 @@ namespace BudgetTracker.Web.Controllers
         {
             try
             {
-                return new JsonResult(await _budgetApi.GetBudget(request));    
+                return new JsonResult(await _budgetApi.GetBudget(request));
             }
-            catch (AuthenticationException) 
+            catch (AuthenticationException)
             {
                 return Forbid();
-            }            
+            }
+        }
+
+        [HttpPost("tree")]
+        public async Task<IActionResult> FetchBudgetTree(ApiRequest request)
+        {
+            try
+            {
+                return new JsonResult(await _budgetApi.FetchBudgetTree(request));
+            }
+            catch (AuthenticationException)
+            {
+                return Forbid();
+            }
         }
     }
 }
