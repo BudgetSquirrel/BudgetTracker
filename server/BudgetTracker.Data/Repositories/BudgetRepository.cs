@@ -139,7 +139,7 @@ namespace BudgetTracker.Data.Repositories
                 subBudget.ParentBudget = budget;
                 if (recursive)
                 {
-                    await LoadSubBudgets(subBudget);
+                    await LoadSubBudgets(subBudget, recursive);
                 }
             }
             budget.SubBudgets = subBudgets;
