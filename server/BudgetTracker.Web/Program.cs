@@ -30,14 +30,15 @@ namespace BudgetTracker.Web
 
         public static async Task PerormPreflightOperations(IWebHost host, string[] args)
         {
-            if ("--seed" in args || "-s" in args)
+            if (args.Contains("--seed") || args.Contains("-s"))
             {
                 using (IServiceScope scope = host.Services.CreateScope())
                 {
                     IServiceProvider services = scope.ServiceProvider;
                     BudgetTrackerContext context = services.GetRequiredService<BudgetTrackerContext>();
-                    BasicSeed seeder = new BasicSeed(context);
-                    seeder.Seed();
+                    IConfiguration appConfig = services.GetRequiredService<IConfiguration>();
+                    BasicSeed seeder = new BasicSeed(context, appConfig);
+                    await seeder.Seed();
                 }
             }
         }

@@ -79,10 +79,7 @@ namespace BudgetTracker.Data.Repositories
             List<BudgetModel> rootBudgets = await _dbContext.Budgets.Where(b => b.OwnerId == userId).ToListAsync();
             // Have to do this outside of query because EF can't do null checks.
             rootBudgets = rootBudgets.Where(b => b.ParentBudgetId == null).ToList();
-            foreach (BudgetModel budgetModel in rootBudgets)
-            {
-
-            }
+            await LoadDurationsForBudgets(rootBudgets);
             List<Budget> rootBudgetsBusinessModels = BudgetConverter.ToBusinessModels(rootBudgets);
             return rootBudgetsBusinessModels;
         }

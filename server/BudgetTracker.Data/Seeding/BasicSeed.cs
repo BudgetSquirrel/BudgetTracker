@@ -1,6 +1,10 @@
 using Bogus;
 using BudgetTracker.Data;
 using BudgetTracker.Data.Models;
+using GateKeeper.Configuration;
+using GateKeeper.Cryptogrophy;
+using GateKeeper.Exceptions;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +15,16 @@ namespace BudgetTracker.Data.Seeding
     public class BasicSeed
     {
         private BudgetTrackerContext _dbContext;
+        private GateKeeperConfig _gateKeeperConfig;
         private Faker _faker;
+        private ICryptor _cryptor;
 
-        public BasicSeed(BudgetTrackerContext dbContext)
+        public BasicSeed(BudgetTrackerContext dbContext, IConfiguration appConfig)
         {
             _dbContext = dbContext;
+            _gateKeeperConfig = ConfigurationReader.FromAppConfiguration(appConfig);
             _faker = new Faker();
+            _cryptor = new Rfc2898Encryptor();
         }
 
         public async Task Seed()
@@ -45,7 +53,7 @@ namespace BudgetTracker.Data.Seeding
                 new UserModel()
                 {
                     UserName = "user1",
-                    PassWord = "user1234",
+                    PassWord = _cryptor.Encrypt("user1234", _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt),
                     Email = "user1@gmail.com",
                     FirstName = "User",
                     LastName = "One"
@@ -53,7 +61,7 @@ namespace BudgetTracker.Data.Seeding
                 new UserModel()
                 {
                     UserName = "squirrel_man",
-                    PassWord = "user1234",
+                    PassWord = _cryptor.Encrypt("user1234", _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt),
                     Email = "squirrel_man@gmail.com",
                     FirstName = "Squirrel",
                     LastName = "Acorn"
