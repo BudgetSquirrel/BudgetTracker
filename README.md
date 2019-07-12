@@ -10,3 +10,6 @@ Create a system that provides the user with easy financial management and planni
 
 ## High level architectural approach
 A client server system. There will be multiple client types such as a mobile app, a thin JavaScript web app and a desktop app. Each client will interact with an API provided by the server. The heavy lifting logic will all be done on the server. The clients will simply request actions and display results to the user.
+
+## Seeding Development Data
+To seed the database, when you run the server with `dotnet run`, pass in a `--seed` option to tell the server to seed the database (`dotnet run --seed`).
