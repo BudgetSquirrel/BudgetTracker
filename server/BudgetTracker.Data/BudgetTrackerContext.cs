@@ -8,7 +8,6 @@ namespace BudgetTracker.Data
         public BudgetTrackerContext(DbContextOptions options)
             :base(options)
         {
-
         }
 
         public DbSet<UserModel> Users { get; set; }
