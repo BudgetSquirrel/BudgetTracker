@@ -49,9 +49,9 @@ namespace BudgetTracker.Web.Migrations
                     Name = table.Column<string>(nullable: true),
                     SetAmount = table.Column<decimal>(nullable: false),
                     BudgetStart = table.Column<DateTime>(nullable: false),
-                    ParentBudgetId = table.Column<Guid>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     OwnerId = table.Column<Guid>(nullable: false),
+                    ParentBudgetId = table.Column<Guid>(nullable: true),
                     DurationId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -69,6 +69,12 @@ namespace BudgetTracker.Web.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Budgets_Budgets_ParentBudgetId",
+                        column: x => x.ParentBudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -80,6 +86,11 @@ namespace BudgetTracker.Web.Migrations
                 name: "IX_Budgets_OwnerId",
                 table: "Budgets",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Budgets_ParentBudgetId",
+                table: "Budgets",
+                column: "ParentBudgetId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

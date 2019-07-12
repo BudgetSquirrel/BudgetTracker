@@ -75,7 +75,7 @@ namespace BudgetTracker.Data.Seeding
         public BudgetModel RandomBudget(UserModel user)
         {
             BudgetModel budget = RandomBudgetValues();
-            budget.OwnerId = user.Id;
+            budget.Owner = user;
             budget.Duration = new BudgetDurationModel()
             {
                 DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN,
@@ -89,8 +89,8 @@ namespace BudgetTracker.Data.Seeding
         public BudgetModel RandomBudget(UserModel user, BudgetModel parent)
         {
             BudgetModel budget = RandomBudgetValues();
-            budget.ParentBudgetId = parent.Id;
-            budget.OwnerId = user.Id;
+            budget.ParentBudget = parent;
+            budget.Owner = user;
             budget.Duration = parent.Duration;
 
             _dbContext.Add(budget);
