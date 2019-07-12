@@ -20,12 +20,12 @@ namespace BudgetTracker.Data.Repositories.Interfaces
         /// <summary>
         /// <p>
         /// Updates a budget based off their id, will return the update budget
-        /// modle but will throw an exception if something fails will be caught in 
+        /// modle but will throw an exception if something fails will be caught in
         /// <see cref="BudgetApi"/>
         /// </p>
         /// </summary>
         Task<Budget> UpdateBudget(Budget budget);
-        
+
         /// Deletes all Budgets that match the given ids. All ids that do not
         /// match a Budget record or couldn't be deleted will be returned in a
         /// <see cref="BudgetTracker.Data.Exceptions.RepositoryException" />.
@@ -49,5 +49,18 @@ namespace BudgetTracker.Data.Repositories.Interfaces
         /// </p>
         /// </summary>
         Task<List<Budget>> GetRootBudgets(Guid userId);
+
+        /// <summary>
+        /// <p>
+        /// Fetches all sub-budgets for the given budget and attaches them to
+        /// that root budget's SubBudgets property.
+        /// </p>
+        /// <p>
+        /// If recursive is true, this will load the sub-budgets for each of
+        /// THOSE sub-budgets and so on and so on until the entire sub-budget
+        /// tree of the given budget has been loaded.
+        /// </p>
+        /// </summary>
+        Task LoadSubBudgets(Budget budget, bool recursive=false);
     }
 }

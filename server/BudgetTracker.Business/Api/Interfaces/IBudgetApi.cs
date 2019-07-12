@@ -51,5 +51,13 @@ namespace BudgetTracker.Business.Api.Interfaces
         /// </p>
         /// </summary>
         Task<ApiResponse> GetRootBudgets(ApiRequest request);
+
+        /// <summary>
+        /// <p>
+        /// Fetches a root budget and it's full tree of sub-budgets and their
+        /// sub budgets recursively.
+        /// </p>
+        /// </summary>
+        Task<ApiResponse> FetchBudgetTree(ApiRequest request);
     }
 }
