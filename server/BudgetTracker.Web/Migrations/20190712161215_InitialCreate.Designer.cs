@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetTracker.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190702122011_InitialCreate")]
+    [Migration("20190712161215_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,8 @@ namespace BudgetTracker.Web.Migrations
 
                     b.HasIndex("OwnerId");
 
+                    b.HasIndex("ParentBudgetId");
+
                     b.ToTable("Budgets");
                 });
 
@@ -101,6 +103,10 @@ namespace BudgetTracker.Web.Migrations
                         .WithMany("Budgets")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BudgetTracker.Data.Models.BudgetModel", "ParentBudget")
+                        .WithMany()
+                        .HasForeignKey("ParentBudgetId");
                 });
 #pragma warning restore 612, 618
         }

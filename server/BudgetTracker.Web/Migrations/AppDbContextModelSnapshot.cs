@@ -63,6 +63,8 @@ namespace BudgetTracker.Web.Migrations
 
                     b.HasIndex("OwnerId");
 
+                    b.HasIndex("ParentBudgetId");
+
                     b.ToTable("Budgets");
                 });
 
@@ -99,6 +101,10 @@ namespace BudgetTracker.Web.Migrations
                         .WithMany("Budgets")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BudgetTracker.Data.Models.BudgetModel", "ParentBudget")
+                        .WithMany()
+                        .HasForeignKey("ParentBudgetId");
                 });
 #pragma warning restore 612, 618
         }
