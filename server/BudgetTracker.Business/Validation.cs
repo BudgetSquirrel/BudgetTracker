@@ -2,7 +2,10 @@ using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetDurations;
+using BudgetTracker.Common.Models;
+using BudgetTracker.Data.Repositories;
 using System;
+using System.Threading.Tasks;
 
 namespace BudgetTracker.Business
 {
@@ -21,6 +24,12 @@ namespace BudgetTracker.Business
         {
             bool isConfirmPasswordCorrect = (arguments.Password == arguments.PasswordConfirm);
             return isConfirmPasswordCorrect;
+        }
+
+        public static async Task<bool> IsAccountRegistrationDuplicate(string username, UserRepository userRepository)
+        {
+            User duplicateUser = await userRepository.GetByUsername(username);
+            return duplicateUser != null;
         }
 
         public static bool IsCreateBudgetRequestValid(CreateBudgetRequestContract arguments)

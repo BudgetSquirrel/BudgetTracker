@@ -51,7 +51,7 @@ namespace BudgetTracker.Data.Repositories
         /// </summary>
         public async Task<List<User>> GetActiveUsers()
         {
-            List<UserModel> userData = await GetActiveUserFromDb().ToListAsync();
+            List<UserModel> userData = await GetActiveUsersFromDb().ToListAsync();
             List<User> userModels = _userConverter.ToBusinessModels(userData);
             return userModels;
         }
@@ -62,7 +62,7 @@ namespace BudgetTracker.Data.Repositories
         /// are the active users.
         /// </p>
         /// </summary>
-        private IQueryable<UserModel> GetActiveUserFromDb()
+        private IQueryable<UserModel> GetActiveUsersFromDb()
         {
             IQueryable<UserModel> users = _dbContext.Users.Where(u => !u.DateDeleted.HasValue);
             return users;
@@ -75,7 +75,7 @@ namespace BudgetTracker.Data.Repositories
         /// </summary>
         public async Task<User> GetByUsername(string username)
         {
-            UserModel userData = await GetActiveUserFromDb().Where(u => u.UserName == username).SingleOrDefaultAsync();
+            UserModel userData = await GetActiveUsersFromDb().Where(u => u.UserName == username).SingleOrDefaultAsync();
             if (userData == null)
             {
                 return null;
@@ -86,42 +86,23 @@ namespace BudgetTracker.Data.Repositories
 
         /// <summary>
         /// <para>
-        /// Creates the user and returns whether or not it was created.
-        /// </para>
-        /// <para>
-        /// If an error occurs, the errors list will be populated with the
-        /// error codes for the errors which occurred.
+        /// Creates the user.
         /// </para>
         /// </summary>
-        public bool Register(User userModel, out IEnumerable<string> errors)
+        public async Task<bool> Register(User userModel)
         {
             string encryptedPassword = _cryptor.Encrypt(userModel.Password, _gateKeeperConfig.EncryptionKey, _gateKeeperConfig.Salt);
             userModel.Password = encryptedPassword;
-            int numDuplicates = GetActiveUserFromDb().Count(user => user.UserName == userModel.Username);
-
-            if (numDuplicates > 0)
-            {
-                errors = new List<string>() { Constants.Authentication.ApiResponseErrorCodes.DUPLICATE_USERNAME };
-                return false;
-            }
 
             UserModel userData = _userConverter.ToDataModel(userModel);
             _dbContext.Users.Add(userData);
-            int recordsSaved = _dbContext.SaveChanges();
-
-            if (recordsSaved < 1)
-            {
-                errors = new List<string>() { Constants.Authentication.ApiResponseErrorCodes.UNKNOWN };
-                return false;
-            }
-
-            errors = null;
-            return true;
+            int recordsSaved = await _dbContext.SaveChangesAsync();
+            return recordsSaved >= 1;
         }
 
         public async Task Delete(Guid userId)
         {
-            UserModel user = await GetActiveUserFromDb().Where(u => u.Id == userId).SingleAsync();
+            UserModel user = await GetActiveUsersFromDb().Where(u => u.Id == userId).SingleAsync();
             user.DateDeleted = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
