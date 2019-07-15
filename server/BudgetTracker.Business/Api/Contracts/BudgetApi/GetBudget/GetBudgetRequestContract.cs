@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace budgettracker.business.Api.Contracts.BudgetApi.GetBudget
+namespace BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget
 {
     public class GetBudgetRequestContract : IApiContract
     {

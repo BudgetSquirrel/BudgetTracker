@@ -76,7 +76,7 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 
         public static BudgetResponseContract ToGeneralResponseContract(Budget model)
         {
-            return new BudgetResponseContract()
+            BudgetResponseContract responseContract = new BudgetResponseContract()
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -85,6 +85,13 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
                 BudgetStart = model.BudgetStart,
                 ParentBudgetId = model.ParentBudgetId
             };
+
+            if (model.SubBudgets != null)
+            {
+                responseContract.SubBudgets = ToGeneralResponseContracts(model.SubBudgets);
+            }
+
+            return responseContract;
         }
 
         public static List<BudgetResponseContract> ToGeneralResponseContracts(List<Budget> budgets)

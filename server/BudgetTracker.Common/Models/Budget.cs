@@ -41,9 +41,19 @@ namespace BudgetTracker.Common.Models
         public Guid? ParentBudgetId { get; set; }
 
         /// <summary>
+        /// The parent budget of which this is a sub-budget.
+        /// </summary>
+        public Budget ParentBudget { get; set; }
+
+        /// <summary>
         /// The user that owns this budget.
         /// </summary>
         public User Owner { get; set; }
+
+        /// <summary>
+        /// Budgets that are children of this budget.
+        /// </summary>
+        public List<Budget> SubBudgets { get; set; }
 
         public override string ToString()
         {

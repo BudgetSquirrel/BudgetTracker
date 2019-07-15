@@ -63,12 +63,13 @@ namespace BudgetTracker.Data.Repositories
         public async Task<Budget> GetBudget(Guid id)
         {
             BudgetModel budget = await _dbContext.Budgets.Where(x => x.Id == id).FirstAsync();
-            if (budget == null) 
+            if (budget == null)
             {
                 throw new RepositoryException("Was not able to find a budget with the id " + id);
             }
-            else 
+            else
             {
+                budget.Duration = await LoadDurationForBudget(budget);
                 return BudgetConverter.ToBusinessModel(budget);
             }
         }
@@ -78,10 +79,7 @@ namespace BudgetTracker.Data.Repositories
             List<BudgetModel> rootBudgets = await _dbContext.Budgets.Where(b => b.OwnerId == userId).ToListAsync();
             // Have to do this outside of query because EF can't do null checks.
             rootBudgets = rootBudgets.Where(b => b.ParentBudgetId == null).ToList();
-            foreach (BudgetModel budgetModel in rootBudgets)
-            {
-                budgetModel.Duration = await LoadDurationForBudget(budgetModel);
-            }
+            await LoadDurationsForBudgets(rootBudgets);
             List<Budget> rootBudgetsBusinessModels = BudgetConverter.ToBusinessModels(rootBudgets);
             return rootBudgetsBusinessModels;
         }
@@ -90,6 +88,14 @@ namespace BudgetTracker.Data.Repositories
         {
             BudgetDurationModel duration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == budget.DurationId);
             return duration;
+        }
+
+        public async Task LoadDurationsForBudgets(List<BudgetModel> budgets)
+        {
+            foreach (BudgetModel budgetModel in budgets)
+            {
+                budgetModel.Duration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == budgetModel.DurationId);
+            }
         }
 
         public async Task<Budget> UpdateBudget(Budget budget)
@@ -120,6 +126,23 @@ namespace BudgetTracker.Data.Repositories
             }
 
             return BudgetConverter.ToBusinessModel(oldBudget);
+        }
+
+        public async Task LoadSubBudgets(Budget budget, bool recursive=false)
+        {
+            List<BudgetModel> subBudgetsData = await _dbContext.Budgets.Where(b => b.ParentBudgetId.Value == budget.Id).ToListAsync();
+            await LoadDurationsForBudgets(subBudgetsData);
+
+            List<Budget> subBudgets = BudgetConverter.ToBusinessModels(subBudgetsData);
+            foreach (Budget subBudget in subBudgets)
+            {
+                subBudget.ParentBudget = budget;
+                if (recursive)
+                {
+                    await LoadSubBudgets(subBudget, recursive);
+                }
+            }
+            budget.SubBudgets = subBudgets;
         }
 
         private BudgetDurationModel GetBudgetDurationUpdated(BudgetDurationModel original, BudgetDurationBase newBudget)
