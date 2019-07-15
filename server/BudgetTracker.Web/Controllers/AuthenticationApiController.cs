@@ -3,6 +3,7 @@ using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
 using BudgetTracker.Business.Api.Contracts.Responses;
 using BudgetTracker.Business.Api.Contracts.Requests;
 using GateKeeper.Cryptogrophy;
+using GateKeeper.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -38,15 +39,29 @@ namespace BudgetTracker.Web.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<ApiResponse> Authenticate(ApiRequest request)
+        public async Task<IActionResult> Authenticate(ApiRequest request)
         {
-            return await _authApi.AuthenticateUser(request);
+            try
+            {
+                return new JsonResult(await _authApi.AuthenticateUser(request));
+            }
+            catch(AuthenticationException)
+            {
+                return Forbid();
+            }
         }
 
         [HttpPost("delete")]
-        public async Task<ApiResponse> DeleteUser(ApiRequest request)
+        public async Task<IActionResult> DeleteUser(ApiRequest request)
         {
-            return await _authApi.DeleteUser(request);
+            try
+            {
+                return new JsonResult(await _authApi.DeleteUser(request));
+            }
+            catch(AuthenticationException)
+            {
+                return Forbid();
+            }
         }
     }
 }

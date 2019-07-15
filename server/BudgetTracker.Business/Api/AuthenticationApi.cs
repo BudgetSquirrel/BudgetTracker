@@ -81,34 +81,18 @@ namespace BudgetTracker.Business.Api
         public async Task<ApiResponse> AuthenticateUser(ApiRequest request)
         {
             ApiResponse response;
+            User authenticatedUser = await Authenticate(request);
 
-            try {
-                User authenticatedUser = await Authenticate(request);
-                UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
-                response = new ApiResponse(responseData);
-            }
-            // This should be caught in the Controller and return Forbid() Also noticed we need to be return IActionResult from our Controllers
-            catch (AuthenticationException)
-            {
-                response = new ApiResponse("Those credentials could not be authorized.");
-            }
+            UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
+            response = new ApiResponse(responseData);
             return response;
         }
 
         public async Task<ApiResponse> DeleteUser(ApiRequest request)
         {
             ApiResponse response;
-            User authenticatedUser;
+            User authenticatedUser = await Authenticate(request);
 
-            try
-            {
-                authenticatedUser = await Authenticate(request);
-            }
-            catch(AuthenticationException)
-            {
-                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.USER_NOT_FOUND);
-                return response;
-            }
             try
             {
                 await ((UserRepository) _userRepository).Delete(authenticatedUser.Id.Value);
