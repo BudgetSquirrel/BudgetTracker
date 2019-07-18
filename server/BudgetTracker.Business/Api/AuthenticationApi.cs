@@ -47,19 +47,21 @@ namespace BudgetTracker.Business.Api
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
             UserRequestApiContract userValues = arguments.UserValues;
+            UserRepository userRepo = _userRepository as UserRepository;
             User userModel = _userApiConverter.ToModel(userValues);
             ApiResponse response;
 
-            IEnumerable<string> errors = null;
             if (!Validation.IsAccountRegistrationRequestValid(userValues))
             {
-                errors = new List<string>() {
-                    Constants.Authentication.ApiResponseErrorCodes.PASSWORD_CONFIRM_INCORRECT
-                };
-                response = new ApiResponse(String.Join(";", errors.ToArray()));
+                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.PASSWORD_CONFIRM_INCORRECT);
                 return response;
             }
-            if (((UserRepository) _userRepository).Register(userModel, out errors))
+            if (await Validation.IsAccountRegistrationDuplicate(userValues.UserName, userRepo))
+            {
+                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.DUPLICATE_USERNAME);
+                return response;
+            }
+            if (await userRepo.Register(userModel))
             {
                 userModel = await _userRepository.GetByUsername(userModel.Username);
                 UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
@@ -67,7 +69,7 @@ namespace BudgetTracker.Business.Api
             }
             else
             {
-                response = new ApiResponse(String.Join(";", errors.ToArray()));
+                response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.UNKNOWN);
             }
 
             return response;
