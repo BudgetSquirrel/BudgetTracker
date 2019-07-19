@@ -6,11 +6,13 @@ using BudgetTracker.Data.Repositories;
 using BudgetTracker.Data.Repositories.Interfaces;
 using BudgetTracker.Data.Models;
 using BudgetTracker.Web.Data;
+using BudgetTracker.Web.Authorization;
 using BudgetTracker.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +44,7 @@ namespace BudgetTracker.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-           
+
 
             services.AddSingleton<IConfiguration>(Configuration);
 
@@ -62,6 +64,17 @@ namespace BudgetTracker.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = "basic-authentication-scheme";
+
+                // you can also skip this to make the challenge scheme handle the forbid as well
+                options.DefaultForbidScheme = "basic-authentication-scheme";
+
+                // of course you also need to register that scheme, e.g. using
+                options.AddScheme<BasicAuthenticationHandler>("basic-authentication-scheme", "scheme display name");
             });
         }
 
@@ -85,7 +98,7 @@ namespace BudgetTracker.Web
 
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
