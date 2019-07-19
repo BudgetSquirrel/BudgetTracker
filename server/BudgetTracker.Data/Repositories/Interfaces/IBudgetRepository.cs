@@ -62,5 +62,10 @@ namespace BudgetTracker.Data.Repositories.Interfaces
         /// </p>
         /// </summary>
         Task LoadSubBudgets(Budget budget, bool recursive=false);
+        /// Will return the duration of a given budget. 
+        /// </p>
+        /// </summary>
+        /// <param name="parentId">The budget's id</param>
+        Task<BudgetDurationBase> GetBudgetDuration(Guid budgetId);
     }
 }

@@ -144,6 +144,11 @@ namespace BudgetTracker.Data.Repositories
             }
             budget.SubBudgets = subBudgets;
         }
+        
+        public async Task<BudgetDurationBase> GetBudgetDuration(Guid budgetId)
+        {
+            return await _dbContext.BudgetDuration.SingleAsync()
+        }
 
         private BudgetDurationModel GetBudgetDurationUpdated(BudgetDurationModel original, BudgetDurationBase newBudget)
         {
