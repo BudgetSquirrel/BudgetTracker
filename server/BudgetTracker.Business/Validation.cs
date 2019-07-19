@@ -34,9 +34,21 @@ namespace BudgetTracker.Business
 
         public static bool IsCreateBudgetRequestValid(CreateBudgetRequestContract arguments)
         {
-            return arguments.Name != null &&
-                arguments.SetAmount != 0M &&
-                IsCreateBudgetDurationRequestValid(arguments.Duration);
+            bool isValid = arguments.Name != null &&
+                arguments.SetAmount != 0M;
+
+            if (!isValid) return false;
+
+            bool isRootBudget = arguments.ParentBudgetId == null;
+            if (isRootBudget)
+            {
+                isValid = isValid && IsCreateBudgetDurationRequestValid(arguments.Duration);
+            }
+            else
+            {
+                isValid = isValid && arguments.Duration == null;
+            }
+            return isValid;
         }
 
         private static bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseContract contract)

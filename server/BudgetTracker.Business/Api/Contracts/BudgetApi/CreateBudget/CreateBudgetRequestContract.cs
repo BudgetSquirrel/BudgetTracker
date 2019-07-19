@@ -22,6 +22,10 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget
 
         public BudgetDurationBaseContract Duration {
             get {
+                if (DurationTemp == null)
+                {
+                    return null;
+                }
                 string durationSerialized = JsonConvert.SerializeObject(DurationTemp);
                 if (DurationTemp.ContainsKey("start-day-of-month") &&
                     DurationTemp.ContainsKey("end-day-of-month"))

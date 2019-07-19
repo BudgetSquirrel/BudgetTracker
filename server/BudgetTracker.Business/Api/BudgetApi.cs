@@ -52,6 +52,12 @@ namespace BudgetTracker.Business.Api
             Budget newBudget = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
             newBudget.Owner = user;
 
+            if(newBudget.ParentBudgetId != null)
+            {
+                newBudget.ParentBudget = await _budgetRepository.GetBudget(newBudget.ParentBudgetId.Value);
+                newBudget.Duration = newBudget.ParentBudget.Duration;
+            }
+
             try
             {
                 newBudget = await _budgetRepository.CreateBudget(newBudget);
