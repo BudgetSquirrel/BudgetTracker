@@ -14,6 +14,10 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
     {
         public static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
         {
+            if (durationContract == null)
+            {
+                return null;
+            }
             BudgetDurationBase durationModel = null;
             if (durationContract is MonthlyBookEndedDurationContract)
             {
@@ -45,6 +49,10 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 
         public static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
         {
+            if (durationModel == null)
+            {
+                return null;
+            }
             BudgetDurationBaseContract durationContract = null;
             if (durationModel is MonthlyBookEndedDuration)
             {
