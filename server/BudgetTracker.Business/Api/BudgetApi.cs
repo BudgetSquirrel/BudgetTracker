@@ -54,7 +54,7 @@ namespace BudgetTracker.Business.Api
 
             if(newBudget.ParentBudgetId != null)
             {
-                newBudget.Duration = await _budgetRepository.GetBudgetDuration(newBudget.ParentBudgetId);
+                newBudget.Duration = await _budgetRepository.GetBudget(newBudget.ParentBudgetId).Duration;                
             }
 
             try
