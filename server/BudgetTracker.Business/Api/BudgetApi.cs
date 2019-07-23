@@ -11,6 +11,7 @@ using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Data.Exceptions;
 using BudgetTracker.Common;
 
@@ -58,6 +59,8 @@ namespace BudgetTracker.Business.Api
                 newBudget.Duration = newBudget.ParentBudget.Duration;
             }
 
+            newBudget.SetAmount = DerivedBudgetAttributes.CalculateBudgetSetAmount(newBudget);
+
             try
             {
                 newBudget = await _budgetRepository.CreateBudget(newBudget);
@@ -84,6 +87,12 @@ namespace BudgetTracker.Business.Api
             {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
             }
+
+            if(newBudget.ParentBudgetId != null)
+            {
+                newBudget.ParentBudget = await _budgetRepository.GetBudget(newBudget.ParentBudgetId.Value);
+            }
+            newBudget.SetAmount = DerivedBudgetAttributes.CalculateBudgetSetAmount(newBudget);
 
             try
             {

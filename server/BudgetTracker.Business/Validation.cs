@@ -34,8 +34,12 @@ namespace BudgetTracker.Business
 
         public static bool IsCreateBudgetRequestValid(CreateBudgetRequestContract arguments)
         {
-            bool isValid = arguments.Name != null &&
-                arguments.SetAmount != 0M;
+            bool isValid = arguments.Name != null;
+
+            bool isAmountValid = (arguments.SetAmount == null && arguments.PercentAmount != null && arguments.PercentAmount <= 1.0) ||
+                                 (arguments.SetAmount != null && arguments.PercentAmount == null);
+
+            isValid = isValid && isAmountValid;
 
             if (!isValid) return false;
 
@@ -78,11 +82,25 @@ namespace BudgetTracker.Business
 
         public static bool IsUpdateBudgetRequestValid(UpdateBudgetRequestContract arguments)
         {
-            return arguments.Id != null &&
-                arguments.Name != null &&
-                arguments.SetAmount != 0M &&
-                arguments.Duration != null
-                && IsUpdateBudgetDurationRequestValid(arguments.Duration);
+            bool isValid = arguments.Id != null &&
+                arguments.Name != null;
+
+            bool isRootBudget = arguments.ParentBudgetId == null;
+            if (isRootBudget)
+            {
+                isValid = isValid && IsUpdateBudgetDurationRequestValid(arguments.Duration);
+            }
+            else
+            {
+                isValid = isValid && arguments.Duration == null;
+            }
+
+            bool isAmountValid = (arguments.SetAmount == null && arguments.PercentAmount != null && arguments.PercentAmount <= 1.0) ||
+                                 (arguments.SetAmount != null && arguments.PercentAmount == null);
+
+            isValid = isValid && isAmountValid;
+
+            return isValid;
         }
 
         private static bool IsUpdateBudgetDurationRequestValid(BudgetDurationBaseContract contract)

@@ -47,7 +47,8 @@ namespace BudgetTracker.Web.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    SetAmount = table.Column<decimal>(nullable: false),
+                    PercentAmount = table.Column<double>(nullable: true),
+                    SetAmount = table.Column<decimal>(nullable: true),
                     BudgetStart = table.Column<DateTime>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     OwnerId = table.Column<Guid>(nullable: false),

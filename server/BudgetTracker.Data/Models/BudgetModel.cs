@@ -7,7 +7,8 @@ namespace BudgetTracker.Data.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public decimal SetAmount { get; set; }
+        public double? PercentAmount { get; set; }
+        public decimal? SetAmount { get; set; }
         public DateTime BudgetStart { get; set; }
         public DateTime CreatedDate { get; set; }
 

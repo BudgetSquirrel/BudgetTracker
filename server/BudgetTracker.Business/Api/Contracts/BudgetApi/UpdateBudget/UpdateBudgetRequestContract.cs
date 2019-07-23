@@ -13,8 +13,11 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("percent-amount")]
+        public double? PercentAmount { get; set; }
+
         [JsonProperty("set-amount")]
-        public decimal SetAmount { get; set; }
+        public decimal? SetAmount { get; set; }
 
         /// <summary>
         /// <p> The duration of the budget cycle in days or months.</p>
@@ -24,6 +27,10 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
 
         public BudgetDurationBaseContract Duration {
             get {
+                if (DurationTemp == null)
+                {
+                    return null;
+                }
                 string durationSerialized = JsonConvert.SerializeObject(DurationTemp);
                 if (DurationTemp.ContainsKey("start-day-of-month") &&
                     DurationTemp.ContainsKey("end-day-of-month"))
@@ -45,7 +52,7 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
         public DateTime BudgetStart { get; set; }
 
         /// <summary>
-        /// <p> The guid the of the parent budget, if the budget is the 'root' 
+        /// <p> The guid the of the parent budget, if the budget is the 'root'
         /// this will be null. This string is converted to guid later. </p>
         /// </summary>
         [JsonProperty("parent-id")]
