@@ -18,7 +18,7 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
         public double? PercentAmount { get; set; }
 
         [JsonProperty("set-amount")]
-        public decimal? SetAmount { get; set; }
+        public decimal SetAmount { get; set; }
 
         [JsonProperty("duration")]
         public BudgetDurationBaseContract Duration { get; set; }
