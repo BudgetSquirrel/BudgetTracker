@@ -21,27 +21,9 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             };
         }
 
-        public static Budget ToModel(UpdateBudgetResponseContract responseContract)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public static UpdateBudgetRequestContract ToRequestContract(Budget model)
         {
             throw new System.NotImplementedException();
-        }
-
-        public static UpdateBudgetResponseContract ToResponseContract(Budget model)
-        {
-            return new UpdateBudgetResponseContract()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                SetAmount = model.SetAmount,
-                Duration = GeneralBudgetApiConverter.GetBudgetDuration(model.Duration),
-                BudgetStart = model.BudgetStart,
-                ParentBudgetId = model.ParentBudgetId,
-            };
         }
     }
 }
