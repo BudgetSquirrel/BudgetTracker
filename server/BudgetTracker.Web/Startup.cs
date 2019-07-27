@@ -1,13 +1,14 @@
 using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Interfaces;
 using BudgetTracker.Common;
-using BudgetTracker.Data;
-using BudgetTracker.Data.Repositories;
-using BudgetTracker.Data.Repositories.Interfaces;
-using BudgetTracker.Data.Models;
+using BudgetTracker.Common.Models;
 using BudgetTracker.Web.Data;
+using BudgetTracker.Business.Ports.Repositories;
+using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Web.Data.Repositories;
 using BudgetTracker.Web.Authorization;
 using BudgetTracker.Web.Models;
+using GateKeeper.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,13 +51,14 @@ namespace BudgetTracker.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<BudgetTrackerContext, AppDbContext>(options =>
+            services.AddDbContext<BudgetTrackerContext>(options =>
             {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });
 
             services.AddScoped<AuthenticationApi>();
-            services.AddScoped<UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGateKeeperUserRepository<User>, UserRepository>();
 
             services.AddScoped<IBudgetRepository, BudgetRepository>();
             services.AddScoped<IBudgetApi, BudgetApi>();

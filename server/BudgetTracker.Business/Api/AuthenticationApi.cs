@@ -6,11 +6,11 @@ using BudgetTracker.Business.Api.Converters;
 using BudgetTracker.Business;
 using BudgetTracker.Common;
 using BudgetTracker.Common.Models;
-using BudgetTracker.Data;
-using BudgetTracker.Data.Repositories;
+using BudgetTracker.Business.Ports.Repositories;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
+using GateKeeper.Repositories;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -29,12 +29,14 @@ namespace BudgetTracker.Business.Api
     public class AuthenticationApi : ApiBase<User>
     {
         UserApiConverter _userApiConverter;
+        IUserRepository _userRepository;
 
-        public AuthenticationApi(UserRepository userRepository,
+        public AuthenticationApi(IGateKeeperUserRepository<User> gateKeeperUserRepository, IUserRepository userRepository,
             IConfiguration appConfig)
-            : base(userRepository, new Rfc2898Encryptor(),
+            : base(gateKeeperUserRepository, new Rfc2898Encryptor(),
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
+            _userRepository = userRepository;
             _userApiConverter = new UserApiConverter();
         }
 
@@ -47,7 +49,7 @@ namespace BudgetTracker.Business.Api
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
             UserRequestApiContract userValues = arguments.UserValues;
-            UserRepository userRepo = _userRepository as UserRepository;
+            IUserRepository userRepo = _userRepository as IUserRepository;
             User userModel = _userApiConverter.ToModel(userValues);
             ApiResponse response;
 
@@ -97,7 +99,7 @@ namespace BudgetTracker.Business.Api
 
             try
             {
-                await ((UserRepository) _userRepository).Delete(authenticatedUser.Id.Value);
+                await ((IUserRepository) _userRepository).Delete(authenticatedUser.Id.Value);
                 response = new ApiResponse();
             }
             catch (InvalidOperationException)

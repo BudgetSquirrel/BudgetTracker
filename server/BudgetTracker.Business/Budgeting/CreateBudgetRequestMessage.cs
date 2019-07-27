@@ -1,14 +1,13 @@
+using BudgetTracker.Business.Api.Contracts;
 using BudgetTracker.Business.Budgeting.Tracking.Periods;
-using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
 
-namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
+namespace BudgetTracker.Business.Budgeting
 {
-    public class UpdateBudgetRequestContract : IApiContract {
-
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
+    public class CreateBudgetRequestMessage : IApiContract {
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -48,8 +47,13 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
             }
         }
 
+        /// <summary>
+        /// <p>
+        /// Allows the user to set a start time, if null the start time will be today.
+        /// </p>
+        /// </summary>
         [JsonProperty("budget-start")]
-        public DateTime BudgetStart { get; set; }
+        public DateTime? BudgetStart { get; set; }
 
         /// <summary>
         /// <p> The guid the of the parent budget, if the budget is the 'root'

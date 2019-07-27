@@ -11,15 +11,15 @@ namespace BudgetTracker.Business.Api
 {
     public class ApiBase<U> where U : IUser
     {
-        protected IUserRepository<U> _userRepository;
+        protected IGateKeeperUserRepository<U> _gateKeeperUserRepository;
         protected ICryptor _cryptor;
 
         protected GateKeeperConfig _gateKeeperConfig;
 
-        public ApiBase(IUserRepository<U> userRepository, ICryptor cryptor,
+        public ApiBase(IGateKeeperUserRepository<U> gateKeeperUserRepository, ICryptor cryptor,
             GateKeeperConfig gateKeeperConfig)
         {
-            _userRepository = userRepository;
+            _gateKeeperUserRepository = gateKeeperUserRepository;
             _cryptor = cryptor;
             _gateKeeperConfig = gateKeeperConfig;
         }
@@ -31,7 +31,7 @@ namespace BudgetTracker.Business.Api
         public async Task<U> Authenticate(ApiRequest request)
         {
             U user = await GateKeeper.Authentication.Authenticate(request.User.UserName, request.User.Password,
-                _userRepository, _cryptor, _gateKeeperConfig);
+                _gateKeeperUserRepository, _cryptor, _gateKeeperConfig);
             return user;
         }
     }

@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="28.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
@@ -19,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BudgetTracker.Business\BudgetTracker.Business.csproj" />
     <ProjectReference Include="..\BudgetTracker.Common\BudgetTracker.Common.csproj" />
-    <ProjectReference Include="..\BudgetTracker.Data\BudgetTracker.Data.csproj" />
     <ProjectReference Include="..\GateKeeper\GateKeeper.csproj" />
   </ItemGroup>
 

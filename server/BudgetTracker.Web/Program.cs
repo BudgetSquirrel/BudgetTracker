@@ -1,5 +1,5 @@
-using BudgetTracker.Data;
-using BudgetTracker.Data.Seeding;
+using BudgetTracker.Web.Data;
+using BudgetTracker.Web.Data.Seeding;
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;

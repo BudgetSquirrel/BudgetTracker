@@ -1,5 +1,5 @@
 using BudgetTracker.Business.Api.Contracts;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetDurations;
+using BudgetTracker.Business.Budgeting.Tracking.Periods;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

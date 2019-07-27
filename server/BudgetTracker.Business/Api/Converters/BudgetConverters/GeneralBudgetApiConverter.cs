@@ -1,9 +1,9 @@
+using BudgetTracker.Business.Budgeting;
+using BudgetTracker.Business.Budgeting.Tracking.Periods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Common.Models;
-using BudgetTracker.Common.Models.BudgetDurations;
 using BudgetTracker.Business.Api.Contracts.BudgetApi;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetDurations;
 
 using System;
 using System.Collections.Generic;
@@ -12,52 +12,52 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 {
     public class GeneralBudgetApiConverter
     {
-        public static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseContract durationContract)
+        public static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseMessage durationMessage)
         {
-            if (durationContract == null)
+            if (durationMessage == null)
             {
                 return null;
             }
             BudgetDurationBase durationModel = null;
-            if (durationContract is MonthlyBookEndedDurationContract)
+            if (durationMessage is MonthlyBookEndedDurationMessage)
             {
-                MonthlyBookEndedDurationContract bookEndDurationContract = (MonthlyBookEndedDurationContract) durationContract;
+                MonthlyBookEndedDurationMessage bookEndDurationMessage = (MonthlyBookEndedDurationMessage) durationMessage;
                 durationModel = new MonthlyBookEndedDuration()
                 {
-                    Id = bookEndDurationContract.Id,
-                    StartDayOfMonth = bookEndDurationContract.StartDayOfMonth,
-                    EndDayOfMonth = bookEndDurationContract.EndDayOfMonth,
-                    RolloverStartDateOnSmallMonths = bookEndDurationContract.RolloverStartDateOnSmallMonths,
-                    RolloverEndDateOnSmallMonths = bookEndDurationContract.RolloverEndDateOnSmallMonths,
+                    Id = bookEndDurationMessage.Id,
+                    StartDayOfMonth = bookEndDurationMessage.StartDayOfMonth,
+                    EndDayOfMonth = bookEndDurationMessage.EndDayOfMonth,
+                    RolloverStartDateOnSmallMonths = bookEndDurationMessage.RolloverStartDateOnSmallMonths,
+                    RolloverEndDateOnSmallMonths = bookEndDurationMessage.RolloverEndDateOnSmallMonths,
                 };
             }
-            else if (durationContract is MonthlyDaySpanDurationContract)
+            else if (durationMessage is MonthlyDaySpanDurationMessage)
             {
-                MonthlyDaySpanDurationContract daySpanDurationContract = (MonthlyDaySpanDurationContract) durationContract;
+                MonthlyDaySpanDurationMessage daySpanDurationMessage = (MonthlyDaySpanDurationMessage) durationMessage;
                 durationModel = new MonthlyDaySpanDuration()
                 {
-                    Id = daySpanDurationContract.Id,
-                    NumberDays = daySpanDurationContract.NumberDays
+                    Id = daySpanDurationMessage.Id,
+                    NumberDays = daySpanDurationMessage.NumberDays
                 };
             }
             else
             {
-                throw new ConversionException(durationContract.GetType(), typeof(BudgetDurationBase), $"Duration class '{durationContract.GetType().ToString()}' not supported class.");
+                throw new ConversionException(durationMessage.GetType(), typeof(BudgetDurationBase), $"Duration class '{durationMessage.GetType().ToString()}' not supported class.");
             }
             return durationModel;
         }
 
-        public static BudgetDurationBaseContract GetBudgetDuration(BudgetDurationBase durationModel)
+        public static BudgetDurationBaseMessage GetBudgetDuration(BudgetDurationBase durationModel)
         {
             if (durationModel == null)
             {
                 return null;
             }
-            BudgetDurationBaseContract durationContract = null;
+            BudgetDurationBaseMessage durationMessage = null;
             if (durationModel is MonthlyBookEndedDuration)
             {
                 MonthlyBookEndedDuration bookEndDurationModel = (MonthlyBookEndedDuration) durationModel;
-                durationContract = new MonthlyBookEndedDurationContract()
+                durationMessage = new MonthlyBookEndedDurationMessage()
                 {
                     Id = bookEndDurationModel.Id,
                     StartDayOfMonth = bookEndDurationModel.StartDayOfMonth,
@@ -69,7 +69,7 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             else if (durationModel is MonthlyDaySpanDuration)
             {
                 MonthlyDaySpanDuration daySpanDurationModel = (MonthlyDaySpanDuration) durationModel;
-                durationContract = new MonthlyDaySpanDurationContract()
+                durationMessage = new MonthlyDaySpanDurationMessage()
                 {
                     Id = daySpanDurationModel.Id,
                     NumberDays = daySpanDurationModel.NumberDays
@@ -77,14 +77,14 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             }
             else
             {
-                throw new ConversionException(durationModel.GetType(), typeof(BudgetDurationBaseContract), $"Duration class '{durationModel.GetType().ToString()}' not supported class.");
+                throw new ConversionException(durationModel.GetType(), typeof(BudgetDurationBaseMessage), $"Duration class '{durationModel.GetType().ToString()}' not supported class.");
             }
-            return durationContract;
+            return durationMessage;
         }
 
-        public static BudgetResponseContract ToGeneralResponseContract(Budget model)
+        public static BudgetResponseContract ToGeneralResponseMessage(Budget model)
         {
-            BudgetResponseContract responseContract = new BudgetResponseContract()
+            BudgetResponseContract responseMessage = new BudgetResponseContract()
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -97,20 +97,20 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 
             if (model.SubBudgets != null)
             {
-                responseContract.SubBudgets = ToGeneralResponseContracts(model.SubBudgets);
+                responseMessage.SubBudgets = ToGeneralResponseMessages(model.SubBudgets);
             }
 
-            return responseContract;
+            return responseMessage;
         }
 
-        public static List<BudgetResponseContract> ToGeneralResponseContracts(List<Budget> budgets)
+        public static List<BudgetResponseContract> ToGeneralResponseMessages(List<Budget> budgets)
         {
-            List<BudgetResponseContract> responseContracts = new List<BudgetResponseContract>();
+            List<BudgetResponseContract> responseMessages = new List<BudgetResponseContract>();
             foreach (Budget budget in budgets)
             {
-                responseContracts.Add(ToGeneralResponseContract(budget));
+                responseMessages.Add(ToGeneralResponseMessage(budget));
             }
-            return responseContracts;
+            return responseMessages;
         }
     }
 }

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Data", "BudgetTracker.Data\BudgetTracker.Data.csproj", "{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Web", "BudgetTracker.Web\BudgetTracker.Web.csproj", "{D333580D-644A-4882-B36F-8E51D61007C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker.Common", "BudgetTracker.Common\BudgetTracker.Common.csproj", "{B9392B4E-BE9F-4490-A2EB-425AEA7D73E6}"
@@ -23,18 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|x64.Build.0 = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Debug|x86.Build.0 = Debug|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|x64.ActiveCfg = Release|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|x64.Build.0 = Release|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|x86.ActiveCfg = Release|Any CPU
-		{07B51C0A-C67A-41CF-99A7-3C59254C2CDA}.Release|x86.Build.0 = Release|Any CPU
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D333580D-644A-4882-B36F-8E51D61007C8}.Debug|x64.ActiveCfg = Debug|Any CPU

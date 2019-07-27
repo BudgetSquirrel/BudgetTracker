@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\BudgetTracker.Data\BudgetTracker.Data.csproj" />
     <ProjectReference Include="..\BudgetTracker.Common\BudgetTracker.Common.csproj" />
   </ItemGroup>
 
