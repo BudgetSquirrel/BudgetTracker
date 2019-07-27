@@ -109,14 +109,18 @@ namespace BudgetTracker.Data.Repositories
                 throw new RepositoryException("No Budget with the id: " + budget.Id + " was found.");
             }
 
-            BudgetDurationModel oldDuration = await _dbContext.BudgetDurations.SingleAsync(d => d.Id == oldBudget.DurationId);
-
             oldBudget.Name = budget.Name;
+            oldBudget.PercentAmount = budget.PercentAmount;
             oldBudget.SetAmount = budget.SetAmount;
             oldBudget.BudgetStart = budget.BudgetStart;
             oldBudget.ParentBudgetId = budget.ParentBudgetId;
 
-            BudgetDurationModel newDuration = GetBudgetDurationUpdated(oldDuration, budget.Duration);
+            if (oldBudget.ParentBudgetId == null)
+            {
+                BudgetDurationModel oldDuration = await _dbContext.BudgetDurations.SingleOrDefaultAsync(d => d.Id == oldBudget.DurationId);
+                SetNewBudgetDurationValues(oldDuration, budget.Duration);
+                oldBudget.Duration = oldDuration;
+            }
 
             int recordSaved = await _dbContext.SaveChangesAsync();
 
@@ -145,7 +149,7 @@ namespace BudgetTracker.Data.Repositories
             budget.SubBudgets = subBudgets;
         }
 
-        private BudgetDurationModel GetBudgetDurationUpdated(BudgetDurationModel original, BudgetDurationBase newBudget)
+        private void SetNewBudgetDurationValues(BudgetDurationModel original, BudgetDurationBase newBudget)
         {
             if (newBudget is MonthlyBookEndedDuration)
             {
@@ -171,7 +175,6 @@ namespace BudgetTracker.Data.Repositories
             {
                 throw new RepositoryException($"The Budget duration type {newBudget.GetType().ToString()} is not a supported type.");
             }
-            return original;
         }
     }
 }

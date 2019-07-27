@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetTracker.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190712161215_InitialCreate")]
+    [Migration("20190722220612_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,9 @@ namespace BudgetTracker.Web.Migrations
 
                     b.Property<Guid?>("ParentBudgetId");
 
-                    b.Property<decimal>("SetAmount");
+                    b.Property<double?>("PercentAmount");
+
+                    b.Property<decimal?>("SetAmount");
 
                     b.HasKey("Id");
 

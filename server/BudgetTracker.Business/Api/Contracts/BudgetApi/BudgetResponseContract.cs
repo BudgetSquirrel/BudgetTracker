@@ -13,6 +13,9 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("percent-amount")]
+        public double? PercentAmount { get; set; }
+
         [JsonProperty("set-amount")]
         public decimal SetAmount { get; set; }
 
