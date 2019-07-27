@@ -16,6 +16,7 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             return new Budget()
             {
                 Name = requestContract.Name,
+                PercentAmount = requestContract.PercentAmount,
                 SetAmount = requestContract.SetAmount,
                 Duration = GeneralBudgetApiConverter.GetBudgetDuration(requestContract.Duration),
                 ParentBudgetId = requestContract.ParentBudgetId,
@@ -39,7 +40,8 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             {
                 Id = model.Id,
                 Name = model.Name,
-                SetAmount = model.SetAmount,
+                PercentAmount = model.PercentAmount,
+                SetAmount = model.SetAmount.Value,
                 Duration = GeneralBudgetApiConverter.GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,
                 ParentBudgetId = model.ParentBudgetId

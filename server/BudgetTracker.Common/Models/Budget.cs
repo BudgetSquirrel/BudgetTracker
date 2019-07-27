@@ -17,12 +17,20 @@ namespace BudgetTracker.Common.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// Allows the user to calculate the Set amount based on the Parent
+        /// budgets Set amount. This will be used on creation time and update
+        /// time to calculate the new value of this budgets SetAmount based on
+        /// it's parent Budget's SetAmount.
+        /// </summary>
+        public double? PercentAmount { get; set; }
+
+        /// <summary>
         /// The amount of money that is available in this budget. If this is
         /// null, then it is assumed that this has sub-budgets. This budget then
         /// can be assumed to have a calculated balance of the sum of all of
         /// it's direct sub-balances (which may also have calculated balances).
         /// </summary>
-        public decimal SetAmount { get; set; }
+        public decimal? SetAmount { get; set; }
 
         /// <summary>
         /// The duration the budget will be per cycle in months.

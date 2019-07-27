@@ -88,6 +88,7 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             {
                 Id = model.Id,
                 Name = model.Name,
+                PercentAmount = model.PercentAmount,
                 SetAmount = model.SetAmount,
                 Duration = GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,

@@ -55,7 +55,9 @@ namespace BudgetTracker.Web.Migrations
 
                     b.Property<Guid?>("ParentBudgetId");
 
-                    b.Property<decimal>("SetAmount");
+                    b.Property<double?>("PercentAmount");
+
+                    b.Property<decimal?>("SetAmount");
 
                     b.HasKey("Id");
 

@@ -16,6 +16,7 @@ namespace BudgetTracker.Data.Converters
             {
                 Id = dataModel.Id,
                 Name = dataModel.Name,
+                PercentAmount = dataModel.PercentAmount,
                 SetAmount = dataModel.SetAmount,
                 Duration = GetBudgetDuration(dataModel.Duration),
                 BudgetStart = dataModel.BudgetStart,
@@ -42,6 +43,7 @@ namespace BudgetTracker.Data.Converters
             {
                 Id = businessObject.Id,
                 Name = businessObject.Name,
+                PercentAmount = businessObject.PercentAmount,
                 SetAmount = businessObject.SetAmount,
                 Duration = GetBudgetDuration(businessObject.Duration),
                 BudgetStart = businessObject.BudgetStart,
