@@ -1,5 +1,5 @@
 using BudgetTracker.Common.Models.BudgetDurations;
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BudgetTracker.Common.Models
