@@ -1,9 +1,10 @@
+using BudgetTracker.Business.Api.Contracts;
 using BudgetTracker.Business.Budgeting.Tracking.Periods;
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget
+namespace BudgetTracker.Business.Budgeting
 {
     public class UpdateBudgetRequestContract : IApiContract {
 

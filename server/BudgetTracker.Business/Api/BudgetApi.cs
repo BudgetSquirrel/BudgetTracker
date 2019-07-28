@@ -63,36 +63,23 @@ namespace BudgetTracker.Business.Api
         public async Task<ApiResponse> UpdateBudget(ApiRequest request)
         {
             await Authenticate(request);
-
             UpdateBudgetArgumentApiContract budgetRequest = request.Arguments<UpdateBudgetArgumentApiContract>();
-
-            Budget newBudget = UpdateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
+            Budget budgetChanges = UpdateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
 
             if(!BudgetValidation.IsUpdateBudgetRequestValid(budgetRequest.BudgetValues))
-            {
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
-            }
-
-            if(newBudget.ParentBudgetId != null)
-            {
-                newBudget.ParentBudget = await _budgetRepository.GetBudget(newBudget.ParentBudgetId.Value);
-            }
-            newBudget.SetAmount = BudgetCreation.CalculateBudgetSetAmount(newBudget);
 
             try
             {
-                newBudget = await _budgetRepository.UpdateBudget(newBudget);
+                budgetChanges.SetAmount = budgetChanges.CalculateBudgetSetAmount();
+                Budget updatedBudget = await _budgetRepository.UpdateBudget(budgetChanges);
+                BudgetResponseContract response = GeneralBudgetApiConverter.ToGeneralResponseMessage(updatedBudget);
+                return new ApiResponse(response);
             }
             catch (RepositoryException ex)
             {
                 return new ApiResponse(ex.Message);
             }
-
-            Console.WriteLine(JsonConvert.SerializeObject(newBudget, Formatting.Indented));
-
-            BudgetResponseContract response = GeneralBudgetApiConverter.ToGeneralResponseMessage(newBudget);
-
-            return new ApiResponse(response);
         }
 
         public async Task<ApiResponse> DeleteBudgets(ApiRequest request)

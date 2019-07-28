@@ -1,7 +1,9 @@
 using BudgetTracker.Business.Budgeting.Tracking.Periods;
+using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Common.Models;
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BudgetTracker.Business.Budgeting
 {
@@ -78,12 +80,52 @@ namespace BudgetTracker.Business.Budgeting
             }
         }
 
-        public bool isRootBudget
+        public bool IsRootBudget
         {
             get
             {
                 return this.ParentBudgetId == null;
             }
+        }
+
+        public decimal CalculateBudgetSetAmount()
+        {
+            decimal newBudgetAmount = default(decimal);
+            if (IsPercentBasedBudget)
+            {
+                newBudgetAmount = ParentBudget.SetAmount.Value * (decimal) PercentAmount.Value;
+            }
+            else
+            {
+                newBudgetAmount = SetAmount.Value;
+            }
+            return newBudgetAmount;
+        }
+
+        /// <summary>
+        /// Takes all attributes of otherBudget and mirrors them
+        /// in this budget. This is sort of like clone except it
+        /// is cloned to an already instantiated budget object.
+        /// </summary>
+        public void Mirror(Budget otherBudget)
+        {
+            Id = otherBudget.Id;
+            Name = otherBudget.Name;
+            PercentAmount = otherBudget.PercentAmount;
+            SetAmount = otherBudget.SetAmount;
+            Duration = otherBudget.Duration;
+            BudgetStart = otherBudget.BudgetStart;
+            ParentBudgetId = otherBudget.ParentBudgetId;
+            ParentBudget = otherBudget.ParentBudget;
+            Owner = otherBudget.Owner;
+            SubBudgets = otherBudget.SubBudgets;
+        }
+
+        public Budget Clone()
+        {
+            Budget clone = new Budget();
+            clone.Mirror(this);
+            return clone;
         }
     }
 }

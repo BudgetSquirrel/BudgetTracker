@@ -1,3 +1,4 @@
+using BudgetTracker.Business.Budgeting;
 using Newtonsoft.Json;
 
 namespace BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget

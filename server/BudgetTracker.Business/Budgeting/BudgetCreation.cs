@@ -12,31 +12,17 @@ namespace BudgetTracker.Business.Budgeting
         {
             budgetCreateObject.Owner = user;
 
-            if (!budgetCreateObject.isRootBudget)
+            if (!budgetCreateObject.IsRootBudget)
             {
                 budgetCreateObject.ParentBudget = await budgetRepository.GetBudget(budgetCreateObject.ParentBudgetId.Value);
                 budgetCreateObject.Duration = budgetCreateObject.ParentBudget.Duration;
             }
 
-            budgetCreateObject.SetAmount = CalculateBudgetSetAmount(budgetCreateObject);
+            budgetCreateObject.SetAmount = budgetCreateObject.CalculateBudgetSetAmount();
 
             budgetCreateObject = await budgetRepository.CreateBudget(budgetCreateObject);
 
             return budgetCreateObject;
-        }
-
-        public static decimal CalculateBudgetSetAmount(Budget budget)
-        {
-            decimal newBudgetAmount = default(decimal);
-            if (budget.IsPercentBasedBudget)
-            {
-                newBudgetAmount = budget.ParentBudget.SetAmount.Value * (decimal) budget.PercentAmount.Value;
-            }
-            else
-            {
-                newBudgetAmount = budget.SetAmount.Value;
-            }
-            return newBudgetAmount;
         }
     }
 }
