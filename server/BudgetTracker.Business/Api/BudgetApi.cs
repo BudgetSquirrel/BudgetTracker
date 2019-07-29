@@ -70,7 +70,7 @@ namespace BudgetTracker.Business.Api
                 return new ApiResponse(ex.Message);
             }
 
-            CreateBudgetResponseContract response = CreateBudgetApiConverter.ToResponseContract(newBudget);
+            BudgetResponseContract response = GeneralBudgetApiConverter.ToGeneralResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
@@ -103,7 +103,7 @@ namespace BudgetTracker.Business.Api
                 return new ApiResponse(ex.Message);
             }
 
-            UpdateBudgetResponseContract response = UpdateBudgetApiConverter.ToResponseContract(newBudget);
+            BudgetResponseContract response = GeneralBudgetApiConverter.ToGeneralResponseContract(newBudget);
 
             return new ApiResponse(response);
         }
@@ -142,7 +142,7 @@ namespace BudgetTracker.Business.Api
 
                 if (retrievedBudget != null)
                 {
-                    response.Response = UpdateBudgetApiConverter.ToResponseContract(retrievedBudget);
+                    response.Response = GeneralBudgetApiConverter.ToGeneralResponseContract(retrievedBudget);
                 }
                 else
                 {
