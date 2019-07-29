@@ -1,5 +1,5 @@
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
-using BudgetTracker.Business.Budgeting.Tracking.Periods;
+using BudgetTracker.Business.Budgeting.BudgetPeriods;
 
 namespace BudgetTracker.Business.Budgeting
 {

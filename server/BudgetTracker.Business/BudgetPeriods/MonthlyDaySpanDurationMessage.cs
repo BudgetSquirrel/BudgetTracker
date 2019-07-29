@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Budgeting.Tracking.Periods
+namespace BudgetTracker.Business.Budgeting.BudgetPeriods
 {
     public class MonthlyDaySpanDurationMessage : BudgetDurationBaseMessage
     {

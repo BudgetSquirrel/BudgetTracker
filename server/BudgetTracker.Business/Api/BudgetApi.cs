@@ -9,7 +9,7 @@ using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
 using BudgetTracker.Business.Budgeting;
-using BudgetTracker.Business.Budgeting.Tracking.Periods;
+using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Models;
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;

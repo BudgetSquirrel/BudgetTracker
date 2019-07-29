@@ -1,4 +1,4 @@
-namespace BudgetTracker.Business.Budgeting.Tracking.Periods
+namespace BudgetTracker.Business.Budgeting.BudgetPeriods
 {
     public class MonthlyDaySpanDuration : BudgetDurationBase
     {

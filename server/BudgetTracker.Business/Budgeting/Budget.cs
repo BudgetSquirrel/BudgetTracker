@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Budgeting.Tracking.Periods;
+using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Common.Models;
 ﻿using System;

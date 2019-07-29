@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetTracker.Web.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
-    [Migration("20190729224719_InitialCreate")]
+    [Migration("20190729230459_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
