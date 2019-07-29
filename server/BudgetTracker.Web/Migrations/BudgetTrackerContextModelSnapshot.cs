@@ -70,6 +70,24 @@ namespace BudgetTracker.Web.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("BudgetTracker.Web.Data.Models.BudgetPeriodModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<Guid>("RootBudgetId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RootBudgetId");
+
+                    b.ToTable("BudgetPeriods");
+                });
+
             modelBuilder.Entity("BudgetTracker.Web.Data.Models.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -107,6 +125,14 @@ namespace BudgetTracker.Web.Migrations
                     b.HasOne("BudgetTracker.Web.Data.Models.BudgetModel", "ParentBudget")
                         .WithMany()
                         .HasForeignKey("ParentBudgetId");
+                });
+
+            modelBuilder.Entity("BudgetTracker.Web.Data.Models.BudgetPeriodModel", b =>
+                {
+                    b.HasOne("BudgetTracker.Web.Data.Models.BudgetModel", "RootBudget")
+                        .WithMany()
+                        .HasForeignKey("RootBudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

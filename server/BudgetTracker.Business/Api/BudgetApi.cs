@@ -51,7 +51,7 @@ namespace BudgetTracker.Business.Api
             {
                 Budget newBudgetValues = CreateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
                 Budget createdBudget = await BudgetCreation.CreateBudgetForUser(newBudgetValues, user, _budgetRepository);
-                CreateBudgetResponseMessage response = CreateBudgetApiConverter.ToResponseContract(createdBudget);
+                BudgetResponseMessage response = GeneralBudgetApiConverter.ToGeneralResponseMessage(createdBudget);
                 return new ApiResponse(response);
             }
             catch (RepositoryException ex)
@@ -73,7 +73,7 @@ namespace BudgetTracker.Business.Api
             {
                 budgetChanges.SetAmount = budgetChanges.CalculateBudgetSetAmount();
                 Budget updatedBudget = await _budgetRepository.UpdateBudget(budgetChanges);
-                BudgetResponseContract response = GeneralBudgetApiConverter.ToGeneralResponseMessage(updatedBudget);
+                BudgetResponseMessage response = GeneralBudgetApiConverter.ToGeneralResponseMessage(updatedBudget);
                 return new ApiResponse(response);
             }
             catch (RepositoryException ex)
@@ -137,7 +137,7 @@ namespace BudgetTracker.Business.Api
             ApiResponse response;
 
             List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id.Value);
-            List<BudgetResponseContract> rootBudgetContracts = GeneralBudgetApiConverter.ToGeneralResponseMessages(rootBudgets);
+            List<BudgetResponseMessage> rootBudgetContracts = GeneralBudgetApiConverter.ToGeneralResponseMessages(rootBudgets);
             BudgetListResponseContract responseData = new BudgetListResponseContract()
             {
                 Budgets = rootBudgetContracts
@@ -161,7 +161,7 @@ namespace BudgetTracker.Business.Api
                 if (rootBudget != null)
                 {
                     await _budgetRepository.LoadSubBudgets(rootBudget, true);
-                    BudgetResponseContract responseContract = GeneralBudgetApiConverter.ToGeneralResponseMessage(rootBudget);
+                    BudgetResponseMessage responseContract = GeneralBudgetApiConverter.ToGeneralResponseMessage(rootBudget);
                     response = new ApiResponse(responseContract);
                 }
                 else

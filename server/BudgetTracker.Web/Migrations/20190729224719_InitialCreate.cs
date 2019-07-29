@@ -78,6 +78,31 @@ namespace BudgetTracker.Web.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BudgetPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    RootBudgetId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BudgetPeriods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BudgetPeriods_Budgets_RootBudgetId",
+                        column: x => x.RootBudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BudgetPeriods_RootBudgetId",
+                table: "BudgetPeriods",
+                column: "RootBudgetId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_DurationId",
                 table: "Budgets",
@@ -96,6 +121,9 @@ namespace BudgetTracker.Web.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BudgetPeriods");
+
             migrationBuilder.DropTable(
                 name: "Budgets");
 

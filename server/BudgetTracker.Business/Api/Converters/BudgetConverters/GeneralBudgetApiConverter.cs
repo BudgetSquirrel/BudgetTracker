@@ -82,14 +82,14 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             return durationMessage;
         }
 
-        public static BudgetResponseContract ToGeneralResponseMessage(Budget model)
+        public static BudgetResponseMessage ToGeneralResponseMessage(Budget model)
         {
-            BudgetResponseContract responseMessage = new BudgetResponseContract()
+            BudgetResponseMessage responseMessage = new BudgetResponseMessage()
             {
                 Id = model.Id,
                 Name = model.Name,
                 PercentAmount = model.PercentAmount,
-                SetAmount = model.SetAmount,
+                SetAmount = model.SetAmount.Value,
                 Duration = GetBudgetDuration(model.Duration),
                 BudgetStart = model.BudgetStart,
                 ParentBudgetId = model.ParentBudgetId
@@ -103,9 +103,9 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
             return responseMessage;
         }
 
-        public static List<BudgetResponseContract> ToGeneralResponseMessages(List<Budget> budgets)
+        public static List<BudgetResponseMessage> ToGeneralResponseMessages(List<Budget> budgets)
         {
-            List<BudgetResponseContract> responseMessages = new List<BudgetResponseContract>();
+            List<BudgetResponseMessage> responseMessages = new List<BudgetResponseMessage>();
             foreach (Budget budget in budgets)
             {
                 responseMessages.Add(ToGeneralResponseMessage(budget));

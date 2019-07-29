@@ -1,11 +1,11 @@
-using BudgetTracker.Business.Api.Contracts;
 using BudgetTracker.Business.Budgeting.Tracking.Periods;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Budgeting
+namespace BudgetTracker.Business.Api.Contracts.BudgetApi
 {
-    public class CreateBudgetResponseMessage : IApiContract {
+    public class BudgetResponseMessage : IApiContract {
 
         [JsonProperty("id")]
         public Guid Id { get; set; }
@@ -28,5 +28,7 @@ namespace BudgetTracker.Business.Budgeting
         [JsonProperty("parent-budget-id")]
         public Guid? ParentBudgetId { get; set; }
 
+        [JsonProperty("sub-budgets")]
+        public List<BudgetResponseMessage> SubBudgets { get; set; }
     }
 }

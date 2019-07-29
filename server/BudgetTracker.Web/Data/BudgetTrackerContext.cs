@@ -13,5 +13,6 @@ namespace BudgetTracker.Web.Data
         public DbSet<UserModel> Users { get; set; }
         public DbSet<BudgetModel> Budgets { get; set; }
         public DbSet<BudgetDurationModel> BudgetDurations { get; set; }
+        public DbSet<BudgetPeriodModel> BudgetPeriods { get; set; }
     }
 }

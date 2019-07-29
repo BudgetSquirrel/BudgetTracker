@@ -8,6 +8,6 @@ namespace BudgetTracker.Business.Api.Contracts.BudgetApi
     public class BudgetListResponseContract : IApiContract
     {
         [JsonProperty("budgets")]
-        public List<BudgetResponseContract> Budgets { get; set; }
+        public List<BudgetResponseMessage> Budgets { get; set; }
     }
 }
