@@ -1,7 +1,6 @@
 using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Interfaces;
 using BudgetTracker.Common;
-using BudgetTracker.Common.Models;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Web.Data;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Web.Data.Models;

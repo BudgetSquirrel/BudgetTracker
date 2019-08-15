@@ -1,6 +1,6 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
-using BudgetTracker.Common.Models;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
 using BudgetTracker.Common.Exceptions;
 

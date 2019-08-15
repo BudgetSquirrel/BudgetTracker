@@ -1,5 +1,5 @@
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Common;
-using BudgetTracker.Common.Models;
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
 using System.Threading.Tasks;

@@ -1,14 +1,14 @@
 using BudgetTracker.Business.Api.Contracts;
 using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Common;
-using BudgetTracker.Common.Models;
 using System;
 
 namespace BudgetTracker.Business.Api.Converters
 {
-    public class UserApiConverter : IApiConverter<User, UserRequestApiContract, UserResponseApiContract>
+    public class UserApiConverter : IApiConverter<User, UserRequestApiMessage, UserResponseApiMessage>
     {
-        public User ToModel(UserRequestApiContract contract)
+        public User ToModel(UserRequestApiMessage contract)
         {
             User user = new User() {
                 Id = contract.Id,
@@ -21,7 +21,7 @@ namespace BudgetTracker.Business.Api.Converters
             return user;
         }
 
-        public User ToModel(UserResponseApiContract contract)
+        public User ToModel(UserResponseApiMessage contract)
         {
             User user = new User() {
                 Id = contract.Id,
@@ -33,9 +33,9 @@ namespace BudgetTracker.Business.Api.Converters
             return user;
         }
 
-        public UserRequestApiContract ToRequestContract(User model)
+        public UserRequestApiMessage ToRequestContract(User model)
         {
-            UserRequestApiContract contract = new UserRequestApiContract() {
+            UserRequestApiMessage contract = new UserRequestApiMessage() {
                 Id = model.Id,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -46,9 +46,9 @@ namespace BudgetTracker.Business.Api.Converters
             return contract;
         }
 
-        public UserResponseApiContract ToResponseContract(User model)
+        public UserResponseApiMessage ToResponseContract(User model)
         {
-            UserResponseApiContract contract = new UserResponseApiContract() {
+            UserResponseApiMessage contract = new UserResponseApiMessage() {
                 Id = model.Id.Value,
                 FirstName = model.FirstName,
                 LastName = model.LastName,

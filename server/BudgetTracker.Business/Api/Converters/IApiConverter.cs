@@ -1,4 +1,5 @@
 using BudgetTracker.Business.Api.Contracts;
+using BudgetTracker.Business.Auth;
 
 namespace BudgetTracker.Business.Api.Converters
 {
@@ -11,8 +12,8 @@ namespace BudgetTracker.Business.Api.Converters
     /// <para>
     /// This converter assumes that a domain model is associated with both
     /// a request and response contract class. Each may be slightly different.
-    /// for example, a UserResponseApiContract may not contain the password
-    /// whereas the UserRequestApiContract would.
+    /// for example, a UserResponseApiMessage may not contain the password
+    /// whereas the UserRequestApiMessage would.
     /// </para>
     /// <para>
     /// M: The model class for this converter (ex. User).

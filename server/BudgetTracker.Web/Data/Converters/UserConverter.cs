@@ -1,5 +1,5 @@
 using BudgetTracker.Web.Data.Models;
-using BudgetTracker.Common.Models;
+using BudgetTracker.Business.Auth;
 using System.Collections.Generic;
 
 namespace BudgetTracker.Web.Data.Converters

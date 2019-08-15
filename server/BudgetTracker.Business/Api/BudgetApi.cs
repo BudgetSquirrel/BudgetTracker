@@ -1,6 +1,6 @@
+using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Contracts.Requests;
 using BudgetTracker.Business.Api.Contracts.Responses;
-using BudgetTracker.Business.Api.Interfaces;
 using BudgetTracker.Business.Api.Converters.BudgetConverters;
 using BudgetTracker.Business.Api.Contracts.BudgetApi;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetTree;
@@ -8,9 +8,9 @@ using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
-using BudgetTracker.Common.Models;
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Common;

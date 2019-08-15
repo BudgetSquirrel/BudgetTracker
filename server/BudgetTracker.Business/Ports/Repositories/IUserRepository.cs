@@ -1,4 +1,4 @@
-using BudgetTracker.Common.Models;
+using BudgetTracker.Business.Auth;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

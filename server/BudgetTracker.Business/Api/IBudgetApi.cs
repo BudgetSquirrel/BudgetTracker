@@ -3,7 +3,7 @@ using BudgetTracker.Business.Api.Contracts.Requests;
 
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Business.Api.Interfaces
+namespace BudgetTracker.Business.Api
 {
     public interface IBudgetApi
     {

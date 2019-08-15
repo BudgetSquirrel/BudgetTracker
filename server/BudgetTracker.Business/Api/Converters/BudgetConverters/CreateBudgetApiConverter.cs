@@ -1,7 +1,7 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
-using BudgetTracker.Common.Models;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
 
 using System;

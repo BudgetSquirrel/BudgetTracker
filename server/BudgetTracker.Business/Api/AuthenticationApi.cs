@@ -1,11 +1,12 @@
+using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Contracts;
 using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
 using BudgetTracker.Business.Api.Contracts.Responses;
 using BudgetTracker.Business.Api.Contracts.Requests;
 using BudgetTracker.Business.Api.Converters;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business;
 using BudgetTracker.Common;
-using BudgetTracker.Common.Models;
 using BudgetTracker.Business.Ports.Repositories;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
@@ -26,7 +27,7 @@ namespace BudgetTracker.Business.Api
     /// this API, one can register new users, login, logout and more.
     /// </p>
     /// </summary>
-    public class AuthenticationApi : ApiBase<User>
+    public class AuthenticationApi : ApiBase<User>, IAuthenticationApi
     {
         UserApiConverter _userApiConverter;
         IUserRepository _userRepository;
@@ -48,17 +49,17 @@ namespace BudgetTracker.Business.Api
         public async Task<ApiResponse> Register(ApiRequest request)
         {
             UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
-            UserRequestApiContract userValues = arguments.UserValues;
+            UserRequestApiMessage userValues = arguments.UserValues;
             IUserRepository userRepo = _userRepository as IUserRepository;
             User userModel = _userApiConverter.ToModel(userValues);
             ApiResponse response;
 
-            if (!Validation.IsAccountRegistrationRequestValid(userValues))
+            if (!User.IsAccountRegistrationRequestValid(userValues))
             {
                 response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.PASSWORD_CONFIRM_INCORRECT);
                 return response;
             }
-            if (await Validation.IsAccountRegistrationDuplicate(userValues.UserName, userRepo))
+            if (await User.IsAccountRegistrationDuplicate(userValues.UserName, userRepo))
             {
                 response = new ApiResponse(Constants.Authentication.ApiResponseErrorCodes.DUPLICATE_USERNAME);
                 return response;
@@ -66,7 +67,7 @@ namespace BudgetTracker.Business.Api
             if (await userRepo.Register(userModel))
             {
                 userModel = await _userRepository.GetByUsername(userModel.Username);
-                UserResponseApiContract responseData = _userApiConverter.ToResponseContract(userModel);
+                UserResponseApiMessage responseData = _userApiConverter.ToResponseContract(userModel);
                 response = new ApiResponse(responseData);
             }
             else
@@ -87,7 +88,7 @@ namespace BudgetTracker.Business.Api
             ApiResponse response;
             User authenticatedUser = await Authenticate(request);
 
-            UserResponseApiContract responseData = _userApiConverter.ToResponseContract(authenticatedUser);
+            UserResponseApiMessage responseData = _userApiConverter.ToResponseContract(authenticatedUser);
             response = new ApiResponse(responseData);
             return response;
         }

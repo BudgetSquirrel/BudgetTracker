@@ -1,6 +1,6 @@
 using BudgetTracker.Business.Api.Contracts.Responses;
 using BudgetTracker.Business.Api.Contracts.Requests;
-using BudgetTracker.Business.Api.Interfaces;
+using BudgetTracker.Business.Api;
 using GateKeeper.Exceptions;
 
 using Microsoft.AspNetCore.Mvc;
