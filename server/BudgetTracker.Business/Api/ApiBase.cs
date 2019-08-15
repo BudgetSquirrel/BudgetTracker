@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Api.Messages.Requests;
+using BudgetTracker.Business.Api.Messages;
 using GateKeeper;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;

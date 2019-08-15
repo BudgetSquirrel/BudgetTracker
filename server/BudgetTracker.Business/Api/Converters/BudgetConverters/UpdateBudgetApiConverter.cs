@@ -1,7 +1,7 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Business.Api.Messages.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi;
 using BudgetTracker.Common.Exceptions;
 
 namespace BudgetTracker.Business.Api.Converters.BudgetConverters

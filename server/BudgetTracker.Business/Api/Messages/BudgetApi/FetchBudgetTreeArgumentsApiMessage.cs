@@ -2,7 +2,7 @@ using BudgetTracker.Business.Api.Messages;
 using Newtonsoft.Json;
 using System;
 
-namespace BudgetTracker.Business.Api.Messages.BudgetApi.BudgetTree
+namespace BudgetTracker.Business.Api.Messages.BudgetApi
 {
     public class FetchBudgetTreeArgumentsApiMessage : IApiMessage
     {

@@ -1,13 +1,7 @@
 using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Messages.Requests;
-using BudgetTracker.Business.Api.Messages.Responses;
+using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Api.Converters.BudgetConverters;
 using BudgetTracker.Business.Api.Messages.BudgetApi;
-using BudgetTracker.Business.Api.Messages.BudgetApi.BudgetTree;
-using BudgetTracker.Business.Api.Messages.BudgetApi.CreateBudget;
-using BudgetTracker.Business.Api.Messages.BudgetApi.DeleteBudgets;
-using BudgetTracker.Business.Api.Messages.BudgetApi.GetBudget;
-using BudgetTracker.Business.Api.Messages.BudgetApi.UpdateBudget;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;

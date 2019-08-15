@@ -1,8 +1,6 @@
 using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Api.Messages.AuthenticationApi;
-using BudgetTracker.Business.Api.Messages.Responses;
-using BudgetTracker.Business.Api.Messages.Requests;
 using BudgetTracker.Business.Api.Converters;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business;

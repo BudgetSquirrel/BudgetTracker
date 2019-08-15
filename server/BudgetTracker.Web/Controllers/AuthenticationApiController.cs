@@ -1,7 +1,6 @@
 using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Messages.AuthenticationApi;
-using BudgetTracker.Business.Api.Messages.Responses;
-using BudgetTracker.Business.Api.Messages.Requests;
+using BudgetTracker.Business.Api.Messages;
 using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
 using Microsoft.AspNetCore.Http;

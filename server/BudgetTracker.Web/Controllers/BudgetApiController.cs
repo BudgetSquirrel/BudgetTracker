@@ -1,5 +1,4 @@
-using BudgetTracker.Business.Api.Messages.Responses;
-using BudgetTracker.Business.Api.Messages.Requests;
+using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Api;
 using GateKeeper.Exceptions;
 

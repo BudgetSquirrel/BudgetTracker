@@ -1,12 +1,11 @@
 using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Messages.AuthenticationApi;
-using BudgetTracker.Business.Api.Messages.Requests;
 using BudgetTracker.Business.Auth;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api.Messages.Requests
+namespace BudgetTracker.Business.Api.Messages
 {
     /// <summary>
     /// <p>

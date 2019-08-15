@@ -1,7 +1,6 @@
-using BudgetTracker.Business.Api.Messages.Responses;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Messages.Responses
+namespace BudgetTracker.Business.Api.Messages
 {
     public class ApiResponse
     {
