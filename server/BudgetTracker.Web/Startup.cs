@@ -55,7 +55,7 @@ namespace BudgetTracker.Web
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddScoped<AuthenticationApi>();
+            services.AddScoped<IAuthenticationApi, AuthenticationApi>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGateKeeperUserRepository<User>, UserRepository>();
 

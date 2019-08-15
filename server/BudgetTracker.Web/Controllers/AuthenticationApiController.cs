@@ -25,9 +25,9 @@ namespace BudgetTracker.Web.Controllers
     [ApiController]
     public class AuthenticationApiController : ControllerBase
     {
-        AuthenticationApi _authApi;
+        IAuthenticationApi _authApi;
 
-        public AuthenticationApiController(AuthenticationApi authApi)
+        public AuthenticationApiController(IAuthenticationApi authApi)
         {
             _authApi = authApi;
         }
