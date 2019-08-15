@@ -2,8 +2,8 @@ using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Business.Api.Contracts.BudgetApi;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.Business.Api.Messages.BudgetApi.CreateBudget;
 
 using System;
 using System.Collections.Generic;

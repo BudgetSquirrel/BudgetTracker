@@ -2,10 +2,10 @@
 using BudgetTracker.Web.Data;
 using BudgetTracker.Web.Data.Models;
 using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Contracts;
-using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
-using BudgetTracker.Business.Api.Contracts.Requests;
-using BudgetTracker.Business.Api.Contracts.Responses;
+using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.Business.Api.Messages.AuthenticationApi;
+using BudgetTracker.Business.Api.Messages.Requests;
+using BudgetTracker.Business.Api.Messages.Responses;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

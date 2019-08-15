@@ -2,7 +2,7 @@ using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi.CreateBudget;
 
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,16 @@ namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 {
     public class CreateBudgetApiConverter
     {
-        public static Budget ToModel(CreateBudgetRequestMessage requestContract)
+        public static Budget ToModel(CreateBudgetRequestMessage requestMessage)
         {
             return new Budget()
             {
-                Name = requestContract.Name,
-                PercentAmount = requestContract.PercentAmount,
-                SetAmount = requestContract.SetAmount,
-                Duration = GeneralBudgetApiConverter.GetBudgetDuration(requestContract.Duration),
-                ParentBudgetId = requestContract.ParentBudgetId,
-                BudgetStart = requestContract.BudgetStart ?? new DateTime()
+                Name = requestMessage.Name,
+                PercentAmount = requestMessage.PercentAmount,
+                SetAmount = requestMessage.SetAmount,
+                Duration = GeneralBudgetApiConverter.GetBudgetDuration(requestMessage.Duration),
+                ParentBudgetId = requestMessage.ParentBudgetId,
+                BudgetStart = requestMessage.BudgetStart ?? new DateTime()
             };
         }
     }

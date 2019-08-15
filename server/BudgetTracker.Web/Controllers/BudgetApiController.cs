@@ -1,5 +1,5 @@
-using BudgetTracker.Business.Api.Contracts.Responses;
-using BudgetTracker.Business.Api.Contracts.Requests;
+using BudgetTracker.Business.Api.Messages.Responses;
+using BudgetTracker.Business.Api.Messages.Requests;
 using BudgetTracker.Business.Api;
 using GateKeeper.Exceptions;
 
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using System.Threading.Tasks;
 using System;
-using BudgetTracker.Business.Api.Contracts.BudgetApi;
+using BudgetTracker.Business.Api.Messages.BudgetApi;
 
 namespace BudgetTracker.Web.Controllers
 {

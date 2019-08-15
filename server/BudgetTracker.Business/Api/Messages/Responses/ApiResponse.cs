@@ -1,7 +1,7 @@
-using BudgetTracker.Business.Api.Contracts.Responses;
+using BudgetTracker.Business.Api.Messages.Responses;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Contracts.Responses
+namespace BudgetTracker.Business.Api.Messages.Responses
 {
     public class ApiResponse
     {
@@ -15,7 +15,7 @@ namespace BudgetTracker.Business.Api.Contracts.Responses
         public ApiResponse()
         {}
 
-        public ApiResponse(IApiContract data)
+        public ApiResponse(IApiMessage data)
         {
             Response = data;
         }
@@ -26,7 +26,7 @@ namespace BudgetTracker.Business.Api.Contracts.Responses
         }
 
         [JsonProperty("response", NullValueHandling=NullValueHandling.Ignore)]
-        public IApiContract Response { get; set; }
+        public IApiMessage Response { get; set; }
 
         [JsonProperty("error", NullValueHandling=NullValueHandling.Ignore)]
         public string Error { get; set; }

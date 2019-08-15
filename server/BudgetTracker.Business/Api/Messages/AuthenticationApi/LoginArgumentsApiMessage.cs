@@ -1,10 +1,10 @@
-using BudgetTracker.Business.Api.Contracts;
+using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Auth;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Contracts.AuthenticationApi
+namespace BudgetTracker.Business.Api.Messages.AuthenticationApi
 {
-    public class LoginArgumentsApiContract : IApiContract
+    public class LoginArgumentsApiMessage : IApiMessage
     {
         /// <summary>
         /// Contains the username and password for logging in.

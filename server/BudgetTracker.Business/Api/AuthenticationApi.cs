@@ -1,8 +1,8 @@
 using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Contracts;
-using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
-using BudgetTracker.Business.Api.Contracts.Responses;
-using BudgetTracker.Business.Api.Contracts.Requests;
+using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.Business.Api.Messages.AuthenticationApi;
+using BudgetTracker.Business.Api.Messages.Responses;
+using BudgetTracker.Business.Api.Messages.Requests;
 using BudgetTracker.Business.Api.Converters;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business;
@@ -48,7 +48,7 @@ namespace BudgetTracker.Business.Api
         /// </summary>
         public async Task<ApiResponse> Register(ApiRequest request)
         {
-            UserRegistrationArgumentApiContract arguments = request.Arguments<UserRegistrationArgumentApiContract>();
+            UserRegistrationArgumentApiMessage arguments = request.Arguments<UserRegistrationArgumentApiMessage>();
             UserRequestApiMessage userValues = arguments.UserValues;
             IUserRepository userRepo = _userRepository as IUserRepository;
             User userModel = _userApiConverter.ToModel(userValues);
@@ -67,7 +67,7 @@ namespace BudgetTracker.Business.Api
             if (await userRepo.Register(userModel))
             {
                 userModel = await _userRepository.GetByUsername(userModel.Username);
-                UserResponseApiMessage responseData = _userApiConverter.ToResponseContract(userModel);
+                UserResponseApiMessage responseData = _userApiConverter.ToResponseMessage(userModel);
                 response = new ApiResponse(responseData);
             }
             else
@@ -88,7 +88,7 @@ namespace BudgetTracker.Business.Api
             ApiResponse response;
             User authenticatedUser = await Authenticate(request);
 
-            UserResponseApiMessage responseData = _userApiConverter.ToResponseContract(authenticatedUser);
+            UserResponseApiMessage responseData = _userApiConverter.ToResponseMessage(authenticatedUser);
             response = new ApiResponse(responseData);
             return response;
         }

@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi.UpdateBudget;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 
 namespace BudgetTracker.Business.Budgeting
@@ -53,7 +53,7 @@ namespace BudgetTracker.Business.Budgeting
             else return false;
         }
 
-        public static bool IsUpdateBudgetRequestValid(UpdateBudgetRequestContract arguments)
+        public static bool IsUpdateBudgetRequestValid(UpdateBudgetRequestMessage arguments)
         {
             bool isValid = arguments.Id != null &&
                 arguments.Name != null;

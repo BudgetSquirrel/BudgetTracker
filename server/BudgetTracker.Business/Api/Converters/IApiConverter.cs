@@ -1,11 +1,11 @@
-using BudgetTracker.Business.Api.Contracts;
+using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Auth;
 
 namespace BudgetTracker.Business.Api.Converters
 {
     /// <summary>
     /// <para>
-    /// Converts models to their corresponding <see cref="IApiContract" />
+    /// Converts models to their corresponding <see cref="IApiMessage" />
     /// implementation or vice versa. This provides methods to perform this
     /// conversion.
     /// </para>
@@ -19,17 +19,17 @@ namespace BudgetTracker.Business.Api.Converters
     /// M: The model class for this converter (ex. User).
     /// </para>
     /// <para>
-    /// Q: The <see cref="IApiContract" /> implementation for this converter (ex. UserApiContract)
+    /// Q: The <see cref="IApiMessage" /> implementation for this converter (ex. UserApiMessage)
     /// that represents a request.
     /// </para>
     /// <para>
-    /// R: The <see cref="IApiContract" /> implementation for this converter (ex. UserApiContract)
+    /// R: The <see cref="IApiMessage" /> implementation for this converter (ex. UserApiMessage)
     /// that represents a response.
     /// </para>
     /// </summary>
     public interface IApiConverter<M, Q, R>
-        where Q : IApiContract
-        where R : IApiContract
+        where Q : IApiMessage
+        where R : IApiMessage
     {
         /// <summary>
         /// <para>
@@ -42,7 +42,7 @@ namespace BudgetTracker.Business.Api.Converters
         /// The contract from which to convert must be a request contract.
         /// </para>
         /// </summary>
-        M ToModel(Q requestContract);
+        M ToModel(Q requestMessage);
 
         /// <summary>
         /// <para>
@@ -55,7 +55,7 @@ namespace BudgetTracker.Business.Api.Converters
         /// The contract from which to convert must be a response contract.
         /// </para>
         /// </summary>
-        M ToModel(R responseContract);
+        M ToModel(R responseMessage);
 
         /// <summary>
         /// <para>
@@ -68,7 +68,7 @@ namespace BudgetTracker.Business.Api.Converters
         /// The contract which will be returned will be a request contract.
         /// </para>
         /// </summary>
-        Q ToRequestContract(M model);
+        Q ToRequestMessage(M model);
 
         /// <summary>
         /// <para>
@@ -81,6 +81,6 @@ namespace BudgetTracker.Business.Api.Converters
         /// The contract which will be returned will be a response contract.
         /// </para>
         /// </summary>
-        R ToResponseContract(M model);
+        R ToResponseMessage(M model);
     }
 }

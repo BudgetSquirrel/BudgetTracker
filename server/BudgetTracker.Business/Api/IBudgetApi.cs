@@ -1,5 +1,5 @@
-using BudgetTracker.Business.Api.Contracts.Responses;
-using BudgetTracker.Business.Api.Contracts.Requests;
+using BudgetTracker.Business.Api.Messages.Responses;
+using BudgetTracker.Business.Api.Messages.Requests;
 
 using System.Threading.Tasks;
 

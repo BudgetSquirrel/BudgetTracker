@@ -1,24 +1,24 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi.UpdateBudget;
 using BudgetTracker.Common.Exceptions;
 
 namespace BudgetTracker.Business.Api.Converters.BudgetConverters
 {
     public class UpdateBudgetApiConverter
     {
-        public static Budget ToModel(UpdateBudgetRequestContract requestContract)
+        public static Budget ToModel(UpdateBudgetRequestMessage requestMessage)
         {
             return new Budget()
             {
-                Id = requestContract.Id,
-                Name = requestContract.Name,
-                PercentAmount = requestContract.PercentAmount,
-                SetAmount = requestContract.SetAmount,
-                Duration = GeneralBudgetApiConverter.GetBudgetDuration(requestContract.Duration),
-                ParentBudgetId = requestContract.ParentBudgetId,
-                BudgetStart = requestContract.BudgetStart
+                Id = requestMessage.Id,
+                Name = requestMessage.Name,
+                PercentAmount = requestMessage.PercentAmount,
+                SetAmount = requestMessage.SetAmount,
+                Duration = GeneralBudgetApiConverter.GetBudgetDuration(requestMessage.Duration),
+                ParentBudgetId = requestMessage.ParentBudgetId,
+                BudgetStart = requestMessage.BudgetStart
             };
         }
     }

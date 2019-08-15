@@ -1,5 +1,5 @@
-using BudgetTracker.Business.Api.Contracts;
-using BudgetTracker.Business.Api.Contracts.AuthenticationApi;
+using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.Business.Api.Messages.AuthenticationApi;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Common;
 using System;
@@ -33,7 +33,7 @@ namespace BudgetTracker.Business.Api.Converters
             return user;
         }
 
-        public UserRequestApiMessage ToRequestContract(User model)
+        public UserRequestApiMessage ToRequestMessage(User model)
         {
             UserRequestApiMessage contract = new UserRequestApiMessage() {
                 Id = model.Id,
@@ -46,7 +46,7 @@ namespace BudgetTracker.Business.Api.Converters
             return contract;
         }
 
-        public UserResponseApiMessage ToResponseContract(User model)
+        public UserResponseApiMessage ToResponseMessage(User model)
         {
             UserResponseApiMessage contract = new UserResponseApiMessage() {
                 Id = model.Id.Value,

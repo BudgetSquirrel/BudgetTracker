@@ -1,9 +1,9 @@
 using System;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget
+namespace BudgetTracker.Business.Api.Messages.BudgetApi.GetBudget
 {
-    public class GetBudgetRequestContract : IApiContract
+    public class GetBudgetRequestMessage : IApiMessage
     {
         /// <summary>
         /// Unique numeric identifier for this <see cref="Budget" />.

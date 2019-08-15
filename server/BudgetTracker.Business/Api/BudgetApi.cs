@@ -1,13 +1,13 @@
 using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Contracts.Requests;
-using BudgetTracker.Business.Api.Contracts.Responses;
+using BudgetTracker.Business.Api.Messages.Requests;
+using BudgetTracker.Business.Api.Messages.Responses;
 using BudgetTracker.Business.Api.Converters.BudgetConverters;
-using BudgetTracker.Business.Api.Contracts.BudgetApi;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.BudgetTree;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.CreateBudget;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.DeleteBudgets;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.GetBudget;
-using BudgetTracker.Business.Api.Contracts.BudgetApi.UpdateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.Business.Api.Messages.BudgetApi.BudgetTree;
+using BudgetTracker.Business.Api.Messages.BudgetApi.CreateBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi.DeleteBudgets;
+using BudgetTracker.Business.Api.Messages.BudgetApi.GetBudget;
+using BudgetTracker.Business.Api.Messages.BudgetApi.UpdateBudget;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
@@ -43,7 +43,7 @@ namespace BudgetTracker.Business.Api
         public async Task<ApiResponse> CreateBudget(ApiRequest request)
         {
             User user = await Authenticate(request);
-            CreateBudgetArgumentApiContract budgetRequest = request.Arguments<CreateBudgetArgumentApiContract>();
+            CreateBudgetArgumentApiMessage budgetRequest = request.Arguments<CreateBudgetArgumentApiMessage>();
 
             if(!BudgetValidation.IsCreateBudgetRequestValid(budgetRequest.BudgetValues))
                 return new ApiResponse(Constants.Budget.ApiResponseErrorCodes.INVALID_ARGUMENTS);
@@ -63,7 +63,7 @@ namespace BudgetTracker.Business.Api
         public async Task<ApiResponse> UpdateBudget(ApiRequest request)
         {
             await Authenticate(request);
-            UpdateBudgetArgumentApiContract budgetRequest = request.Arguments<UpdateBudgetArgumentApiContract>();
+            UpdateBudgetArgumentApiMessage budgetRequest = request.Arguments<UpdateBudgetArgumentApiMessage>();
             Budget budgetChanges = UpdateBudgetApiConverter.ToModel(budgetRequest.BudgetValues);
 
             if(!BudgetValidation.IsUpdateBudgetRequestValid(budgetRequest.BudgetValues))
@@ -88,7 +88,7 @@ namespace BudgetTracker.Business.Api
 
             ApiResponse response = null;
 
-            DeleteBudgetArgumentsApiContract deleteArgs = request.Arguments<DeleteBudgetArgumentsApiContract>();
+            DeleteBudgetArgumentsApiMessage deleteArgs = request.Arguments<DeleteBudgetArgumentsApiMessage>();
             try
             {
                 await _budgetRepository.DeleteBudgets(deleteArgs.BudgetIds);
@@ -106,7 +106,7 @@ namespace BudgetTracker.Business.Api
         {
             User user = await Authenticate(request);
 
-            GetBudgetArgumentApiContract getBudget = request.Arguments<GetBudgetArgumentApiContract>();
+            GetBudgetArgumentApiMessage getBudget = request.Arguments<GetBudgetArgumentApiMessage>();
 
             ApiResponse response = new ApiResponse();
 
@@ -137,10 +137,10 @@ namespace BudgetTracker.Business.Api
             ApiResponse response;
 
             List<Budget> rootBudgets = await _budgetRepository.GetRootBudgets(user.Id.Value);
-            List<BudgetResponseMessage> rootBudgetContracts = GeneralBudgetApiConverter.ToGeneralResponseMessages(rootBudgets);
-            BudgetListResponseContract responseData = new BudgetListResponseContract()
+            List<BudgetResponseMessage> rootBudgetMessages = GeneralBudgetApiConverter.ToGeneralResponseMessages(rootBudgets);
+            BudgetListResponseMessage responseData = new BudgetListResponseMessage()
             {
-                Budgets = rootBudgetContracts
+                Budgets = rootBudgetMessages
             };
 
             response = new ApiResponse(responseData);
@@ -152,7 +152,7 @@ namespace BudgetTracker.Business.Api
             User user = await Authenticate(request);
             ApiResponse response = null;
 
-            Guid rootBudgetId = request.Arguments<FetchBudgetTreeArgumentsApiContract>().RootBudgetId;
+            Guid rootBudgetId = request.Arguments<FetchBudgetTreeArgumentsApiMessage>().RootBudgetId;
 
             try
             {
@@ -161,8 +161,8 @@ namespace BudgetTracker.Business.Api
                 if (rootBudget != null)
                 {
                     await _budgetRepository.LoadSubBudgets(rootBudget, true);
-                    BudgetResponseMessage responseContract = GeneralBudgetApiConverter.ToGeneralResponseMessage(rootBudget);
-                    response = new ApiResponse(responseContract);
+                    BudgetResponseMessage responseMessage = GeneralBudgetApiConverter.ToGeneralResponseMessage(rootBudget);
+                    response = new ApiResponse(responseMessage);
                 }
                 else
                 {
