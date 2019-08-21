@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BudgetTracker.Web.Migrations
+namespace BudgetTracker.BudgetSquirrel.WebApi.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
     partial class BudgetTrackerContextModelSnapshot : ModelSnapshot

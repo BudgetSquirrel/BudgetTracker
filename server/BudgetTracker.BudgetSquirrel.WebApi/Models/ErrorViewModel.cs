@@ -1,6 +1,6 @@
 using System;
 
-namespace BudgetTracker.Web.Models
+namespace BudgetTracker.BudgetSquirrel.WebApi.Models
 {
     public class ErrorViewModel
     {

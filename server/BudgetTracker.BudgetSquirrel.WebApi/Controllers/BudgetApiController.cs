@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System;
 using BudgetTracker.Business.Api.Messages.BudgetApi;
 
-namespace BudgetTracker.Web.Controllers
+namespace BudgetTracker.BudgetSquirrel.WebApi.Controllers
 {
     [Route("api/budget")]
     [ApiController]

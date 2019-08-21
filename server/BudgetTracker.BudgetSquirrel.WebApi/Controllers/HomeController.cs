@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using BudgetTracker.Web.Models;
+using BudgetTracker.BudgetSquirrel.WebApi.Models;
 
-namespace BudgetTracker.Web.Controllers
+namespace BudgetTracker.BudgetSquirrel.WebApi.Controllers
 {
     public class HomeController : Controller
     {

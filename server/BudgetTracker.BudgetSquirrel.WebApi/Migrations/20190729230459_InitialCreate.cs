@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BudgetTracker.Web.Migrations
+namespace BudgetTracker.BudgetSquirrel.WebApi.Migrations
 {
     public partial class InitialCreate : Migration
     {

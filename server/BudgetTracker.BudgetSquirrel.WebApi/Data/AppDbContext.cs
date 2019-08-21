@@ -2,7 +2,7 @@ using BudgetTracker.Data.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BudgetTracker.Web.Data
+namespace BudgetTracker.BudgetSquirrel.WebApi.Data
 {
     /// <summary>
     /// <p>

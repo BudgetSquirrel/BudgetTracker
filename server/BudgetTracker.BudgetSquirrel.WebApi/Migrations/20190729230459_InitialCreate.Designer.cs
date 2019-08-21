@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BudgetTracker.Web.Migrations
+namespace BudgetTracker.BudgetSquirrel.WebApi.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
     [Migration("20190729230459_InitialCreate")]

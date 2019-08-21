@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Web.Controllers
+namespace BudgetTracker.BudgetSquirrel.WebApi.Controllers
 {
     /// <summary>
     /// <p>

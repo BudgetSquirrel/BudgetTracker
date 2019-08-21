@@ -5,8 +5,8 @@ using BudgetTracker.Data.EntityFramework;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Data.EntityFramework.Models;
 using BudgetTracker.Data.EntityFramework.Repositories;
-using BudgetTracker.Web.Authorization;
-using BudgetTracker.Web.Models;
+using BudgetTracker.BudgetSquirrel.WebApi.Authorization;
+using BudgetTracker.BudgetSquirrel.WebApi.Models;
 using GateKeeper.Repositories;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace BudgetTracker.Web
+namespace BudgetTracker.BudgetSquirrel.WebApi
 {
     public class Startup
     {
