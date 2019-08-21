@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BudgetTracker.Web.Data.Converters
+namespace BudgetTracker.Data.EntityFramework.Converters
 {
     /// <summary>
     /// <p>

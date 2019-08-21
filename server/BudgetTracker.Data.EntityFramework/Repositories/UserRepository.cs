@@ -2,8 +2,8 @@ using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Common;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Web.Data.Converters;
-using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Data.EntityFramework.Converters;
+using BudgetTracker.Data.EntityFramework.Models;
 using GateKeeper;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Web.Data.Repositories
+namespace BudgetTracker.Data.EntityFramework.Repositories
 {
     /// <summary>
     /// Contains logic to perform CRUD operations on users. This acts as a

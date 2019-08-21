@@ -1,9 +1,9 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Web.Data;
-using BudgetTracker.Web.Data.Converters;
-using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Data.EntityFramework;
+using BudgetTracker.Data.EntityFramework.Converters;
+using BudgetTracker.Data.EntityFramework.Models;
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
 
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BudgetTracker.Web.Data.Repositories
+namespace BudgetTracker.Data.EntityFramework.Repositories
 {
     public class BudgetRepository : IBudgetRepository
     {

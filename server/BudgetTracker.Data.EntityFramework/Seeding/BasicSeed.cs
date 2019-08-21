@@ -1,6 +1,6 @@
 using Bogus;
-using BudgetTracker.Web.Data;
-using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Data.EntityFramework;
+using BudgetTracker.Data.EntityFramework.Models;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
 using GateKeeper.Exceptions;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Web.Data.Seeding
+namespace BudgetTracker.Data.EntityFramework.Seeding
 {
     public class BasicSeed
     {

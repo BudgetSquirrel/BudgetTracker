@@ -1,10 +1,10 @@
 using BudgetTracker.Business.Api;
 using BudgetTracker.Common;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Web.Data;
+using BudgetTracker.Data.EntityFramework;
 using BudgetTracker.Business.Ports.Repositories;
-using BudgetTracker.Web.Data.Models;
-using BudgetTracker.Web.Data.Repositories;
+using BudgetTracker.Data.EntityFramework.Models;
+using BudgetTracker.Data.EntityFramework.Repositories;
 using BudgetTracker.Web.Authorization;
 using BudgetTracker.Web.Models;
 using GateKeeper.Repositories;

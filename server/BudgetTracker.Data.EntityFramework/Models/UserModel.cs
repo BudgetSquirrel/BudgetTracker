@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Web.Data.Models
+namespace BudgetTracker.Data.EntityFramework.Models
 {
     public class UserModel
     {

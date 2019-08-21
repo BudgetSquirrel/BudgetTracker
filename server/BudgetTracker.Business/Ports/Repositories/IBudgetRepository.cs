@@ -29,7 +29,7 @@ namespace BudgetTracker.Business.Ports.Repositories
 
         /// Deletes all Budgets that match the given ids. All ids that do not
         /// match a Budget record or couldn't be deleted will be returned in a
-        /// <see cref="BudgetTracker.Web.Data.Exceptions.RepositoryException" />.
+        /// <see cref="BudgetTracker.Data.EntityFramework.Exceptions.RepositoryException" />.
         /// This error will not be thrown until all budgets that can be deleted
         /// have been deleted.
         /// </p>

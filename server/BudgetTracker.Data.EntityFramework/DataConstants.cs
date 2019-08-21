@@ -1,4 +1,4 @@
-namespace BudgetTracker.Web.Data
+namespace BudgetTracker.Data.EntityFramework
 {
     public class DataConstants
     {

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BudgetTracker.Web.Data.Models
+namespace BudgetTracker.Data.EntityFramework.Models
 {
     public class BudgetModel
     {

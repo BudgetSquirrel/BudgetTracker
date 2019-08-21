@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Web.Data.Models
+namespace BudgetTracker.Data.EntityFramework.Models
 {
     /// <summary>
     /// <p>
@@ -46,7 +46,7 @@ namespace BudgetTracker.Web.Data.Models
         /// </p>
         /// <p>
         /// Options for this field are the TYPE_* constants found in the
-        /// class <see cref="BudgetTracker.Web.Data.DataConstants.BudgetDuration" />
+        /// class <see cref="BudgetTracker.Data.EntityFramework.DataConstants.BudgetDuration" />
         /// </p>
         /// </summary>
         public string DurationType { get; set; }

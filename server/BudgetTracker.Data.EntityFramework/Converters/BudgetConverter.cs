@@ -2,12 +2,12 @@ using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Web.Data;
-using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Data.EntityFramework;
+using BudgetTracker.Data.EntityFramework.Models;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Web.Data.Converters
+namespace BudgetTracker.Data.EntityFramework.Converters
 {
     public class BudgetConverter
     {

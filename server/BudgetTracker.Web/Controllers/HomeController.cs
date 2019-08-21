@@ -1,6 +1,6 @@
 ﻿using BudgetTracker.Common;
-using BudgetTracker.Web.Data;
-using BudgetTracker.Web.Data.Models;
+using BudgetTracker.Data.EntityFramework;
+using BudgetTracker.Data.EntityFramework.Models;
 using BudgetTracker.Business.Api;
 using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Api.Messages.AuthenticationApi;
