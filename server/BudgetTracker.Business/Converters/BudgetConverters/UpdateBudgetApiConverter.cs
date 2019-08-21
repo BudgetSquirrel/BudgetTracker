@@ -4,7 +4,7 @@ using BudgetTracker.Business.Auth;
 using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using BudgetTracker.Common.Exceptions;
 
-namespace BudgetTracker.BudgetSquirrel.Application.Converters.BudgetConverters
+namespace BudgetTracker.Business.Converters.BudgetConverters
 {
     public class UpdateBudgetApiConverter
     {

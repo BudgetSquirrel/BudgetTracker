@@ -1,7 +1,7 @@
 using BudgetTracker.BudgetSquirrel.Application;
 using BudgetTracker.BudgetSquirrel.Application.Messages;
 using BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi;
-using BudgetTracker.BudgetSquirrel.Application.Converters;
+using BudgetTracker.Business.Converters;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business;
 using BudgetTracker.Common;

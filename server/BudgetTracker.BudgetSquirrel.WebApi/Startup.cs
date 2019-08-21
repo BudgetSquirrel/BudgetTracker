@@ -6,6 +6,7 @@ using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Data.EntityFramework.Models;
 using BudgetTracker.Data.EntityFramework.Repositories;
 using BudgetTracker.BudgetSquirrel.WebApi.Authorization;
+using BudgetTracker.BudgetSquirrel.WebApi.Data;
 using BudgetTracker.BudgetSquirrel.WebApi.Models;
 using GateKeeper.Repositories;
 using System;
@@ -50,7 +51,7 @@ namespace BudgetTracker.BudgetSquirrel.WebApi
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<BudgetTrackerContext>(options =>
+            services.AddDbContext<BudgetTrackerContext, AppDbContext>(options =>
             {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
             });

@@ -7,7 +7,7 @@ using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.BudgetSquirrel.Application.Converters.BudgetConverters
+namespace BudgetTracker.Business.Converters.BudgetConverters
 {
     public class CreateBudgetApiConverter
     {

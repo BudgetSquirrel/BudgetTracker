@@ -1,10 +1,9 @@
 using BudgetTracker.BudgetSquirrel.Application.Messages;
-using BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Common;
 using System;
 
-namespace BudgetTracker.BudgetSquirrel.Application.Converters
+namespace BudgetTracker.Business.Converters
 {
     public class UserApiConverter
     {
