@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BudgetTracker.Common\BudgetTracker.Common.csproj" />
+    <ProjectReference Include="..\GateKeeper\GateKeeper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

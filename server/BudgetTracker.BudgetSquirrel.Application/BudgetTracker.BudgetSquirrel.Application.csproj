@@ -5,9 +5,14 @@
   </PropertyGroup>
 
 
+  <ItemGroup>      
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+
   <ItemGroup>
     <ProjectReference Include="..\BudgetTracker.Business\BudgetTracker.Business.csproj" />
     <ProjectReference Include="..\BudgetTracker.Common\BudgetTracker.Common.csproj" />
-</ItemGroup>
+  </ItemGroup>
 
 </Project>

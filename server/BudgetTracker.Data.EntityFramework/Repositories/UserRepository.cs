@@ -1,6 +1,5 @@
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
-using BudgetTracker.Common;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Data.EntityFramework.Converters;
 using BudgetTracker.Data.EntityFramework.Models;
