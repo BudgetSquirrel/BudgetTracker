@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Messages
+namespace BudgetTracker.BudgetSquirrel.Application.Messages
 {
     public class ApiResponse
     {
@@ -14,7 +14,7 @@ namespace BudgetTracker.Business.Api.Messages
         public ApiResponse()
         {}
 
-        public ApiResponse(IApiMessage data)
+        public ApiResponse(object data)
         {
             Response = data;
         }
@@ -25,7 +25,7 @@ namespace BudgetTracker.Business.Api.Messages
         }
 
         [JsonProperty("response", NullValueHandling=NullValueHandling.Ignore)]
-        public IApiMessage Response { get; set; }
+        public object Response { get; set; }
 
         [JsonProperty("error", NullValueHandling=NullValueHandling.Ignore)]
         public string Error { get; set; }

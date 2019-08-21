@@ -2,12 +2,12 @@ using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api.Converters.BudgetConverters
+namespace BudgetTracker.BudgetSquirrel.Application.Converters.BudgetConverters
 {
     public class GeneralBudgetApiConverter
     {

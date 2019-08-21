@@ -1,9 +1,9 @@
 ﻿using BudgetTracker.Common;
 using BudgetTracker.Data.EntityFramework;
 using BudgetTracker.Data.EntityFramework.Models;
-using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Messages;
-using BudgetTracker.Business.Api.Messages.AuthenticationApi;
+using BudgetTracker.BudgetSquirrel.Application;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

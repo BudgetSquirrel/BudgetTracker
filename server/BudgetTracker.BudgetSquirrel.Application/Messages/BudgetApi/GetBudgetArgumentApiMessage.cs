@@ -1,7 +1,7 @@
-using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Messages.BudgetApi
+namespace BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi
 {
     public class GetBudgetArgumentApiMessage : IApiMessage
     {

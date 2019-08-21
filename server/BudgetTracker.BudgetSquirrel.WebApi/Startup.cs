@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Api;
+using BudgetTracker.BudgetSquirrel.Application;
 using BudgetTracker.Common;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Data.EntityFramework;

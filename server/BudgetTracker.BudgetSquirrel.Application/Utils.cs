@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api
+namespace BudgetTracker.BudgetSquirrel.Application
 {
     public class Utils
     {

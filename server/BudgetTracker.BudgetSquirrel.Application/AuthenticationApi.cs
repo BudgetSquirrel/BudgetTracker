@@ -1,7 +1,7 @@
-using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Messages;
-using BudgetTracker.Business.Api.Messages.AuthenticationApi;
-using BudgetTracker.Business.Api.Converters;
+using BudgetTracker.BudgetSquirrel.Application;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi;
+using BudgetTracker.BudgetSquirrel.Application.Converters;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business;
 using BudgetTracker.Common;
@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Business.Api
+namespace BudgetTracker.BudgetSquirrel.Application
 {
     /// <summary>
     /// <p>
@@ -27,7 +27,6 @@ namespace BudgetTracker.Business.Api
     /// </summary>
     public class AuthenticationApi : ApiBase<User>, IAuthenticationApi
     {
-        UserApiConverter _userApiConverter;
         IUserRepository _userRepository;
 
         public AuthenticationApi(IGateKeeperUserRepository<User> gateKeeperUserRepository, IUserRepository userRepository,
@@ -36,7 +35,6 @@ namespace BudgetTracker.Business.Api
                     ConfigurationReader.FromAppConfiguration(appConfig))
         {
             _userRepository = userRepository;
-            _userApiConverter = new UserApiConverter();
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace BudgetTracker.Business.Api
             UserRegistrationArgumentApiMessage arguments = request.Arguments<UserRegistrationArgumentApiMessage>();
             UserRequestApiMessage userValues = arguments.UserValues;
             IUserRepository userRepo = _userRepository as IUserRepository;
-            User userModel = _userApiConverter.ToModel(userValues);
+            User userModel = UserApiConverter.ToModel(userValues);
             ApiResponse response;
 
             if (!User.IsAccountRegistrationRequestValid(userValues))
@@ -65,7 +63,7 @@ namespace BudgetTracker.Business.Api
             if (await userRepo.Register(userModel))
             {
                 userModel = await _userRepository.GetByUsername(userModel.Username);
-                UserResponseApiMessage responseData = _userApiConverter.ToResponseMessage(userModel);
+                UserResponseApiMessage responseData = UserApiConverter.ToResponseMessage(userModel);
                 response = new ApiResponse(responseData);
             }
             else
@@ -86,7 +84,7 @@ namespace BudgetTracker.Business.Api
             ApiResponse response;
             User authenticatedUser = await Authenticate(request);
 
-            UserResponseApiMessage responseData = _userApiConverter.ToResponseMessage(authenticatedUser);
+            UserResponseApiMessage responseData = UserApiConverter.ToResponseMessage(authenticatedUser);
             response = new ApiResponse(responseData);
             return response;
         }

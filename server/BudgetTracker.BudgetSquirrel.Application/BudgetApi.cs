@@ -1,7 +1,7 @@
-using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Messages;
-using BudgetTracker.Business.Api.Converters.BudgetConverters;
-using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.BudgetSquirrel.Application;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Converters.BudgetConverters;
+using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Business.Api
+namespace BudgetTracker.BudgetSquirrel.Application
 {
     public class BudgetApi :  ApiBase<User>, IBudgetApi
     {

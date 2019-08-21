@@ -1,8 +1,8 @@
-using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
 
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Business.Api
+namespace BudgetTracker.BudgetSquirrel.Application
 {
     public interface IBudgetApi
     {

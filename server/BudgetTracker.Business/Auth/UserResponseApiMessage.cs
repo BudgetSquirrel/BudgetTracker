@@ -1,10 +1,9 @@
-using BudgetTracker.Business.Api.Messages;
 using Newtonsoft.Json;
 using System;
 
 namespace BudgetTracker.Business.Auth
 {
-    public class UserResponseApiMessage : IApiMessage
+    public class UserResponseApiMessage
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }

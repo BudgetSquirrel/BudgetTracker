@@ -1,4 +1,3 @@
-using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,7 +6,7 @@ using System.Linq;
 
 namespace BudgetTracker.Business.Budgeting
 {
-    public class CreateBudgetRequestMessage : IApiMessage {
+    public class CreateBudgetRequestMessage {
 
         [JsonProperty("name")]
         public string Name { get; set; }

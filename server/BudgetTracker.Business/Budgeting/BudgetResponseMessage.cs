@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api.Messages.BudgetApi
+namespace BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi
 {
-    public class BudgetResponseMessage : IApiMessage {
+    public class BudgetResponseMessage {
 
         [JsonProperty("id")]
         public Guid Id { get; set; }

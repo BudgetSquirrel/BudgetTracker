@@ -1,7 +1,7 @@
 using BudgetTracker.Business.Auth;
 using Newtonsoft.Json;
 
-namespace BudgetTracker.Business.Api.Messages.AuthenticationApi
+namespace BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi
 {
     public class UserRegistrationArgumentApiMessage : IApiMessage
     {

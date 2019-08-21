@@ -1,4 +1,3 @@
-using BudgetTracker.Business.Api.Messages;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 using System;
 using Newtonsoft.Json;
@@ -6,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace BudgetTracker.Business.Budgeting
 {
-    public class UpdateBudgetRequestMessage : IApiMessage {
+    public class UpdateBudgetRequestMessage {
 
         [JsonProperty("id")]
         public Guid Id { get; set; }

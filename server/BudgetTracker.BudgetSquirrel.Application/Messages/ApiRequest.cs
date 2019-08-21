@@ -1,11 +1,11 @@
-using BudgetTracker.Business.Api;
-using BudgetTracker.Business.Api.Messages.AuthenticationApi;
+using BudgetTracker.BudgetSquirrel.Application;
+using BudgetTracker.BudgetSquirrel.Application.Messages.AuthenticationApi;
 using BudgetTracker.Business.Auth;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api.Messages
+namespace BudgetTracker.BudgetSquirrel.Application.Messages
 {
     /// <summary>
     /// <p>
@@ -20,7 +20,7 @@ namespace BudgetTracker.Business.Api.Messages
         [JsonProperty("arguments")]
         public Dictionary<string, object> ArgumentsDict { get; set; }
 
-        public C Arguments<C>() where C : IApiMessage {
+        public C Arguments<C>() {
             string argumentsRaw = JsonConvert.SerializeObject(ArgumentsDict);
             return JsonConvert.DeserializeObject<C>(argumentsRaw);
         }

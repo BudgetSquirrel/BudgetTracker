@@ -1,12 +1,12 @@
-using BudgetTracker.Business.Api.Messages;
-using BudgetTracker.Business.Api;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
+using BudgetTracker.BudgetSquirrel.Application;
 using GateKeeper.Exceptions;
 
 using Microsoft.AspNetCore.Mvc;
 
 using System.Threading.Tasks;
 using System;
-using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 
 namespace BudgetTracker.BudgetSquirrel.WebApi.Controllers
 {

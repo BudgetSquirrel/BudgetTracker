@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Api.Messages;
+using BudgetTracker.BudgetSquirrel.Application.Messages;
 using GateKeeper;
 using GateKeeper.Configuration;
 using GateKeeper.Cryptogrophy;
@@ -7,7 +7,7 @@ using GateKeeper.Repositories;
 using System;
 using System.Threading.Tasks;
 
-namespace BudgetTracker.Business.Api
+namespace BudgetTracker.BudgetSquirrel.Application
 {
     public class ApiBase<U> where U : IUser
     {

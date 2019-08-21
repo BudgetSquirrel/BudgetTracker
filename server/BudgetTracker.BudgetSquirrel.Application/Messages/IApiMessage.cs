@@ -1,4 +1,4 @@
-namespace BudgetTracker.Business.Api.Messages
+namespace BudgetTracker.BudgetSquirrel.Application.Messages
 {
     /// <summary>
     /// <p>

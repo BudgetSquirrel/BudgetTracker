@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Api.Messages.BudgetApi;
+using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using BudgetTracker.Business.Budgeting.BudgetPeriods;
 
 namespace BudgetTracker.Business.Budgeting

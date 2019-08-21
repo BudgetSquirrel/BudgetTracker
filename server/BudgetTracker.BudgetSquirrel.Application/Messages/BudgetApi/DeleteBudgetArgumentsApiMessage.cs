@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.Business.Api.Messages.BudgetApi
+namespace BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi
 {
     public class DeleteBudgetArgumentsApiMessage : IApiMessage
     {
