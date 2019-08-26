@@ -29,6 +29,12 @@ namespace BudgetTracker.Business.Budgeting
                 {
                     return null;
                 }
+                else if (DurationTemp.ContainsKey("start-day-of-month") &&
+                    DurationTemp.ContainsKey("end-day-of-month") &&
+                    DurationTemp.ContainsKey("number-days"))
+                {
+                    throw new JsonSerializationException("Budget duration must be either a bookended duration or a day span duration. It cannot be both.");
+                }
                 string durationSerialized = JsonConvert.SerializeObject(DurationTemp);
                 if (DurationTemp.ContainsKey("start-day-of-month") &&
                     DurationTemp.ContainsKey("end-day-of-month"))
