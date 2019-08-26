@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\BudgetTracker.Data\BudgetTracker.Data.csproj" />
     <ProjectReference Include="..\BudgetTracker.Common\BudgetTracker.Common.csproj" />
+    <ProjectReference Include="..\GateKeeper\GateKeeper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

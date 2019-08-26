@@ -4,13 +4,13 @@ Run project:
 Add reference from projectA to projectB
     dotnet add <projectA.csproj (default current)> reference <projectB.csproj>
 
-    ex. dotnet add BudgetTracker.Web/BudgetTracker.Web.csproj reference BudgetTracker.Data/BudgetTracker.Data.csproj
-    ex. dotnet add reference ../BudgetTracker.Data/BudgetTracker.Data.csproj (from BudgetTracker.Web project folder)
+    ex. dotnet add BudgetTracker.BudgetSquirrel.WebApi/BudgetTracker.BudgetSquirrel.WebApi.csproj reference BudgetTracker.Data.EntityFramework/BudgetTracker.Data.EntityFramework.csproj
+    ex. dotnet add reference ../BudgetTracker.Data.EntityFramework/BudgetTracker.Data.EntityFramework.csproj (from BudgetTracker.BudgetSquirrel.WebApi project folder)
 
 New Project:
     dotnet new <project_type> -n <name> -o <directory>
 
-    ex. dotnet new mvc -n BudgetTracker.Web -o BudgetTracker.Web
+    ex. dotnet new mvc -n BudgetTracker.BudgetSquirrel.WebApi -o BudgetTracker.BudgetSquirrel.WebApi
 
     See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-new?tabs=netcore21
         for project type templates
@@ -23,4 +23,4 @@ New Solution:
 Add projectA to Solution slnA:
     dotnet sln <slnA> add <projectA.csproj>
 
-    ex. dotnet sln BudgetTracker.sln add BudgetTracker.Data/BudgetTracker.Data.csproj
+    ex. dotnet sln BudgetTracker.sln add BudgetTracker.Data.EntityFramework/BudgetTracker.Data.EntityFramework.csproj

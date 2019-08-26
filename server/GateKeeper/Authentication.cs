@@ -16,7 +16,7 @@ namespace GateKeeper
         /// repository.
         /// </summary>
         public static async Task<U> Authenticate<U>(string username, string passwordGuess,
-            IUserRepository<U> userRepository, ICryptor cryptor,
+            IGateKeeperUserRepository<U> userRepository, ICryptor cryptor,
             GateKeeperConfig gateKeeperConfig) where U : IUser
         {
             U user = await userRepository.GetByUsername(username);
