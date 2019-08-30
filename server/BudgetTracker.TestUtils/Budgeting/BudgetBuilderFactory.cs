@@ -7,19 +7,21 @@ namespace BudgetTracker.TestUtils.Budgeting
     {
         public BudgetBuilderFactory()
         {
-            if (typeof(E) != typeof(CreateBudgetRequestMessage) ||
+            if (typeof(E) != typeof(CreateBudgetRequestMessage) &&
                 typeof(E) != typeof(Budget))
             {
-                throw Exception("BudgetBuilderFactory cannot return a builder of type " + typeof(E).ToString());
+                throw new NotImplementedException("BudgetBuilderFactory cannot return a builder of type " + typeof(E).ToString());
             }
         }
 
         public IBudgetBuilder<E> GetBuilder()
         {
             if (typeof(E) == typeof(CreateBudgetRequestMessage))
-                return new CreateBudgetRequestMessageBuilder();
+                return (IBudgetBuilder<E>) (new CreateBudgetRequestMessageBuilder());
             else if (typeof(E) == typeof(Budget))
-                return new BudgetBuilder();
+                return (IBudgetBuilder<E>) (new BudgetBuilder());
+            else
+                throw new NotImplementedException("BudgetBuilderFactory cannot return a builder of type " + typeof(E).ToString());
         }
     }
 }

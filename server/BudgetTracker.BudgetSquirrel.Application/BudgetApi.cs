@@ -4,7 +4,7 @@ using BudgetTracker.Business.Converters.BudgetConverters;
 using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Ports.Exceptions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Common;

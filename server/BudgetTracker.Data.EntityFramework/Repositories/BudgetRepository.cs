@@ -1,5 +1,5 @@
 using BudgetTracker.Business.Budgeting;
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Data.EntityFramework;
 using BudgetTracker.Data.EntityFramework.Converters;

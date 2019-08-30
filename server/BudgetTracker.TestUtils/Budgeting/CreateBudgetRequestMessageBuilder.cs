@@ -1,6 +1,8 @@
 using Bogus;
 using BudgetTracker.Business.Budgeting;
+using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 ﻿using System;
 
 namespace BudgetTracker.TestUtils.Budgeting
@@ -37,66 +39,86 @@ namespace BudgetTracker.TestUtils.Budgeting
 
             isDaySpanDuration = isDaySpanDuration ?? _faker.Random.Bool();
 
-            if (isDaySpanDuration)
+            if (isDaySpanDuration == true)
             {
                 _durationBuild["NumberDays"] = _faker.Random.Number(29,31);
             }
             else
             {
-                _durationBuild["StartDayOfMonth"] = _faker.Random.Number(1,10);
+                int startDayOfMonth = _faker.Random.Number(1,10);
                 int daysSpanned = _faker.Random.Number(29,31);
-                _durationBuild["EndDayOfMonth"] = _durationBuild["StartDayOfMonth"] + daysSpanned;
+                _durationBuild["StartDayOfMonth"] = startDayOfMonth;
+                _durationBuild["EndDayOfMonth"] = startDayOfMonth + daysSpanned;
                 _durationBuild["RolloverStartDateOnSmallMonths"] = _faker.Random.Bool();
                 _durationBuild["RolloverEndDateOnSmallMonths"] = _faker.Random.Bool();
             }
         }
 
-        public IBudgetBuilder SetName(string name) => _budgetValueBuild.Name = name;
-        public IBudgetBuilder SetPercentAmount(double? percentAmount) => _budgetValueBuild.PercentAmount = percentAmount;
-        public IBudgetBuilder SetFixedAmount(decimal? setAmount) => _budgetValueBuild.SetAmount = setAmount;
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetName(string name){
+            _budgetValueBuild.Name = name;
+            return this;
+        }
 
-        public IBudgetBuilder SetDurationStartDayOfMonth(int? value)
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetPercentAmount(double? percentAmount)
+        {
+            _budgetValueBuild.PercentAmount = percentAmount;
+            return this;
+        }
+
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetFixedAmount(decimal? setAmount)
+        {
+            _budgetValueBuild.SetAmount = setAmount;
+            return this;
+        }
+
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetDurationStartDayOfMonth(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
             _durationBuild["StartDayOfMonth"] = value;
+            return this;
         }
 
-        public IBudgetBuilder SetDurationEndDayOfMonth(int? value)
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetDurationEndDayOfMonth(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
             _durationBuild["EndDayOfMonth"] = value;
+            return this;
         }
 
-        public IBudgetBuilder SetDurationRolloverStartDateOnSmallMonths(bool? value)
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetDurationRolloverStartDateOnSmallMonths(bool? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
             _durationBuild["RolloverStartDateOnSmallMonths"] = value;
+            return this;
         }
 
-        public IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool? value)
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetDurationRolloverEndDateOnSmallMonths(bool? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
             _durationBuild["RolloverEndDateOnSmallMonths"] = value;
+            return this;
         }
 
-        public IBudgetBuilder SetDurationNumberDays(int? value)
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetDurationNumberDays(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(true);
             _durationBuild["NumberDays"] = value;
+            return this;
         }
 
-        public IBudgetBuilder SetParentBudget(Guid? parentId, bool clearDurationValues = true) {
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetParentBudget(Guid? parentId, bool clearDurationValues = true) {
             _budgetValueBuild.ParentBudgetId = parentId;
             if (clearDurationValues)
             {
                 _budgetValueBuild.DurationTemp = null;
                 _durationBuild = null;
             }
+            return this;
         }
 
         public CreateBudgetRequestMessage Build()

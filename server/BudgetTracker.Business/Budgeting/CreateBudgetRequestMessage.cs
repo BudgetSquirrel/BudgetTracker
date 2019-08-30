@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

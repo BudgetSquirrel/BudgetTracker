@@ -1,6 +1,8 @@
 using Bogus;
 using BudgetTracker.Business.Budgeting;
+using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 ﻿using System;
 
 namespace BudgetTracker.TestUtils.Budgeting
@@ -20,7 +22,7 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         private void InitRandomized()
         {
-            _budgetValueBuild.Id = new Guid();
+            _budgetValueBuild.Id = Guid.NewGuid();
             _budgetValueBuild.Name = _faker.Lorem.Word();
             _budgetValueBuild.BudgetStart = DateTime.Now;
 
@@ -36,7 +38,7 @@ namespace BudgetTracker.TestUtils.Budgeting
         {
             isDaySpanDuration = isDaySpanDuration ?? _faker.Random.Bool();
 
-            if (isDaySpanDuration)
+            if (isDaySpanDuration == true)
             {
                 _budgetValueBuild.Duration = new MonthlyDaySpanDuration()
                 {
@@ -45,65 +47,85 @@ namespace BudgetTracker.TestUtils.Budgeting
             }
             else
             {
+                int startDayOfMonth = _faker.Random.Number(1,10);
                 int daysSpanned = _faker.Random.Number(29,31);
-                _budgetValueBuild.Duration = new MonthlyBookendedDuration()
+                _budgetValueBuild.Duration = new MonthlyBookEndedDuration()
                 {
-                    StartDayOfMonth = _faker.Random.Number(1,10),
-                    EndDayOfMonth = _durationBuild["StartDayOfMonth"] + daysSpanned,
+                    StartDayOfMonth = startDayOfMonth,
+                    EndDayOfMonth = startDayOfMonth + daysSpanned,
                     RolloverStartDateOnSmallMonths = _faker.Random.Bool(),
                     RolloverEndDateOnSmallMonths = _faker.Random.Bool()
                 };
             }
-            _durationBuild.Id = new Guid();
+            _budgetValueBuild.Duration.Id = Guid.NewGuid();
             _durationBuild = _budgetValueBuild.Duration;
         }
 
-        public IBudgetBuilder<Budget> SetName(string name) => _budgetValueBuild.Name = name;
-        public IBudgetBuilder<Budget> SetPercentAmount(double? percentAmount) => _budgetValueBuild.PercentAmount = percentAmount;
-        public IBudgetBuilder<Budget> SetFixedAmount(decimal? setAmount) => _budgetValueBuild.SetAmount = setAmount;
+        public IBudgetBuilder<Budget> SetName(string name)
+        {
+            _budgetValueBuild.Name = name;
+            return this;
+        }
+
+        public IBudgetBuilder<Budget> SetPercentAmount(double? percentAmount)
+        {
+            _budgetValueBuild.PercentAmount = percentAmount;
+            return this;
+        }
+
+        public IBudgetBuilder<Budget> SetFixedAmount(decimal? setAmount) {
+            _budgetValueBuild.SetAmount = setAmount;
+            return this;
+        }
 
         public IBudgetBuilder<Budget> SetDurationStartDayOfMonth(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
-            _durationBuild.StartDayOfMonth = value;
+            ((MonthlyBookEndedDuration) _durationBuild).StartDayOfMonth = value.Value;
+            return this;
         }
 
         public IBudgetBuilder<Budget> SetDurationEndDayOfMonth(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
-            _durationBuild.EndDayOfMonth = value;
+            ((MonthlyBookEndedDuration) _durationBuild).EndDayOfMonth = value.Value;
+            return this;
         }
 
         public IBudgetBuilder<Budget> SetDurationRolloverStartDateOnSmallMonths(bool? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
-            _durationBuild.RolloverStartDateOnSmallMonths = value;
+            ((MonthlyBookEndedDuration) _durationBuild).RolloverStartDateOnSmallMonths = value.Value;
+            return this;
         }
 
         public IBudgetBuilder<Budget> SetDurationRolloverEndDateOnSmallMonths(bool? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(false);
-            _durationBuild.RolloverEndDateOnSmallMonths = value;
+            ((MonthlyBookEndedDuration) _durationBuild).RolloverEndDateOnSmallMonths = value.Value;
+            return this;
         }
 
         public IBudgetBuilder<Budget> SetDurationNumberDays(int? value)
         {
             if (_durationBuild == null)
                 InitRandomDuration(true);
-            _durationBuild.NumberDays = value;
+            ((MonthlyDaySpanDuration) _durationBuild).NumberDays = value.Value;
+            return this;
         }
 
         public IBudgetBuilder<Budget> SetParentBudget(Guid? parentId, bool clearDurationValues = true) {
             _budgetValueBuild.ParentBudgetId = parentId;
             if (clearDurationValues)
             {
-                _budgetValueBuild.DurationTemp = null;
+                _budgetValueBuild.Duration = null;
                 _durationBuild = null;
             }
+            return this;
         }
 
         public Budget Build()
