@@ -90,6 +90,11 @@ namespace BudgetTracker.Business.Budgeting
 
         public decimal CalculateBudgetSetAmount()
         {
+            if (!IsRootBudget && ParentBudget == null)
+            {
+                throw new Exception("Parent budget must be load for non-root budget.");
+            }
+
             decimal newBudgetAmount = default(decimal);
             if (IsPercentBasedBudget)
             {
@@ -97,6 +102,10 @@ namespace BudgetTracker.Business.Budgeting
             }
             else
             {
+                if (!IsRootBudget && SetAmount.Value > ParentBudget.SetAmount.Value)
+                {
+                    throw new Exception("Cannot set this budget amount greater than it's parents.");
+                }
                 newBudgetAmount = SetAmount.Value;
             }
             return newBudgetAmount;

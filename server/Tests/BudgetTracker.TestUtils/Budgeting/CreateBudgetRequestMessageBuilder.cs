@@ -121,6 +121,10 @@ namespace BudgetTracker.TestUtils.Budgeting
             return this;
         }
 
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetParentBudget(CreateBudgetRequestMessage parentBudget, bool clearDurationValues = true) {
+            throw new NotImplementedException("Use the SetParentBudget(Guid, bool) overload for CreateBudgetRequestMessageBuilder.SetParentBudget()");
+        }
+
         public CreateBudgetRequestMessage Build()
         {
             return _budgetValueBuild;

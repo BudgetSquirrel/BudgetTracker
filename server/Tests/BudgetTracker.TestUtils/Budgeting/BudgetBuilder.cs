@@ -128,6 +128,12 @@ namespace BudgetTracker.TestUtils.Budgeting
             return this;
         }
 
+        public IBudgetBuilder<Budget> SetParentBudget(Budget parent, bool clearDurationValues = true) {
+            SetParentBudget(parent.Id, clearDurationValues);
+            _budgetValueBuild.ParentBudget = parent;
+            return this;
+        }
+
         public Budget Build()
         {
             return _budgetValueBuild;
