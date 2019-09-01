@@ -10,7 +10,7 @@ namespace BudgetTracker.Business.Tests.UnitTests
 
         public BaseUnitTest()
         {
-            _startup = new TestStartup();
+            _startup = TestStartup.Instance;
             _services = _startup.Services;
         }
 

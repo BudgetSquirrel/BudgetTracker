@@ -1,4 +1,5 @@
 using BudgetTracker.Business.Budgeting;
+using BudgetTracker.TestUtils.Auth;
 using BudgetTracker.TestUtils.Budgeting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,10 +8,17 @@ namespace BudgetTracker.Business.Tests
 {
     public class TestStartup
     {
-        private TestStartup _singleton;
+        private static TestStartup _singleton;
         private IServiceProvider _services;
 
-        public TestStartup Instance
+        /// <summary>
+        /// Instantiate the singleton instance of TestStartup.
+        /// This is private to enforce the singleton pattern.
+        /// </summary>
+        private TestStartup()
+        {}
+
+        public static TestStartup Instance
         {
             get {
                 if (_singleton == null)
@@ -36,6 +44,7 @@ namespace BudgetTracker.Business.Tests
         {
             services.AddScoped<BudgetBuilderFactory<Budget>>();
             services.AddScoped<BudgetBuilderFactory<CreateBudgetRequestMessage>>();
+            services.AddScoped<UserFactory>();
         }
     }
 }

@@ -1,4 +1,5 @@
 using Bogus;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
@@ -131,6 +132,12 @@ namespace BudgetTracker.TestUtils.Budgeting
         public IBudgetBuilder<Budget> SetParentBudget(Budget parent, bool clearDurationValues = true) {
             SetParentBudget(parent.Id, clearDurationValues);
             _budgetValueBuild.ParentBudget = parent;
+            return this;
+        }
+
+        public IBudgetBuilder<Budget> SetOwner(User owner)
+        {
+            _budgetValueBuild.Owner = owner;
             return this;
         }
 

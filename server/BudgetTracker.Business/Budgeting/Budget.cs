@@ -102,10 +102,6 @@ namespace BudgetTracker.Business.Budgeting
             }
             else
             {
-                if (!IsRootBudget && SetAmount.Value > ParentBudget.SetAmount.Value)
-                {
-                    throw new Exception("Cannot set this budget amount greater than it's parents.");
-                }
                 newBudgetAmount = SetAmount.Value;
             }
             return newBudgetAmount;

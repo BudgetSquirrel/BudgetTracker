@@ -71,6 +71,7 @@ namespace BudgetTracker.Data.EntityFramework.Repositories
             else
             {
                 budget.Duration = await LoadDurationForBudget(budget);
+                budget.Owner = await _dbContext.Users.SingleAsync(u => u.Id == budget.OwnerId);
                 return BudgetConverter.ToBusinessModel(budget);
             }
         }

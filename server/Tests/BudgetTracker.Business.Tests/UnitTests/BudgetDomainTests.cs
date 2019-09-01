@@ -50,23 +50,28 @@ namespace BudgetTracker.Business.Tests.UnitTests
         }
 
         [Theory]
-        [InlineData(100, 99)]
-        [InlineData(40, 37)]
-        [InlineData(40, 0)]
-        public void Test_CalculateSetAmountThrowsException_When_IsSubBudget_And_SetAmountMoreThanParent(decimal setAmount, decimal parentSetAmount)
+        [InlineData(.35, null, true)]
+        [InlineData(.0, null, true)]
+        [InlineData(1, null, true)]
+        [InlineData(null, 0, false)]
+        [InlineData(null, 58, false)]
+        [InlineData(null, 100, false)]
+        public void Test_IsPercentBasedIsRight(double? percentAmount, double? setAmountTmp, bool expectedIsPercentAmount)
         {
+            decimal? setAmount = (decimal?) setAmountTmp;
+
             Budget parent = _budgetBuilderFactory.GetBuilder()
-                                .SetFixedAmount(parentSetAmount)
+                                .SetFixedAmount(100)
                                 .SetPercentAmount(null)
                                 .Build();
 
-            Budget child = _budgetBuilderFactory.GetBuilder()
+            Budget budget = _budgetBuilderFactory.GetBuilder()
                                     .SetParentBudget(parent)
+                                    .SetPercentAmount(percentAmount)
                                     .SetFixedAmount(setAmount)
-                                    .SetPercentAmount(null)
                                     .Build();
 
-            Assert.Throws<Exception>(() => child.CalculateBudgetSetAmount());
+            Assert.Equal(expectedIsPercentAmount, budget.IsPercentBasedBudget);
         }
     }
 }

@@ -1,4 +1,5 @@
 using Bogus;
+using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
@@ -123,6 +124,11 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<CreateBudgetRequestMessage> SetParentBudget(CreateBudgetRequestMessage parentBudget, bool clearDurationValues = true) {
             throw new NotImplementedException("Use the SetParentBudget(Guid, bool) overload for CreateBudgetRequestMessageBuilder.SetParentBudget()");
+        }
+
+        public IBudgetBuilder<CreateBudgetRequestMessage> SetOwner(User owner)
+        {
+            throw new NotImplementedException("CreateBudgetRequestMessage does not store the owner of the budget. Use a UserRequestApiMessage instead.");
         }
 
         public CreateBudgetRequestMessage Build()
