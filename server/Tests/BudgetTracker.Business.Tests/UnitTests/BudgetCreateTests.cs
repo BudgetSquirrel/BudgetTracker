@@ -1,3 +1,4 @@
+using Bogus;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Ports.Repositories;
@@ -15,12 +16,14 @@ namespace BudgetTracker.Business.Tests.UnitTests
     {
         private BudgetBuilderFactory<Budget> _budgetBuilderFactory;
         private UserFactory _userFactory;
+        private Faker _faker;
 
         public BudgetCreateTests()
             : base()
         {
             _budgetBuilderFactory = GetService<BudgetBuilderFactory<Budget>>();
             _userFactory = GetService<UserFactory>();
+            _faker = new Faker();
         }
 
         [Fact]
@@ -74,6 +77,31 @@ namespace BudgetTracker.Business.Tests.UnitTests
 
             Budget created = await BudgetCreation.CreateBudgetForUser(child, owner, mockBudgetRepository.Object);
             Assert.Equal(expectedSetAmount, created.SetAmount);
+        }
+
+        [Fact]
+        public async Task Test_ParentBudgetSet_When_CreatesAsSubBudget()
+        {
+            Mock<IBudgetRepository> mockBudgetRepository = new Mock<IBudgetRepository>();
+            User owner = _userFactory.NewUser();
+
+            Budget parent = _budgetBuilderFactory.GetBuilder()
+                                .SetFixedAmount(_faker.Finance.Amount())
+                                .SetOwner(owner)
+                                .Build();
+            Budget child = _budgetBuilderFactory.GetBuilder()
+                                .SetParentBudget(parent)
+                                .SetPercentAmount(0.2)
+                                .SetOwner(owner)
+                                .Build();
+
+            mockBudgetRepository.Setup(repo => repo.CreateBudget(It.IsAny<Budget>()))
+                                .Returns(Task.FromResult(child));
+            mockBudgetRepository.Setup(repo => repo.GetBudget(parent.Id))
+                                .Returns(Task.FromResult(parent));
+
+            Budget created = await BudgetCreation.CreateBudgetForUser(child, owner, mockBudgetRepository.Object);
+            Assert.Equal(parent.Id, created.ParentBudget.Id);
         }
     }
 }
