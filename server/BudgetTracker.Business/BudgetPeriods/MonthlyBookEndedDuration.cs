@@ -1,4 +1,4 @@
-namespace BudgetTracker.Business.Budgeting.BudgetPeriods
+namespace BudgetTracker.Business.BudgetPeriods
 {
     /// <summary>
     /// <p>

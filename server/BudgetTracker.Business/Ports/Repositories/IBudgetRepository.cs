@@ -1,5 +1,5 @@
 using BudgetTracker.Business.Budgeting;
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

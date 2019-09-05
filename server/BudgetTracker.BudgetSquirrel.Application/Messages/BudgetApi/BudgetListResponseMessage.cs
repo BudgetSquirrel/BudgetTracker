@@ -1,5 +1,5 @@
 using BudgetTracker.BudgetSquirrel.Application.Messages;
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

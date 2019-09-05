@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Auth;
 ﻿using System;
@@ -90,6 +90,11 @@ namespace BudgetTracker.Business.Budgeting
 
         public decimal CalculateBudgetSetAmount()
         {
+            if (!IsRootBudget && ParentBudget == null)
+            {
+                throw new Exception("Parent budget must be load for non-root budget.");
+            }
+
             decimal newBudgetAmount = default(decimal);
             if (IsPercentBasedBudget)
             {

@@ -1,5 +1,5 @@
 using BudgetTracker.Business.Budgeting;
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Data.EntityFramework;
 using BudgetTracker.Data.EntityFramework.Converters;
@@ -71,6 +71,7 @@ namespace BudgetTracker.Data.EntityFramework.Repositories
             else
             {
                 budget.Duration = await LoadDurationForBudget(budget);
+                budget.Owner = await _dbContext.Users.SingleAsync(u => u.Id == budget.OwnerId);
                 return BudgetConverter.ToBusinessModel(budget);
             }
         }

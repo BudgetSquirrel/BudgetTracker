@@ -1,4 +1,4 @@
-using BudgetTracker.Business.Budgeting.BudgetPeriods;
+using BudgetTracker.Business.BudgetPeriods;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -28,6 +28,12 @@ namespace BudgetTracker.Business.Budgeting
                 if (DurationTemp == null)
                 {
                     return null;
+                }
+                else if (DurationTemp.ContainsKey("start-day-of-month") &&
+                    DurationTemp.ContainsKey("end-day-of-month") &&
+                    DurationTemp.ContainsKey("number-days"))
+                {
+                    throw new JsonSerializationException("Budget duration must be either a bookended duration or a day span duration. It cannot be both.");
                 }
                 string durationSerialized = JsonConvert.SerializeObject(DurationTemp);
                 if (DurationTemp.ContainsKey("start-day-of-month") &&
