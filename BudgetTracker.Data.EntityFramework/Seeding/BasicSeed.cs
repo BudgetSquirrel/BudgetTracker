@@ -81,6 +81,7 @@ namespace BudgetTracker.Data.EntityFramework.Seeding
                 DurationType = DataConstants.BudgetDuration.TYPE_MONTHLY_SPAN,
                 NumberDays = _faker.Random.Number(31)
             };
+            BudgetPeriodModel period = SeedPeriodForRootBudget(budget);
 
             _dbContext.Add(budget);
             return budget;
@@ -107,6 +108,18 @@ namespace BudgetTracker.Data.EntityFramework.Seeding
                 CreatedDate = DateTime.Now,
             };
             return budget;
+        }
+
+        private BudgetPeriodModel SeedPeriodForRootBudget(BudgetModel rootBudget)
+        {
+            BudgetPeriodModel period = new BudgetPeriodModel()
+            {
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(rootBudget.Duration.NumberDays),
+                RootBudget = rootBudget
+            };
+            _dbContext.Add(period);
+            return period;
         }
     }
 }

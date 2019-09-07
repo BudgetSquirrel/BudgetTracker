@@ -11,6 +11,7 @@ namespace BudgetTracker.Data.EntityFramework.Models
         public decimal? SetAmount { get; set; }
         public DateTime BudgetStart { get; set; }
         public DateTime CreatedDate { get; set; }
+        public decimal FundBalance { get; set; }
 
         public Guid OwnerId { get; set; }
         [ForeignKey("OwnerId")]
