@@ -1,0 +1,3 @@
+[submodule "ApplicationWebApi"]
+	path = ApplicationWebApi
+	url = https://github.com/BudgetSquirrel/ApplicationWebApi.git
