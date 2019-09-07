@@ -3,6 +3,7 @@ using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Tests;
+using BudgetTracker.Common.Exceptions;
 using BudgetTracker.TestUtils.Auth;
 using BudgetTracker.TestUtils.Budgeting;
 using Moq;
@@ -102,6 +103,31 @@ namespace BudgetTracker.Business.Tests.UnitTests
 
             Budget created = await BudgetCreation.CreateBudgetForUser(child, owner, mockBudgetRepository.Object);
             Assert.Equal(parent.Id, created.ParentBudget.Id);
+        }
+
+        [Fact]
+        public async Task Test_ErrorThrown_When_BudgetCreatedAsSubBudget_And_UserDoesntOwnParentBudget()
+        {
+            Mock<IBudgetRepository> mockBudgetRepository = new Mock<IBudgetRepository>();
+            User owner1 = _userFactory.NewUser();
+            User owner2 = _userFactory.NewUser();
+
+            Budget parent = _budgetBuilderFactory.GetBuilder()
+                                .SetFixedAmount(_faker.Finance.Amount())
+                                .SetOwner(owner1)
+                                .Build();
+            Budget child = _budgetBuilderFactory.GetBuilder()
+                                .SetParentBudget(parent)
+                                .SetPercentAmount(0.2)
+                                .SetOwner(owner2)
+                                .Build();
+
+            mockBudgetRepository.Setup(repo => repo.CreateBudget(It.IsAny<Budget>()))
+                                .Returns(Task.FromResult(child));
+            mockBudgetRepository.Setup(repo => repo.GetBudget(parent.Id))
+                                .Returns(Task.FromResult(parent));
+
+            await Assert.ThrowsAsync<AuthorizationException>(() => BudgetCreation.CreateBudgetForUser(child, owner2, mockBudgetRepository.Object));
         }
     }
 }
