@@ -79,6 +79,11 @@ namespace BudgetTracker.TestUtils.Budgeting
             return this;
         }
 
+        public IBudgetBuilder<Budget> SetFundBalance(decimal fundBalance) {
+            _budgetValueBuild.FundBalance = fundBalance;
+            return this;
+        }
+
         public IBudgetBuilder<Budget> SetDurationStartDayOfMonth(int? value)
         {
             if (_durationBuild == null)

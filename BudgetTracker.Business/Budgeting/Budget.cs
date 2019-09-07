@@ -2,6 +2,7 @@ using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Transactions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Auth;
+using BudgetTracker.Common.Exceptions;
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace BudgetTracker.Business.Budgeting
         {
             get
             {
-                return !IsRootBudget && ParentBudget == null;
+                return !IsRootBudget && ParentBudget != null;
             }
         }
 
@@ -154,12 +155,12 @@ namespace BudgetTracker.Business.Budgeting
         {
             if (transaction.Owner.Id != Owner.Id)
             {
-                throw new Exception("This transaction does not belong to the owner of this budget.");
+                throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
             FundBalance += transaction.Amount;
             if (!IsRootBudget)
             {
-                await LoadParentBudget();
+                await LoadParentBudget(budgetRepository);
                 await ParentBudget.ApplyTransaction(transaction, budgetRepository);
             }
         }
@@ -168,7 +169,7 @@ namespace BudgetTracker.Business.Budgeting
         {
             if (!IsRootBudget && !IsParentBudgetLoaded)
             {
-                ParentBudget = await budgetRepository.GetBudget(ParentBudgetId);
+                ParentBudget = await budgetRepository.GetBudget(ParentBudgetId.Value);
             }
         }
 
@@ -180,8 +181,8 @@ namespace BudgetTracker.Business.Budgeting
             }
             else
             {
-                List<Budget> ownersRootBudgets = await budgetRepository.GetRootBudgets(Owner.Id);
-                _rootBudget = ownersRootBudgets.Where(b => b.Duration.Id == Duration.Id);
+                List<Budget> ownersRootBudgets = await budgetRepository.GetRootBudgets(Owner.Id.Value);
+                _rootBudget = ownersRootBudgets.Single(b => b.Duration.Id == Duration.Id);
             }
             return _rootBudget;
         }

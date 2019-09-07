@@ -14,6 +14,7 @@ namespace BudgetTracker.TestUtils.Budgeting
         IBudgetBuilder<E> SetDurationRolloverEndDateOnSmallMonths(bool? value);
         IBudgetBuilder<E> SetDurationNumberDays(int? value);
         IBudgetBuilder<E> SetOwner(User owner);
+        IBudgetBuilder<E> SetFundBalance(decimal fundBalance);
 
         /// <summary>
         /// Set the percent amount for this budget. If you set the percentAmount,

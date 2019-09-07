@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BudgetTracker.BudgetSquirrel.Application\BudgetTracker.BudgetSquirrel.Application.csproj" />
     <ProjectReference Include="..\..\BudgetTracker.Business\BudgetTracker.Business.csproj" />
   </ItemGroup>
 
