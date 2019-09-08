@@ -89,7 +89,7 @@ namespace BudgetTracker.Data.EntityFramework.Seeding
 
         public BudgetModel RandomBudget(UserModel user, BudgetModel parent)
         {
-            BudgetModel budget = RandomBudgetValues();
+            BudgetModel budget = RandomBudgetValues(parent);
             budget.ParentBudget = parent;
             budget.Owner = user;
             budget.Duration = parent.Duration;
@@ -98,15 +98,22 @@ namespace BudgetTracker.Data.EntityFramework.Seeding
             return budget;
         }
 
-        private BudgetModel RandomBudgetValues()
+        private BudgetModel RandomBudgetValues(BudgetModel parent = null)
         {
             BudgetModel budget = new BudgetModel()
             {
                 Name = _faker.Lorem.Word(),
-                SetAmount = _faker.Finance.Amount(),
                 BudgetStart = DateTime.Now,
                 CreatedDate = DateTime.Now,
             };
+            if (parent != null)
+            {
+                budget.SetAmount = _faker.Finance.Amount(max: parent.SetAmount.Value);
+            }
+            else
+            {
+                budget.SetAmount = _faker.Finance.Amount();
+            }
             return budget;
         }
 

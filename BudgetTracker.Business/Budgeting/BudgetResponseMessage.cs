@@ -19,6 +19,9 @@ namespace BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi
         [JsonProperty("set-amount")]
         public decimal SetAmount { get; set; }
 
+        [JsonProperty("fund-balance")]
+        public decimal FundBalance { get; set; }
+
         [JsonProperty("duration")]
         public BudgetDurationBaseMessage Duration { get; set; }
 

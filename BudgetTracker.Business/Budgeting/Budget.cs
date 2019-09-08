@@ -157,12 +157,17 @@ namespace BudgetTracker.Business.Budgeting
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
+            Console.WriteLine("================");
+            Console.WriteLine($"Here: {FundBalance} + {transaction.Amount} = {FundBalance + transaction.Amount}");
             FundBalance += transaction.Amount;
+            Console.WriteLine($"Now: {FundBalance}");
             if (!IsRootBudget)
             {
                 await LoadParentBudget(budgetRepository);
                 await ParentBudget.ApplyTransaction(transaction, budgetRepository);
             }
+            Budget updatedBudget = await budgetRepository.UpdateBudget(this);
+            Mirror(updatedBudget);
         }
 
         public async Task LoadParentBudget(IBudgetRepository budgetRepository)
@@ -199,6 +204,7 @@ namespace BudgetTracker.Business.Budgeting
             Name = otherBudget.Name;
             PercentAmount = otherBudget.PercentAmount;
             SetAmount = otherBudget.SetAmount;
+            FundBalance = otherBudget.FundBalance;
             Duration = otherBudget.Duration;
             BudgetStart = otherBudget.BudgetStart;
             ParentBudgetId = otherBudget.ParentBudgetId;
