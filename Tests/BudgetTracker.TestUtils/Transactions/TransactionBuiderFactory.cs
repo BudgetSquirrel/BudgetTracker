@@ -8,5 +8,10 @@ namespace BudgetTracker.TestUtils.Transactions
         {
             return new TransactionBuilder();
         }
+
+        public TransactionMessageBuilder GetMessageBuilder()
+        {
+            return new TransactionMessageBuilder();
+        }
     }
 }
