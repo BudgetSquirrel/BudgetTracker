@@ -86,7 +86,7 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<Budget> SetDurationStartDayOfMonth(int? value)
         {
-            if (_durationBuild == null)
+            if (_durationBuild == null || !(_durationBuild is MonthlyBookEndedDuration))
                 InitRandomDuration(false);
             ((MonthlyBookEndedDuration) _durationBuild).StartDayOfMonth = value.Value;
             return this;
@@ -94,7 +94,7 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<Budget> SetDurationEndDayOfMonth(int? value)
         {
-            if (_durationBuild == null)
+            if (_durationBuild == null || !(_durationBuild is MonthlyBookEndedDuration))
                 InitRandomDuration(false);
             ((MonthlyBookEndedDuration) _durationBuild).EndDayOfMonth = value.Value;
             return this;
@@ -102,7 +102,7 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<Budget> SetDurationRolloverStartDateOnSmallMonths(bool? value)
         {
-            if (_durationBuild == null)
+            if (_durationBuild == null || !(_durationBuild is MonthlyBookEndedDuration))
                 InitRandomDuration(false);
             ((MonthlyBookEndedDuration) _durationBuild).RolloverStartDateOnSmallMonths = value.Value;
             return this;
@@ -110,7 +110,7 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<Budget> SetDurationRolloverEndDateOnSmallMonths(bool? value)
         {
-            if (_durationBuild == null)
+            if (_durationBuild == null || !(_durationBuild is MonthlyBookEndedDuration))
                 InitRandomDuration(false);
             ((MonthlyBookEndedDuration) _durationBuild).RolloverEndDateOnSmallMonths = value.Value;
             return this;
@@ -118,25 +118,22 @@ namespace BudgetTracker.TestUtils.Budgeting
 
         public IBudgetBuilder<Budget> SetDurationNumberDays(int? value)
         {
-            if (_durationBuild == null)
+            if (_durationBuild == null || !(_durationBuild is MonthlyDaySpanDuration))
                 InitRandomDuration(true);
             ((MonthlyDaySpanDuration) _durationBuild).NumberDays = value.Value;
             return this;
         }
 
-        public IBudgetBuilder<Budget> SetParentBudget(Guid? parentId, bool clearDurationValues = true) {
+        public IBudgetBuilder<Budget> SetParentBudget(Guid? parentId) {
             _budgetValueBuild.ParentBudgetId = parentId;
-            if (clearDurationValues)
-            {
-                _budgetValueBuild.Duration = null;
-                _durationBuild = null;
-            }
             return this;
         }
 
-        public IBudgetBuilder<Budget> SetParentBudget(Budget parent, bool clearDurationValues = true) {
-            SetParentBudget(parent.Id, clearDurationValues);
+        public IBudgetBuilder<Budget> SetParentBudget(Budget parent) {
+            SetParentBudget(parent.Id);
             _budgetValueBuild.ParentBudget = parent;
+            _budgetValueBuild.Duration = parent.Duration;
+            _durationBuild = _budgetValueBuild.Duration;
             return this;
         }
 

@@ -3,6 +3,7 @@ using BudgetTracker.Business.Transactions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Common.Exceptions;
+using Newtonsoft.Json;
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -75,6 +76,7 @@ namespace BudgetTracker.Business.Budgeting
         /// <summary>
         /// The parent budget of which this is a sub-budget.
         /// </summary>
+        [JsonIgnore]
         public Budget ParentBudget { get; set; }
 
         /// <summary>
@@ -157,10 +159,7 @@ namespace BudgetTracker.Business.Budgeting
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
-            Console.WriteLine("================");
-            Console.WriteLine($"Here: {FundBalance} + {transaction.Amount} = {FundBalance + transaction.Amount}");
             FundBalance += transaction.Amount;
-            Console.WriteLine($"Now: {FundBalance}");
             if (!IsRootBudget)
             {
                 await LoadParentBudget(budgetRepository);
