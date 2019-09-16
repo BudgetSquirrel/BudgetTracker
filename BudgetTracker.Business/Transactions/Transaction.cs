@@ -13,6 +13,7 @@ namespace BudgetTracker.Business.Transactions
         public DateTime DateOfTransaction { get; set; }
         public string CheckNumber { get; set; }
         public string Notes { get; set; }
+        public Guid BudgetId { get; set; }
         public Budget Budget { get; set; }
         public User Owner { get; set; }
     }

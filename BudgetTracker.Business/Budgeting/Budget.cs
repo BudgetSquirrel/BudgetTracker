@@ -148,12 +148,13 @@ namespace BudgetTracker.Business.Budgeting
         /// on this budget by the amount specified in the transaction.
         /// </p>
         /// <p>
-        /// This does not save this budget to the repository. The
-        /// repository is only used to fetch the parent budget if
-        /// it is not already loaded.
+        /// If budgetRepository is not null, this will save the changes to the
+        /// given budgetRepository and the changes in the repository will be
+        /// applied to this object. Otherwise, if budgetRepository is null, then
+        /// this will not try to save the changes to the repository.
         /// </p>
         /// </summary>
-        public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository)
+        public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository=null)
         {
             if (transaction.Owner.Id != Owner.Id)
             {
@@ -165,8 +166,11 @@ namespace BudgetTracker.Business.Budgeting
                 await LoadParentBudget(budgetRepository);
                 await ParentBudget.ApplyTransaction(transaction, budgetRepository);
             }
-            Budget updatedBudget = await budgetRepository.UpdateBudget(this);
-            Mirror(updatedBudget);
+            if (budgetRepository != null)
+            {
+                Budget updatedBudget = await budgetRepository.UpdateBudget(this);
+                Mirror(updatedBudget);
+            }
         }
 
         public async Task LoadParentBudget(IBudgetRepository budgetRepository)

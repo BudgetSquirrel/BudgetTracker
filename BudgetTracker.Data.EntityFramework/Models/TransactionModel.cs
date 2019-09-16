@@ -12,7 +12,7 @@ namespace BudgetTracker.Data.EntityFramework.Models
         public decimal Amount { get; set; }
         public DateTime DateOfTransaction { get; set; }
         public string CheckNumber { get; set; }
-        [MaxLength(200)]
+        [MaxLength(500)]
         public string Notes { get; set; }
 
         public Guid BudgetId { get; set; }

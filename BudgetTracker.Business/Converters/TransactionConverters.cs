@@ -15,7 +15,8 @@ namespace BudgetTracker.Business.Converters
                 Amount = message.Amount,
                 DateOfTransaction = message.DateOfTransaction,
                 CheckNumber = message.CheckNumber,
-                Notes = message.Notes
+                Notes = message.Notes,
+                BudgetId = message.BudgetId
             };
             return transaction;
         }

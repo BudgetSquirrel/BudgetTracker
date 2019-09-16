@@ -17,6 +17,7 @@ namespace BudgetTracker.Data.EntityFramework.Converters
                 DateOfTransaction = dto.DateOfTransaction,
                 CheckNumber = dto.CheckNumber,
                 Notes = dto.Notes,
+                BudgetId = dto.BudgetId
             };
             return transaction;
         }
