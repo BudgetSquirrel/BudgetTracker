@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,12 +12,15 @@ namespace BudgetTracker.Data.EntityFramework.Models
         public decimal? SetAmount { get; set; }
         public DateTime BudgetStart { get; set; }
         public DateTime CreatedDate { get; set; }
+        public decimal FundBalance { get; set; }
 
         public Guid OwnerId { get; set; }
+        [JsonIgnore]
         [ForeignKey("OwnerId")]
         public UserModel Owner { get; set; }
 
         public Guid? ParentBudgetId { get; set; }
+        [JsonIgnore]
         [ForeignKey("ParentBudgetId")]
         public BudgetModel ParentBudget { get; set; }
 

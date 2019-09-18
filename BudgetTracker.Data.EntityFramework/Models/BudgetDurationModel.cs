@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -51,6 +52,7 @@ namespace BudgetTracker.Data.EntityFramework.Models
         /// </summary>
         public string DurationType { get; set; }
 
+        [JsonIgnore]
         public List<BudgetModel> Budgets { get; set; }
 
         #region Monthly Budget Fields

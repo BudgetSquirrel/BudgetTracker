@@ -1,7 +1,11 @@
 using BudgetTracker.Business.BudgetPeriods;
+using BudgetTracker.Business.Transactions;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Auth;
+using BudgetTracker.Common.Exceptions;
+using Newtonsoft.Json;
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,6 +40,24 @@ namespace BudgetTracker.Business.Budgeting
         public decimal? SetAmount { get; set; }
 
         /// <summary>
+        /// The amount that is currently available in the fund attached to this
+        /// budget for the budget planner to spend. Each time a transaction is
+        /// applied to this budget, this balance will be modified to reflect that
+        /// transaction.
+        /// It is important to note that this number is agnostic of the budget
+        /// amounts (PercentAmount/SetAmount). Those are planned amount that the
+        /// user will put into the budget fund every budget period. This is the
+        /// amount that stores that planned amount along with any rollover from
+        /// previous months.
+        /// For example, a user may put $50 into this budget every budget period,
+        /// but after 3 budget periods, if they don't spend anything, this fund
+        /// balance will have a value of $150 (3 budget periods worth of saving
+        /// $50 each period). If they then go and log a transaction against this
+        /// budget of $37, this fund balance will then only be $113 (150 - 137).
+        /// </summary>
+        public decimal FundBalance { get; set; }
+
+        /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
         public BudgetDurationBase Duration { get; set; }
@@ -54,6 +76,7 @@ namespace BudgetTracker.Business.Budgeting
         /// <summary>
         /// The parent budget of which this is a sub-budget.
         /// </summary>
+        [JsonIgnore]
         public Budget ParentBudget { get; set; }
 
         /// <summary>
@@ -66,11 +89,10 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public List<Budget> SubBudgets { get; set; }
 
-        public override string ToString()
-        {
-            string str = this.Name + " ($" + this.SetAmount.ToString() + ")";
-            return str;
-        }
+        /// <summary>
+        /// List of transactions logged against this budget.
+        /// </summary>
+        public List<Transaction> Transactions { get; set; }
 
         public bool IsPercentBasedBudget
         {
@@ -88,9 +110,17 @@ namespace BudgetTracker.Business.Budgeting
             }
         }
 
+        public bool IsParentBudgetLoaded
+        {
+            get
+            {
+                return !IsRootBudget && ParentBudget != null;
+            }
+        }
+
         public decimal CalculateBudgetSetAmount()
         {
-            if (!IsRootBudget && ParentBudget == null)
+            if (!IsRootBudget && !IsParentBudgetLoaded)
             {
                 throw new Exception("Parent budget must be load for non-root budget.");
             }
@@ -108,6 +138,65 @@ namespace BudgetTracker.Business.Budgeting
         }
 
         /// <summary>
+        /// <p>
+        /// Apply the given transaction to this budget. If this
+        /// has a parent budget, this needs to be applied to the
+        /// parent budget as well. Obviously, this is recursive.
+        /// </p>
+        /// <p>
+        /// Applying the transaction means modifying the FundBalance
+        /// on this budget by the amount specified in the transaction.
+        /// </p>
+        /// <p>
+        /// If budgetRepository is not null, this will save the changes to the
+        /// given budgetRepository and the changes in the repository will be
+        /// applied to this object. Otherwise, if budgetRepository is null, then
+        /// this will not try to save the changes to the repository.
+        /// </p>
+        /// </summary>
+        public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository=null)
+        {
+            if (transaction.Owner.Id != Owner.Id)
+            {
+                throw new ValidationException("This transaction does not belong to the owner of this budget.");
+            }
+            FundBalance += transaction.Amount;
+            if (!IsRootBudget)
+            {
+                await LoadParentBudget(budgetRepository);
+                await ParentBudget.ApplyTransaction(transaction, budgetRepository);
+            }
+            if (budgetRepository != null)
+            {
+                Budget updatedBudget = await budgetRepository.UpdateBudget(this);
+                Mirror(updatedBudget);
+            }
+        }
+
+        public async Task LoadParentBudget(IBudgetRepository budgetRepository)
+        {
+            if (!IsRootBudget && !IsParentBudgetLoaded)
+            {
+                ParentBudget = await budgetRepository.GetBudget(ParentBudgetId.Value);
+            }
+        }
+
+        public async Task<Budget> GetRootBudget(IBudgetRepository budgetRepository)
+        {
+            if (IsRootBudget)
+            {
+                _rootBudget = this;
+            }
+            else
+            {
+                List<Budget> ownersRootBudgets = await budgetRepository.GetRootBudgets(Owner.Id.Value);
+                _rootBudget = ownersRootBudgets.Single(b => b.Duration.Id == Duration.Id);
+            }
+            return _rootBudget;
+        }
+        private Budget _rootBudget;
+
+        /// <summary>
         /// Takes all attributes of otherBudget and mirrors them
         /// in this budget. This is sort of like clone except it
         /// is cloned to an already instantiated budget object.
@@ -118,6 +207,7 @@ namespace BudgetTracker.Business.Budgeting
             Name = otherBudget.Name;
             PercentAmount = otherBudget.PercentAmount;
             SetAmount = otherBudget.SetAmount;
+            FundBalance = otherBudget.FundBalance;
             Duration = otherBudget.Duration;
             BudgetStart = otherBudget.BudgetStart;
             ParentBudgetId = otherBudget.ParentBudgetId;

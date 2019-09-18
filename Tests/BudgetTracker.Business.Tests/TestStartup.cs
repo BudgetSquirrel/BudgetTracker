@@ -1,6 +1,7 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.TestUtils.Auth;
 using BudgetTracker.TestUtils.Budgeting;
+using BudgetTracker.TestUtils.Transactions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -43,7 +44,7 @@ namespace BudgetTracker.Business.Tests
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<BudgetBuilderFactory<Budget>>();
-            services.AddScoped<BudgetBuilderFactory<CreateBudgetRequestMessage>>();
+            services.AddScoped<TransactionBuilderFactory>();
             services.AddScoped<UserFactory>();
         }
     }

@@ -6,14 +6,15 @@ namespace BudgetTracker.TestUtils.Budgeting
     public interface IBudgetBuilder<E>
     {
         IBudgetBuilder<E> SetName(string name);
-        IBudgetBuilder<E> SetParentBudget(Guid? parentId, bool clearDurationValues = true);
-        IBudgetBuilder<E> SetParentBudget(E parent, bool clearDurationValues = true);
+        IBudgetBuilder<E> SetParentBudget(Guid? parentId);
+        IBudgetBuilder<E> SetParentBudget(E parent);
         IBudgetBuilder<E> SetDurationStartDayOfMonth(int? value);
         IBudgetBuilder<E> SetDurationEndDayOfMonth(int? value);
         IBudgetBuilder<E> SetDurationRolloverStartDateOnSmallMonths(bool? value);
         IBudgetBuilder<E> SetDurationRolloverEndDateOnSmallMonths(bool? value);
         IBudgetBuilder<E> SetDurationNumberDays(int? value);
         IBudgetBuilder<E> SetOwner(User owner);
+        IBudgetBuilder<E> SetFundBalance(decimal fundBalance);
 
         /// <summary>
         /// Set the percent amount for this budget. If you set the percentAmount,
