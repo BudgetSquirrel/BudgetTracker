@@ -1,5 +1,7 @@
 using BudgetTracker.Business.Transactions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetTracker.Business.Converters
 {
@@ -35,6 +37,11 @@ namespace BudgetTracker.Business.Converters
                 BudgetId = transaction.Budget.Id
             };
             return message;
+        }
+
+        public static List<TransactionMessage> Convert(List<Transaction> transactions)
+        {
+            return transactions.Select(t => Convert(t)).ToList();
         }
     }
 }

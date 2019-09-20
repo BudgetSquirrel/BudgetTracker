@@ -89,11 +89,6 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public List<Budget> SubBudgets { get; set; }
 
-        /// <summary>
-        /// List of transactions logged against this budget.
-        /// </summary>
-        public List<Transaction> Transactions { get; set; }
-
         public bool IsPercentBasedBudget
         {
             get
@@ -195,6 +190,31 @@ namespace BudgetTracker.Business.Budgeting
             return _rootBudget;
         }
         private Budget _rootBudget;
+
+        /// <summary>
+        /// <p>
+        /// Fetches all transactions that have been logged under this budget
+        /// or one of it's sub budgets. This is recursive. This budgets sub
+        /// budgets must be loaded recursively before calling this method.
+        /// </p>
+        /// </summary>
+        public async Task<List<Transaction>> GetTransactions(DateTime? fromDate, DateTime? toDate, ITransactionRepository transactionRepository)
+        {
+            List<Transaction> transactions = await transactionRepository.FetchTransactions(this.Id, fromDate, toDate);
+            transactions = transactions.Select(t =>
+            {
+                t.Budget = this;
+                return t;
+            }).ToList();
+            foreach (Budget subBudget in SubBudgets)
+            {
+                List<Transaction> transactionsForSubBudget = await subBudget.GetTransactions(fromDate,
+                                                                                toDate,
+                                                                                transactionRepository);
+                transactions.AddRange(transactionsForSubBudget);
+            }
+            return transactions;
+        }
 
         /// <summary>
         /// Takes all attributes of otherBudget and mirrors them

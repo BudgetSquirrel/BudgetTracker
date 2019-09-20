@@ -1,6 +1,8 @@
 using BudgetTracker.Business.Transactions;
 using BudgetTracker.Data.EntityFramework.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetTracker.Data.EntityFramework.Converters
 {
@@ -36,6 +38,11 @@ namespace BudgetTracker.Data.EntityFramework.Converters
                 Notes = transaction.Notes
             };
             return dto;
+        }
+
+        public static List<Transaction> Convert(List<TransactionModel> transactionDatas)
+        {
+            return transactionDatas.Select(t => Convert(t)).ToList();
         }
     }
 }
