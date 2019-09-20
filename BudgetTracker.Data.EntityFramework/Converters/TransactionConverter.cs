@@ -40,9 +40,9 @@ namespace BudgetTracker.Data.EntityFramework.Converters
             return dto;
         }
 
-        public static List<Transaction> Convert(List<TransactionModel> transactionDatas)
+        public static IEnumerable<Transaction> Convert(IEnumerable<TransactionModel> transactionDatas)
         {
-            return transactionDatas.Select(t => Convert(t)).ToList();
+            return transactionDatas.Select(t => Convert(t));
         }
     }
 }

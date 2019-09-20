@@ -38,17 +38,17 @@ namespace BudgetTracker.Data.EntityFramework.Repositories
             return TransactionConverter.Convert(newTransaction);
         }
 
-        public async Task<List<Transaction>> FetchTransactions(Guid budgetId, DateTime? fromDateTmp=null, DateTime? toDateTmp=null)
+        public async Task<IEnumerable<Transaction>> FetchTransactions(Guid budgetId, DateTime? fromDateTmp=null, DateTime? toDateTmp=null)
         {
             DateTime fromDate = fromDateTmp ?? DateTime.Now.AddDays(-365);
             DateTime toDate = toDateTmp ?? DateTime.Now;
 
-            List<TransactionModel> transactionDatas = await (from t in _dbContext.Transactions
+            IEnumerable<TransactionModel> transactionDatas = await (from t in _dbContext.Transactions
                                                            where t.BudgetId == budgetId &&
                                                                  t.DateOfTransaction >= fromDate &&
                                                                  t.DateOfTransaction <= toDate
                                                            select t).ToListAsync();
-            List<Transaction> transactions = TransactionConverter.Convert(transactionDatas);
+            IEnumerable<Transaction> transactions = TransactionConverter.Convert(transactionDatas);
             return transactions;
         }
     }

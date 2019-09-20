@@ -23,6 +23,6 @@ namespace BudgetTracker.Business.Ports.Repositories
         /// null, it will default to 365 days in the past.
         /// </p>
         /// </summary>
-        Task<List<Transaction>> FetchTransactions(Guid budgetId, DateTime? fromDate=null, DateTime? toDate=null);
+        Task<IEnumerable<Transaction>> FetchTransactions(Guid budgetId, DateTime? fromDate=null, DateTime? toDate=null);
     }
 }

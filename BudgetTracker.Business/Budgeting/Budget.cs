@@ -198,9 +198,9 @@ namespace BudgetTracker.Business.Budgeting
         /// budgets must be loaded recursively before calling this method.
         /// </p>
         /// </summary>
-        public async Task<List<Transaction>> GetTransactions(DateTime? fromDate, DateTime? toDate, ITransactionRepository transactionRepository)
+        public async Task<IEnumerable<Transaction>> GetTransactions(DateTime? fromDate, DateTime? toDate, ITransactionRepository transactionRepository)
         {
-            List<Transaction> transactions = await transactionRepository.FetchTransactions(this.Id, fromDate, toDate);
+            List<Transaction> transactions = (await transactionRepository.FetchTransactions(this.Id, fromDate, toDate)).ToList();
             transactions = transactions.Select(t =>
             {
                 t.Budget = this;
@@ -208,9 +208,9 @@ namespace BudgetTracker.Business.Budgeting
             }).ToList();
             foreach (Budget subBudget in SubBudgets)
             {
-                List<Transaction> transactionsForSubBudget = await subBudget.GetTransactions(fromDate,
+                List<Transaction> transactionsForSubBudget = (await subBudget.GetTransactions(fromDate,
                                                                                 toDate,
-                                                                                transactionRepository);
+                                                                                transactionRepository)).ToList();
                 transactions.AddRange(transactionsForSubBudget);
             }
             return transactions;

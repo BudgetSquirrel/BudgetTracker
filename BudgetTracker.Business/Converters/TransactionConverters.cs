@@ -39,9 +39,9 @@ namespace BudgetTracker.Business.Converters
             return message;
         }
 
-        public static List<TransactionMessage> Convert(List<Transaction> transactions)
+        public static IEnumerable<TransactionMessage> Convert(IEnumerable<Transaction> transactions)
         {
-            return transactions.Select(t => Convert(t)).ToList();
+            return transactions.Select(t => Convert(t));
         }
     }
 }
