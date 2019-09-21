@@ -118,7 +118,7 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public bool IsOwnedBy(User user)
         {
-            return user.Id == Id;
+            return user.Id == Owner.Id;
         }
 
         public decimal CalculateBudgetSetAmount()
@@ -159,7 +159,7 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository=null)
         {
-            if (IsOwnedBy(transaction.Owner))
+            if (!IsOwnedBy(transaction.Owner))
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
