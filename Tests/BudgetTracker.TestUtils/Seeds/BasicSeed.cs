@@ -26,6 +26,15 @@ namespace BudgetTracker.TestUtils.Seeds
             _userFactory = userFactory;
         }
 
+        /// <summary>
+        /// <p>
+        /// Seeds the database with budgets.
+        /// </p>
+        /// <p>
+        /// The root has 5 sub budgets. The sub budget with $340 also has 2 sub
+        /// budgets of it's own.
+        /// </p>
+        /// </summary>
         public async Task<Budget> Seed(IUserRepository userRepository,
             IBudgetRepository budgetRepository)
         {
@@ -37,15 +46,14 @@ namespace BudgetTracker.TestUtils.Seeds
                                                 .SetDurationNumberDays(30)
                                                 .Build();
 
-            root.SubBudgets = CreateSubBudgets(root, owner);
 
             await userRepository.Register(owner);
             await budgetRepository.CreateBudget(root);
-            foreach (Budget b in root.SubBudgets) await budgetRepository.CreateBudget(b);
+            root.SubBudgets = await CreateSubBudgets(root, owner, budgetRepository);
             return (root);
         }
 
-        private List<Budget> CreateSubBudgets(Budget parent, User owner)
+        private async Task<List<Budget>> CreateSubBudgets(Budget parent, User owner, IBudgetRepository budgetRepository)
         {
             List<Budget> subBudgets = new List<Budget>()
             {
@@ -62,6 +70,19 @@ namespace BudgetTracker.TestUtils.Seeds
                                             .SetFixedAmount(remainingMoney)
                                             .SetPercentAmount(null)
                                             .Build());
+            foreach (Budget b in subBudgets) await budgetRepository.CreateBudget(b);
+            subBudgets[0].SubBudgets = await CreateDeepSubBudget(subBudgets[0], owner, budgetRepository);
+            return subBudgets;
+        }
+
+        private async Task<List<Budget>> CreateDeepSubBudget(Budget parent, User owner, IBudgetRepository budgetRepository)
+        {
+            List<Budget> subBudgets = new List<Budget>()
+            {
+                StartSubBudgetBuild(parent, owner).SetFixedAmount(167).SetPercentAmount(null).Build(),
+                StartSubBudgetBuild(parent, owner).SetFixedAmount(parent.SetAmount-167).SetPercentAmount(null).Build()
+            };
+            foreach (Budget b in subBudgets) await budgetRepository.CreateBudget(b);
             return subBudgets;
         }
 
