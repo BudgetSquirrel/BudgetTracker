@@ -113,6 +113,14 @@ namespace BudgetTracker.Business.Budgeting
             }
         }
 
+        /// <summary>
+        /// Determines if the user owns this budget.
+        /// </summary>
+        public bool IsOwnedBy(User user)
+        {
+            return user.Id == Id;
+        }
+
         public decimal CalculateBudgetSetAmount()
         {
             if (!IsRootBudget && !IsParentBudgetLoaded)
@@ -151,7 +159,7 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository=null)
         {
-            if (transaction.Owner.Id != Owner.Id)
+            if (IsOwnedBy(transaction.Owner))
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
