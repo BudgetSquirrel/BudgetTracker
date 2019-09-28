@@ -89,11 +89,6 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public List<Budget> SubBudgets { get; set; }
 
-        /// <summary>
-        /// List of transactions logged against this budget.
-        /// </summary>
-        public List<Transaction> Transactions { get; set; }
-
         public bool IsPercentBasedBudget
         {
             get
@@ -116,6 +111,14 @@ namespace BudgetTracker.Business.Budgeting
             {
                 return !IsRootBudget && ParentBudget != null;
             }
+        }
+
+        /// <summary>
+        /// Determines if the user owns this budget.
+        /// </summary>
+        public bool IsOwnedBy(User user)
+        {
+            return user.Id == Owner.Id;
         }
 
         public decimal CalculateBudgetSetAmount()
@@ -156,7 +159,7 @@ namespace BudgetTracker.Business.Budgeting
         /// </summary>
         public async Task ApplyTransaction(Transaction transaction, IBudgetRepository budgetRepository=null)
         {
-            if (transaction.Owner.Id != Owner.Id)
+            if (!IsOwnedBy(transaction.Owner))
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
@@ -195,6 +198,31 @@ namespace BudgetTracker.Business.Budgeting
             return _rootBudget;
         }
         private Budget _rootBudget;
+
+        /// <summary>
+        /// <p>
+        /// Fetches all transactions that have been logged under this budget
+        /// or one of it's sub budgets. This is recursive. This budgets sub
+        /// budgets must be loaded recursively before calling this method.
+        /// </p>
+        /// </summary>
+        public async Task<IEnumerable<Transaction>> GetTransactions(DateTime? fromDate, DateTime? toDate, ITransactionRepository transactionRepository)
+        {
+            List<Transaction> transactions = (await transactionRepository.FetchTransactions(this.Id, fromDate, toDate)).ToList();
+            transactions = transactions.Select(t =>
+            {
+                t.Budget = this;
+                return t;
+            }).ToList();
+            foreach (Budget subBudget in SubBudgets)
+            {
+                List<Transaction> transactionsForSubBudget = (await subBudget.GetTransactions(fromDate,
+                                                                                toDate,
+                                                                                transactionRepository)).ToList();
+                transactions.AddRange(transactionsForSubBudget);
+            }
+            return transactions;
+        }
 
         /// <summary>
         /// Takes all attributes of otherBudget and mirrors them

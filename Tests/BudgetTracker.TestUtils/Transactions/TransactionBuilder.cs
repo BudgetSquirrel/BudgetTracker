@@ -23,7 +23,7 @@ namespace BudgetTracker.TestUtils.Transactions
             {
                 VendorName = _faker.Company.CompanyName(),
                 Description = _faker.Commerce.Product(),
-                Amount = _faker.Finance.Amount(),
+                Amount = _faker.Finance.Amount(min: 100),
                 DateOfTransaction = DateTime.Now,
                 CheckNumber = _faker.Random.Number().ToString(),
                 Notes = _faker.Lorem.Sentences()
