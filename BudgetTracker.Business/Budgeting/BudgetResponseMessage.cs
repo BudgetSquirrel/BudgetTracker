@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi
+namespace BudgetTracker.Business.Budgeting
 {
     public class BudgetResponseMessage {
 

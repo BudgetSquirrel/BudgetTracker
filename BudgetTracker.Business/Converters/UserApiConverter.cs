@@ -1,4 +1,3 @@
-using BudgetTracker.BudgetSquirrel.Application.Messages;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Common;
 using System;

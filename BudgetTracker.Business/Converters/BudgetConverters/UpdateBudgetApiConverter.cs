@@ -1,7 +1,6 @@
 using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 using BudgetTracker.Common.Exceptions;
 
 namespace BudgetTracker.Business.Converters.BudgetConverters

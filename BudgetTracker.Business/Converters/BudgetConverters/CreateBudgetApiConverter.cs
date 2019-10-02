@@ -2,7 +2,6 @@ using BudgetTracker.Business.Budgeting;
 using BudgetTracker.Business.BudgetPeriods;
 using BudgetTracker.Common.Exceptions;
 using BudgetTracker.Business.Auth;
-using BudgetTracker.BudgetSquirrel.Application.Messages.BudgetApi;
 
 using System;
 using System.Collections.Generic;
