@@ -176,6 +176,18 @@ namespace BudgetTracker.Business.Budgeting
             }
         }
 
+        /// <summary>
+        /// <p>
+        /// Gets the total amount from the transactions. If the result is positive,
+        /// then that means the user earned more money in these transactions
+        /// than the spent. The oposite is true if the result is negative.
+        /// </p>
+        /// </summary>
+        public decimal CalculateTransactionsTotalNetValue(List<Transaction> transactions)
+        {
+            return transactions.Sum(t => t.Amount);
+        }
+
         public async Task LoadParentBudget(IBudgetRepository budgetRepository)
         {
             if (!IsRootBudget && !IsParentBudgetLoaded)
