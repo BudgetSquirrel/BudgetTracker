@@ -114,6 +114,7 @@ namespace BudgetTracker.Data.EntityFramework.Seeding
             {
                 budget.SetAmount = _faker.Finance.Amount();
             }
+            budget.FundBalance = budget.SetAmount.Value;
             return budget;
         }
 
