@@ -34,7 +34,7 @@ namespace BudgetTracker.Data.EntityFramework.Converters
                 Amount = transaction.Amount,
                 DateOfTransaction = transaction.DateOfTransaction,
                 CheckNumber = transaction.CheckNumber,
-                BudgetId = transaction.Budget.Id,
+                BudgetId = transaction.Budget?.Id ?? transaction.BudgetId,
                 Notes = transaction.Notes
             };
             return dto;

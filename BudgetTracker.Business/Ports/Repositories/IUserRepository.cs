@@ -23,6 +23,13 @@ namespace BudgetTracker.Business.Ports.Repositories
         Task<User> GetByUsername(string username);
 
         /// <summary>
+        /// Returns the user that has the given id or null if
+        /// it doesn't exist. The password on the user returned in this
+        /// will be encrypted.
+        /// </summary>
+        Task<User> GetById(Guid userId);
+
+        /// <summary>
         /// <para>
         /// Creates the user.
         /// </para>
