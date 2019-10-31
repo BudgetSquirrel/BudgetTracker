@@ -5,6 +5,8 @@ namespace BudgetTracker.Business.BudgetPeriods
 {
     public class BudgetPeriod
     {
+        public Guid Id { get; set; }
+
         /// <summary>
         /// The root budget related to this budget period.
         /// </summary>
@@ -24,5 +26,16 @@ namespace BudgetTracker.Business.BudgetPeriods
         /// The end date of the budget period
         /// </summary>
         public DateTime EndDate { get; set; }
+
+        public BudgetPeriod(Budget rootBudget, DateTime start)
+        {
+            RootBudget = rootBudget;
+            RootBudgetId = rootBudget.Id;
+            StartDate = start;
+            EndDate = rootBudget.Duration.GetEndDateFromStartDate(start);
+        }
+
+        public BudgetPeriod()
+        {}
     }
 }

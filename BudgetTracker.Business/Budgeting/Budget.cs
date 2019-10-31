@@ -171,8 +171,7 @@ namespace BudgetTracker.Business.Budgeting
             }
             if (budgetRepository != null)
             {
-                Budget updatedBudget = await budgetRepository.UpdateBudget(this);
-                Mirror(updatedBudget);
+                await Save(budgetRepository);
             }
         }
 
@@ -234,6 +233,31 @@ namespace BudgetTracker.Business.Budgeting
                 transactions.AddRange(transactionsForSubBudget);
             }
             return transactions;
+        }
+
+        public async Task ClosePeriod(BudgetPeriod period, IBudgetRepository budgetRepository)
+        {
+            Budget rootBudget = this;
+            if (!IsRootBudget)
+                rootBudget = await GetRootBudget(budgetRepository);
+
+            if (period.RootBudgetId != rootBudget.Id)
+                throw new InvalidOperationException("That budget period does not belong to this budget.");
+
+            FundBalance += SetAmount.Value;
+
+            foreach (Budget subBudget in SubBudgets)
+            {
+                await subBudget.ClosePeriod(period, budgetRepository);
+            }
+
+            await Save(budgetRepository);
+        }
+
+        private async Task Save(IBudgetRepository budgetRepository)
+        {
+            Budget updatedBudget = await budgetRepository.UpdateBudget(this);
+            Mirror(updatedBudget);
         }
 
         /// <summary>
