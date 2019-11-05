@@ -114,6 +114,31 @@ namespace BudgetTracker.Business.Budgeting
         }
 
         /// <summary>
+        /// <p>
+        /// Amount of money spent represented by the fetched Transactions. This
+        /// does not factor in expenses (negative transactions), only earnings
+        /// (positive transactions).
+        /// </p>
+        /// </summary>
+        public decimal GetAmountIn(IEnumerable<Transaction> transactions)
+        {
+            return transactions.Where(t => t.Amount > 0).Sum(t => t.Amount);
+        }
+
+        /// <summary>
+        /// <p>
+        /// Amount of money spent represented by the fetched Transactions. This
+        /// does not factor in earnings (positive transactions), only expenses
+        /// (negative transactions). This value is returned as the absolute
+        /// value (always positive).
+        /// </p>
+        /// </summary>
+        public decimal GetAmountOut(IEnumerable<Transaction> transactions)
+        {
+            return -1 * transactions.Where(t => t.Amount < 0).Sum(t => t.Amount);
+        }
+
+        /// <summary>
         /// Determines if the user owns this budget.
         /// </summary>
         public bool IsOwnedBy(User user)
@@ -163,7 +188,9 @@ namespace BudgetTracker.Business.Budgeting
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
+
             FundBalance += transaction.Amount;
+
             if (!IsRootBudget)
             {
                 await LoadParentBudget(budgetRepository);
