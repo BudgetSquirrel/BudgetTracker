@@ -10,13 +10,20 @@ namespace BudgetTracker.Business.Budgeting
 {
     public class BudgetCreation
     {
-        public static async Task<Budget> CreateBudgetForUser(Budget budgetCreateObject, User user, IBudgetRepository budgetRepository)
+        public IBudgetRepository _budgetRepository;
+
+        public BudgetCreation(IBudgetRepository budgetRepository)
+        {
+            _budgetRepository = budgetRepository;
+        }
+
+        public async Task<Budget> CreateBudgetForUser(Budget budgetCreateObject, User user)
         {
             budgetCreateObject.Owner = user;
 
             if (!budgetCreateObject.IsRootBudget)
             {
-                budgetCreateObject.ParentBudget = await budgetRepository.GetBudget(budgetCreateObject.ParentBudgetId.Value);
+                budgetCreateObject.ParentBudget = await _budgetRepository.GetBudget(budgetCreateObject.ParentBudgetId.Value);
                 if (user.Id != budgetCreateObject.ParentBudget.Owner.Id)
                 {
                     throw new AuthorizationException("This user does not have access to the specified parent budget.");
@@ -25,7 +32,7 @@ namespace BudgetTracker.Business.Budgeting
             }
 
             budgetCreateObject.SetAmount = budgetCreateObject.CalculateBudgetSetAmount();
-            budgetCreateObject = await budgetRepository.CreateBudget(budgetCreateObject);
+            budgetCreateObject = await _budgetRepository.CreateBudget(budgetCreateObject);
 
             return budgetCreateObject;
         }

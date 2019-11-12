@@ -42,7 +42,7 @@ namespace BudgetTracker.Business.Tests.UnitTests
             mockBudgetRepository.Setup(repo => repo.CreateBudget(It.IsAny<Budget>()))
                                 .Returns(Task.FromResult(budget));
 
-            Budget createdBudget = await BudgetCreation.CreateBudgetForUser(budget, owner, mockBudgetRepository.Object);
+            Budget createdBudget = await GetBudgetCreator(mockBudgetRepository.Object).CreateBudgetForUser(budget, owner);
 
             mockBudgetRepository.Verify(repo => repo.CreateBudget(budget));
             Assert.Equal(createdBudget.Name, budget.Name);
@@ -76,7 +76,7 @@ namespace BudgetTracker.Business.Tests.UnitTests
             mockBudgetRepository.Setup(repo => repo.GetBudget(parent.Id))
                                 .Returns(Task.FromResult(parent));
 
-            Budget created = await BudgetCreation.CreateBudgetForUser(child, owner, mockBudgetRepository.Object);
+            Budget created = await GetBudgetCreator(mockBudgetRepository.Object).CreateBudgetForUser(child, owner);
             Assert.Equal(expectedSetAmount, created.SetAmount);
         }
 
@@ -101,7 +101,7 @@ namespace BudgetTracker.Business.Tests.UnitTests
             mockBudgetRepository.Setup(repo => repo.GetBudget(parent.Id))
                                 .Returns(Task.FromResult(parent));
 
-            Budget created = await BudgetCreation.CreateBudgetForUser(child, owner, mockBudgetRepository.Object);
+            Budget created = await GetBudgetCreator(mockBudgetRepository.Object).CreateBudgetForUser(child, owner);
             Assert.Equal(parent.Id, created.ParentBudget.Id);
         }
 
@@ -127,7 +127,12 @@ namespace BudgetTracker.Business.Tests.UnitTests
             mockBudgetRepository.Setup(repo => repo.GetBudget(parent.Id))
                                 .Returns(Task.FromResult(parent));
 
-            await Assert.ThrowsAsync<AuthorizationException>(() => BudgetCreation.CreateBudgetForUser(child, owner2, mockBudgetRepository.Object));
+            await Assert.ThrowsAsync<AuthorizationException>(() => GetBudgetCreator(mockBudgetRepository.Object).CreateBudgetForUser(child, owner2));
+        }
+
+        private BudgetCreation GetBudgetCreator(IBudgetRepository budgetRepository)
+        {
+            return new BudgetCreation(budgetRepository);
         }
     }
 }
