@@ -1,6 +1,7 @@
 using Bogus;
 using BudgetTracker.Business.Auth;
 using BudgetTracker.Business.Budgeting;
+using BudgetTracker.Business.Converters.BudgetConverters;
 using BudgetTracker.Business.Ports.Repositories;
 using BudgetTracker.Business.Tests;
 using BudgetTracker.Common.Exceptions;
@@ -130,9 +131,9 @@ namespace BudgetTracker.Business.Tests.UnitTests
             await Assert.ThrowsAsync<AuthorizationException>(() => GetBudgetCreator(mockBudgetRepository.Object).CreateBudgetForUser(child, owner2));
         }
 
-        private BudgetCreation GetBudgetCreator(IBudgetRepository budgetRepository)
+        private BudgetCreation GetBudgetCreator(IBudgetRepository budgetRepository, BudgetValidator budgetValidator, BudgetMessageConverter budgetMessageConverter)
         {
-            return new BudgetCreation(budgetRepository);
+            return new BudgetCreation(budgetRepository, budgetValidator, budgetMessageConverter);
         }
     }
 }
