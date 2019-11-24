@@ -8,9 +8,68 @@ using System.Collections.Generic;
 
 namespace BudgetTracker.Business.Converters.BudgetConverters
 {
-    public class GeneralBudgetApiConverter
+    public class BudgetMessageConverter
     {
-        public static BudgetDurationBase GetBudgetDuration(BudgetDurationBaseMessage durationMessage)
+        public Budget ToModel(CreateBudgetRequestMessage requestMessage)
+        {
+            return new Budget()
+            {
+                Name = requestMessage.Name,
+                PercentAmount = requestMessage.PercentAmount,
+                SetAmount = requestMessage.SetAmount,
+                Duration = GetBudgetDuration(requestMessage.Duration),
+                ParentBudgetId = requestMessage.ParentBudgetId,
+                BudgetStart = requestMessage.BudgetStart ?? new DateTime()
+            };
+        }
+
+        public BudgetResponseMessage ToGeneralResponseMessage(Budget model)
+        {
+            BudgetResponseMessage responseMessage = new BudgetResponseMessage()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                PercentAmount = model.PercentAmount,
+                SetAmount = model.SetAmount.Value,
+                FundBalance = model.FundBalance,
+                Duration = GetBudgetDuration(model.Duration),
+                BudgetStart = model.BudgetStart,
+                ParentBudgetId = model.ParentBudgetId
+            };
+
+            if (model.SubBudgets != null)
+            {
+                responseMessage.SubBudgets = ToGeneralResponseMessages(model.SubBudgets);
+            }
+
+            return responseMessage;
+        }
+
+        public List<BudgetResponseMessage> ToGeneralResponseMessages(List<Budget> budgets)
+        {
+            List<BudgetResponseMessage> responseMessages = new List<BudgetResponseMessage>();
+            foreach (Budget budget in budgets)
+            {
+                responseMessages.Add(ToGeneralResponseMessage(budget));
+            }
+            return responseMessages;
+        }
+
+        public Budget ToModel(UpdateBudgetRequestMessage requestMessage)
+        {
+            return new Budget()
+            {
+                Id = requestMessage.Id,
+                Name = requestMessage.Name,
+                PercentAmount = requestMessage.PercentAmount,
+                SetAmount = requestMessage.SetAmount,
+                Duration = GetBudgetDuration(requestMessage.Duration),
+                ParentBudgetId = requestMessage.ParentBudgetId,
+                BudgetStart = requestMessage.BudgetStart
+            };
+        }
+
+        public BudgetDurationBase GetBudgetDuration(BudgetDurationBaseMessage durationMessage)
         {
             if (durationMessage == null)
             {
@@ -45,7 +104,7 @@ namespace BudgetTracker.Business.Converters.BudgetConverters
             return durationModel;
         }
 
-        public static BudgetDurationBaseMessage GetBudgetDuration(BudgetDurationBase durationModel)
+        public BudgetDurationBaseMessage GetBudgetDuration(BudgetDurationBase durationModel)
         {
             if (durationModel == null)
             {
@@ -78,38 +137,6 @@ namespace BudgetTracker.Business.Converters.BudgetConverters
                 throw new ConversionException(durationModel.GetType(), typeof(BudgetDurationBaseMessage), $"Duration class '{durationModel.GetType().ToString()}' not supported class.");
             }
             return durationMessage;
-        }
-
-        public static BudgetResponseMessage ToGeneralResponseMessage(Budget model)
-        {
-            BudgetResponseMessage responseMessage = new BudgetResponseMessage()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                PercentAmount = model.PercentAmount,
-                SetAmount = model.SetAmount.Value,
-                FundBalance = model.FundBalance,
-                Duration = GetBudgetDuration(model.Duration),
-                BudgetStart = model.BudgetStart,
-                ParentBudgetId = model.ParentBudgetId
-            };
-
-            if (model.SubBudgets != null)
-            {
-                responseMessage.SubBudgets = ToGeneralResponseMessages(model.SubBudgets);
-            }
-
-            return responseMessage;
-        }
-
-        public static List<BudgetResponseMessage> ToGeneralResponseMessages(List<Budget> budgets)
-        {
-            List<BudgetResponseMessage> responseMessages = new List<BudgetResponseMessage>();
-            foreach (Budget budget in budgets)
-            {
-                responseMessages.Add(ToGeneralResponseMessage(budget));
-            }
-            return responseMessages;
         }
     }
 }

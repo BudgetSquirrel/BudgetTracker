@@ -2,9 +2,9 @@ using BudgetTracker.Business.BudgetPeriods;
 
 namespace BudgetTracker.Business.Budgeting
 {
-    public class BudgetValidation
+    public class BudgetValidator
     {
-        public static bool IsCreateBudgetRequestValid(CreateBudgetRequestMessage arguments)
+        public bool IsCreateBudgetRequestValid(CreateBudgetRequestMessage arguments)
         {
             bool isValid = arguments.Name != null;
 
@@ -27,7 +27,7 @@ namespace BudgetTracker.Business.Budgeting
             return isValid;
         }
 
-        private static bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
+        private bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
         {
             if (message == null)
             {
@@ -52,7 +52,7 @@ namespace BudgetTracker.Business.Budgeting
             else return false;
         }
 
-        public static bool IsUpdateBudgetRequestValid(UpdateBudgetRequestMessage arguments)
+        public bool IsUpdateBudgetRequestValid(UpdateBudgetRequestMessage arguments)
         {
             bool isValid = arguments.Id != null &&
                 arguments.Name != null;
@@ -75,7 +75,7 @@ namespace BudgetTracker.Business.Budgeting
             return isValid;
         }
 
-        private static bool IsUpdateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
+        private bool IsUpdateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
         {
             if (message == null)
             {

@@ -86,6 +86,22 @@ namespace BudgetTracker.Data.EntityFramework.Repositories
         }
 
         /// <summary>
+        /// Returns the user that has the given id or null if
+        /// it doesn't exist. The password on the user returned in this
+        /// will be encrypted.
+        /// </summary>
+        public async Task<User> GetById(Guid userId)
+        {
+            UserModel userData = await GetActiveUsersFromDb().Where(u => u.Id == userId).SingleOrDefaultAsync();
+            if (userData == null)
+            {
+                return null;
+            }
+            User user = _userConverter.ToBusinessModel(userData);
+            return user;
+        }
+
+        /// <summary>
         /// <para>
         /// Creates the user.
         /// </para>

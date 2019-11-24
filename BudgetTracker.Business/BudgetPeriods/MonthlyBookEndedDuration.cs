@@ -1,3 +1,5 @@
+using System;
+
 namespace BudgetTracker.Business.BudgetPeriods
 {
     /// <summary>
@@ -59,5 +61,10 @@ namespace BudgetTracker.Business.BudgetPeriods
         /// </p>
         /// </summary>
         public bool RolloverEndDateOnSmallMonths { get; set; }
+
+        public override DateTime GetEndDateFromStartDate(DateTime startDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

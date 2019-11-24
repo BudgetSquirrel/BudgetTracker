@@ -114,6 +114,31 @@ namespace BudgetTracker.Business.Budgeting
         }
 
         /// <summary>
+        /// <p>
+        /// Amount of money spent represented by the fetched Transactions. This
+        /// does not factor in expenses (negative transactions), only earnings
+        /// (positive transactions).
+        /// </p>
+        /// </summary>
+        public decimal GetAmountIn(IEnumerable<Transaction> transactions)
+        {
+            return transactions.Where(t => t.Amount > 0).Sum(t => t.Amount);
+        }
+
+        /// <summary>
+        /// <p>
+        /// Amount of money spent represented by the fetched Transactions. This
+        /// does not factor in earnings (positive transactions), only expenses
+        /// (negative transactions). This value is returned as the absolute
+        /// value (always positive).
+        /// </p>
+        /// </summary>
+        public decimal GetAmountOut(IEnumerable<Transaction> transactions)
+        {
+            return -1 * transactions.Where(t => t.Amount < 0).Sum(t => t.Amount);
+        }
+
+        /// <summary>
         /// Determines if the user owns this budget.
         /// </summary>
         public bool IsOwnedBy(User user)
@@ -163,7 +188,9 @@ namespace BudgetTracker.Business.Budgeting
             {
                 throw new ValidationException("This transaction does not belong to the owner of this budget.");
             }
+
             FundBalance += transaction.Amount;
+
             if (!IsRootBudget)
             {
                 await LoadParentBudget(budgetRepository);
@@ -171,8 +198,7 @@ namespace BudgetTracker.Business.Budgeting
             }
             if (budgetRepository != null)
             {
-                Budget updatedBudget = await budgetRepository.UpdateBudget(this);
-                Mirror(updatedBudget);
+                await Save(budgetRepository);
             }
         }
 
@@ -234,6 +260,31 @@ namespace BudgetTracker.Business.Budgeting
                 transactions.AddRange(transactionsForSubBudget);
             }
             return transactions;
+        }
+
+        public async Task ClosePeriod(BudgetPeriod period, IBudgetRepository budgetRepository)
+        {
+            Budget rootBudget = this;
+            if (!IsRootBudget)
+                rootBudget = await GetRootBudget(budgetRepository);
+
+            if (period.RootBudgetId != rootBudget.Id)
+                throw new InvalidOperationException("That budget period does not belong to this budget.");
+
+            FundBalance += SetAmount.Value;
+
+            foreach (Budget subBudget in SubBudgets)
+            {
+                await subBudget.ClosePeriod(period, budgetRepository);
+            }
+
+            await Save(budgetRepository);
+        }
+
+        private async Task Save(IBudgetRepository budgetRepository)
+        {
+            Budget updatedBudget = await budgetRepository.UpdateBudget(this);
+            Mirror(updatedBudget);
         }
 
         /// <summary>

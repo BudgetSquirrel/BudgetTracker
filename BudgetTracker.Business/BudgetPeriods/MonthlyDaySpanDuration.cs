@@ -1,3 +1,5 @@
+using System;
+
 namespace BudgetTracker.Business.BudgetPeriods
 {
     public class MonthlyDaySpanDuration : BudgetDurationBase
@@ -8,5 +10,10 @@ namespace BudgetTracker.Business.BudgetPeriods
         /// </p>
         /// </summary>
         public int NumberDays { get; set; }
+
+        public override DateTime GetEndDateFromStartDate(DateTime startDate)
+        {
+            return startDate.AddDays(NumberDays);
+        }
     }
 }
