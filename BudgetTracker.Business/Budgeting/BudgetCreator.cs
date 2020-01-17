@@ -9,13 +9,18 @@ using BudgetTracker.Business.Converters.BudgetConverters;
 
 namespace BudgetTracker.Business.Budgeting
 {
-    public class BudgetCreation
+    public class BudgetCreator
     {
+        public static class CreateBudgetErrorMessages
+        {
+            public const string UNAUTHORIZED = "UNAUTHORIZED";
+        }
+
         private IBudgetRepository _budgetRepository;
         private BudgetValidator _budgetValidator;
         private BudgetMessageConverter _createBudgetApiConverter;
 
-        public BudgetCreation(IBudgetRepository budgetRepository, BudgetValidator budgetValidator,
+        public BudgetCreator(IBudgetRepository budgetRepository, BudgetValidator budgetValidator,
             BudgetMessageConverter createBudgetApiConverter)
         {
             _budgetRepository = budgetRepository;
@@ -25,6 +30,8 @@ namespace BudgetTracker.Business.Budgeting
 
         public async Task<Budget> CreateBudgetForUser(CreateBudgetRequestMessage createInput, User user)
         {
+            _budgetValidator.ValidateCreateBudgetRequest(createInput);
+
             Budget budgetCreateObject = _createBudgetApiConverter.ToModel(createInput);
             budgetCreateObject.Owner = user;
 
@@ -33,7 +40,7 @@ namespace BudgetTracker.Business.Budgeting
                 budgetCreateObject.ParentBudget = await _budgetRepository.GetBudget(budgetCreateObject.ParentBudgetId.Value);
                 if (user.Id != budgetCreateObject.ParentBudget.Owner.Id)
                 {
-                    throw new AuthorizationException("This user does not have access to the specified parent budget.");
+                    throw new InvalidOperationException(CreateBudgetErrorMessages.UNAUTHORIZED);
                 }
                 budgetCreateObject.Duration = budgetCreateObject.ParentBudget.Duration;
             }

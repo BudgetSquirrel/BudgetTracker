@@ -3,10 +3,10 @@ using System;
 
 namespace BudgetTracker.Business.Auth
 {
-    public class UserResponseApiMessage
+    public class RegisterUserMessage
     {
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         [JsonProperty("first-name")]
         public string FirstName { get; set; }
@@ -16,6 +16,12 @@ namespace BudgetTracker.Business.Auth
 
         [JsonProperty("username")]
         public string UserName { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
+
+        [JsonProperty("password-confirm")]
+        public string PasswordConfirm { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }

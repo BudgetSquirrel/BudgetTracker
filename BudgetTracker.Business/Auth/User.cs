@@ -18,22 +18,5 @@ namespace BudgetTracker.Business.Auth
         public string Password { get; set; }
         public string Email { get; set; }
         public DateTime? DateDeleted { get; set; }
-
-        /// <summary>
-        /// Validates an incoming request to register a new request.
-        /// Specifically, this looks to see if the confirm password
-        /// is the same as the regular password.
-        /// </summary>
-        public static bool IsAccountRegistrationRequestValid(UserRequestApiMessage arguments)
-        {
-            bool isConfirmPasswordCorrect = (arguments.Password == arguments.PasswordConfirm);
-            return isConfirmPasswordCorrect;
-        }
-
-        public static async Task<bool> IsAccountRegistrationDuplicate(string username, IUserRepository userRepository)
-        {
-            User duplicateUser = await userRepository.GetByUsername(username);
-            return duplicateUser != null;
-        }
     }
 }

@@ -55,20 +55,6 @@ namespace BudgetTracker.Business.Converters.BudgetConverters
             return responseMessages;
         }
 
-        public Budget ToModel(UpdateBudgetRequestMessage requestMessage)
-        {
-            return new Budget()
-            {
-                Id = requestMessage.Id,
-                Name = requestMessage.Name,
-                PercentAmount = requestMessage.PercentAmount,
-                SetAmount = requestMessage.SetAmount,
-                Duration = GetBudgetDuration(requestMessage.Duration),
-                ParentBudgetId = requestMessage.ParentBudgetId,
-                BudgetStart = requestMessage.BudgetStart
-            };
-        }
-
         public BudgetDurationBase GetBudgetDuration(BudgetDurationBaseMessage durationMessage)
         {
             if (durationMessage == null)

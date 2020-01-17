@@ -1,30 +1,52 @@
+using System;
+using System.Collections.Generic;
 using BudgetTracker.Business.BudgetPeriods;
+using Newtonsoft.Json;
 
 namespace BudgetTracker.Business.Budgeting
 {
     public class BudgetValidator
     {
-        public bool IsCreateBudgetRequestValid(CreateBudgetRequestMessage arguments)
+        public static class ErrorMessages
         {
-            bool isValid = arguments.Name != null;
+            public const string INVALID_NAME = "INVALID_NAME";
+            public const string INVALID_AMOUNT = "INVALID_AMOUNT";
+            public const string INVALID_DURATION = "INVALID_DURATION";
+            public const string NO_DURATION_EXPECTED = "NO_DURATION_EXPECTED";
+        }
+
+        public void ValidateCreateBudgetRequest(CreateBudgetRequestMessage arguments)
+        {
+            bool isNameValid = arguments.Name != null;
 
             bool isAmountValid = (arguments.SetAmount == null && arguments.PercentAmount != null && arguments.PercentAmount <= 1.0) ||
                                  (arguments.SetAmount != null && arguments.PercentAmount == null);
 
-            isValid = isValid && isAmountValid;
-
-            if (!isValid) return false;
-
             bool isRootBudget = arguments.ParentBudgetId == null;
+            bool isDurationValid = true;
+            bool isUnexpectedDuration = false;
             if (isRootBudget)
             {
-                isValid = isValid && IsCreateBudgetDurationRequestValid(arguments.Duration);
+                isDurationValid = IsCreateBudgetDurationRequestValid(arguments.Duration);
+
             }
             else
             {
-                isValid = isValid && arguments.Duration == null;
+                isUnexpectedDuration = arguments.Duration != null;
             }
-            return isValid;
+
+            List<string> errorMessages = new List<string>();
+            if (!isNameValid)
+                errorMessages.Add(ErrorMessages.INVALID_NAME);
+            if (!isAmountValid)
+                errorMessages.Add(ErrorMessages.INVALID_AMOUNT);
+            if (!isDurationValid)
+                errorMessages.Add(ErrorMessages.INVALID_DURATION);
+            if (isUnexpectedDuration)
+                errorMessages.Add(ErrorMessages.NO_DURATION_EXPECTED);
+            if (!isNameValid || !isAmountValid || !isDurationValid || isUnexpectedDuration)
+                throw new InvalidOperationException(
+                    JsonConvert.SerializeObject(errorMessages));
         }
 
         private bool IsCreateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
@@ -52,27 +74,38 @@ namespace BudgetTracker.Business.Budgeting
             else return false;
         }
 
-        public bool IsUpdateBudgetRequestValid(UpdateBudgetRequestMessage arguments)
+        public void ValidateUpdateBudgetRequest(UpdateBudgetRequestMessage arguments)
         {
-            bool isValid = arguments.Id != null &&
-                arguments.Name != null;
-
-            bool isRootBudget = arguments.ParentBudgetId == null;
-            if (isRootBudget)
-            {
-                isValid = isValid && IsUpdateBudgetDurationRequestValid(arguments.Duration);
-            }
-            else
-            {
-                isValid = isValid && arguments.Duration == null;
-            }
+            bool isIdPresent = arguments.Id != null;
+            bool isNameValid = arguments.Name != null;
 
             bool isAmountValid = (arguments.SetAmount == null && arguments.PercentAmount != null && arguments.PercentAmount <= 1.0) ||
                                  (arguments.SetAmount != null && arguments.PercentAmount == null);
 
-            isValid = isValid && isAmountValid;
+            bool isRootBudget = arguments.ParentBudgetId == null;
+            bool isDurationValid = true;
+            bool isUnexpectedDuration = false;
+            if (isRootBudget)
+            {
+                isDurationValid = IsUpdateBudgetDurationRequestValid(arguments.Duration);
+            }
+            else
+            {
+                isUnexpectedDuration = arguments.Duration != null;
+            }
 
-            return isValid;
+            List<string> errorMessages = new List<string>();
+            if (!isNameValid)
+                errorMessages.Add(ErrorMessages.INVALID_NAME);
+            if (!isAmountValid)
+                errorMessages.Add(ErrorMessages.INVALID_AMOUNT);
+            if (!isDurationValid)
+                errorMessages.Add(ErrorMessages.INVALID_DURATION);
+            if (isUnexpectedDuration)
+                errorMessages.Add(ErrorMessages.NO_DURATION_EXPECTED);
+            if (!isNameValid || !isAmountValid || !isDurationValid || isUnexpectedDuration)
+                throw new InvalidOperationException(
+                    JsonConvert.SerializeObject(errorMessages));
         }
 
         private bool IsUpdateBudgetDurationRequestValid(BudgetDurationBaseMessage message)
