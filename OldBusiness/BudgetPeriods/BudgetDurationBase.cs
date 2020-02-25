@@ -1,6 +1,6 @@
 using System;
 
-namespace BudgetTracker.Business.BudgetPeriods
+namespace BudgetSquirrel.Business.BudgetPeriods
 {
     public abstract class BudgetDurationBase
     {
