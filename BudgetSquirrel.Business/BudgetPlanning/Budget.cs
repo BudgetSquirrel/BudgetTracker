@@ -59,35 +59,49 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public DateTime BudgetStart { get; private set; }
 
-        public Budget(string name, double? percentAmount, decimal? setAmount, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart)
-        {
-            Name = name;
-            PercentAmount = percentAmount;
-            SetAmount = setAmount;
-            FundBalance = fundBalance;
-            Duration = duration;
-            BudgetStart = budgetStart;
-        }
-
-        public Budget(Guid id, string name, double? percentAmount, decimal? setAmount, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart)
-        {
-            Id = id;
-            Name = name;
-            PercentAmount = percentAmount;
-            SetAmount = setAmount;
-            FundBalance = fundBalance;
-            Duration = duration;
-            BudgetStart = budgetStart;
-        }
-
         public bool IsPercentBasedBudget
         {
             get
             {
                 return this.PercentAmount != null;
             }
+        }
+
+        public Budget(string name, decimal fundBalance,
+            BudgetDurationBase duration, DateTime budgetStart)
+        {
+            Name = name;
+            FundBalance = fundBalance;
+            Duration = duration;
+            BudgetStart = budgetStart;
+            SetAmount = 0;
+        }
+
+        public Budget(Guid id, string name, decimal fundBalance,
+            BudgetDurationBase duration, DateTime budgetStart)
+        {
+            Id = id;
+            Name = name;
+            FundBalance = fundBalance;
+            Duration = duration;
+            BudgetStart = budgetStart;
+            SetAmount = 0;
+        }
+
+        public void SetPercentAmount(double percent)
+        {
+            if (percent < 0 || percent > 1)
+                throw new InvalidOperationException("Can only set percent amount of budget to a number between 0 and 1 inclusive.");
+            SetAmount = null;
+            PercentAmount = percent;
+        }
+
+        public void SetFixedAmount(decimal amount)
+        {
+            if (amount < 0)
+                throw new InvalidOperationException("Fixed amount of budget must not be less than 0.");
+            PercentAmount = null;
+            SetAmount = amount;
         }
     }
 }

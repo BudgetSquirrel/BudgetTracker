@@ -61,5 +61,22 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </p>
         /// </summary>
         public bool RolloverEndDateOnSmallMonths { get; set; }
+
+        public MonthlyBookEndedDuration(int startDay, int endDay, bool rolloverStartDateOnSmallMonths, bool rolloverEndDateOnSmallMonths)
+        {
+            StartDayOfMonth = startDay;
+            EndDayOfMonth = endDay;
+            RolloverStartDateOnSmallMonths = rolloverStartDateOnSmallMonths;
+            RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
+        }
+
+        public MonthlyBookEndedDuration(Guid id, int startDay, int endDay, bool rolloverStartDateOnSmallMonths, bool rolloverEndDateOnSmallMonths)
+            : base(id)
+        {
+            StartDayOfMonth = startDay;
+            EndDayOfMonth = endDay;
+            RolloverStartDateOnSmallMonths = rolloverStartDateOnSmallMonths;
+            RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
+        }
     }
 }
