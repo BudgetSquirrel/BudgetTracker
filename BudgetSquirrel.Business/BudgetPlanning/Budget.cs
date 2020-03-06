@@ -103,5 +103,10 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             PercentAmount = null;
             SetAmount = amount;
         }
+
+        public void AddToFund(decimal amount)
+        {
+            this.FundBalance += amount;
+        }
     }
 }
