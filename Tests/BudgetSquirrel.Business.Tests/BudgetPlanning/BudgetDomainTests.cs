@@ -122,9 +122,13 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         [Theory]
         [InlineData(12, 46, 58)]
         [InlineData(11, -45, -34)]
-        public void Test_FundBalanceCorrect_WhenAddToFundCalled()
+        public void Test_FundBalanceCorrect_WhenAddToFundCalled(decimal startBalance, decimal add, decimal expected)
         {
+            Budget subject = _builderFactoryFixture.BudgetBuilder.SetFundBalance(startBalance).Build();
 
+            subject.AddToFund(add);
+
+            Assert.Equal(expected, subject.FundBalance);
         }
     }
 }

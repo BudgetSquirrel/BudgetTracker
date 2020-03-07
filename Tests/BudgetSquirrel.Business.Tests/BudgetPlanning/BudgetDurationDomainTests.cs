@@ -16,9 +16,9 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
         [Theory]
         [InlineData(2020, 2, 2, 24, 2020, 2, 26)]
-        [InlineData(2020, 3, 7, 24, 2020, 4, 1)]
-        [InlineData(2020, 2, 2, 24, 2020, 2, 26)]
-        [InlineData(2020, 2, 2, 24, 2020, 2, 26)]
+        [InlineData(2020, 3, 8, 24, 2020, 4, 1)]
+        [InlineData(2020, 2, 20, 24, 2020, 3, 15)]
+        [InlineData(2019, 12, 20, 24, 2020, 1, 13)]
         public void Test_DaySpanDurationGetEndDate_ReturnsCorrect(int startYear, int startMonth, int startDay, int numberDays, int expectedYear, int expectedMonth, int expectedDay)
         {
             BudgetDurationBuilderProvider builderProvider = _builderFactoryFixture.GetService<BudgetDurationBuilderProvider>();
@@ -30,7 +30,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
             DateTime expected = new DateTime(expectedYear, expectedMonth, expectedDay);
             DateTime actual = subject.GetEndDateFromStartDate(startDate);
 
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
         }
 
         public void Dispose()
