@@ -118,5 +118,13 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
             Assert.Equal(expectedDefaultSetAmount, subject.SetAmount);
         }
+
+        [Theory]
+        [InlineData(12, 46, 58)]
+        [InlineData(11, -45, -34)]
+        public void Test_FundBalanceCorrect_WhenAddToFundCalled()
+        {
+
+        }
     }
 }
