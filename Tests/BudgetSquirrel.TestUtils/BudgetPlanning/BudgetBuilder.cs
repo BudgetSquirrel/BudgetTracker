@@ -81,14 +81,6 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             return this;
         }
 
-        public IBudgetBuilder SetDurationStartDayOfMonth(int value)
-        {
-            if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))
-                InitRandomDuration(false);
-            ((MonthlyBookEndedDurationBuilder) _durationBuilder).SetDurationStartDayOfMonth(value);
-            return this;
-        }
-
         public IBudgetBuilder SetDurationEndDayOfMonth(int value)
         {
             if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))

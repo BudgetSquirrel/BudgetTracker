@@ -12,7 +12,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         public DaySpanDurationBuilder()
         {
-
+            InitRandom();
         }
 
         private void InitRandom()

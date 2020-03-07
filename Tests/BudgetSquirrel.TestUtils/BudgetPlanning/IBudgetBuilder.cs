@@ -6,7 +6,6 @@ namespace BudgetSquirrel.TestUtils.Budgeting
     public interface IBudgetBuilder
     {
         IBudgetBuilder SetName(string name);
-        IBudgetBuilder SetDurationStartDayOfMonth(int value);
         IBudgetBuilder SetDurationEndDayOfMonth(int value);
         IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool value);
         IBudgetBuilder SetDurationNumberDays(int value);

@@ -7,8 +7,6 @@ namespace BudgetSquirrel.TestUtils.Budgeting
     public class MonthlyBookEndedDurationBuilder : IBudgetDurationBuilder
     {
         private Faker _faker = new Faker();
-        
-        private int _startDayOfMonth;
 
         private int _endDayOfMonth;
 
@@ -21,18 +19,8 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         private void InitRandom()
         {
-            int startDayOfMonth = _faker.Random.Number(1,10);
-            int daysSpanned = _faker.Random.Number(29,31);
-                
-            _startDayOfMonth = startDayOfMonth;
-            _endDayOfMonth = startDayOfMonth + daysSpanned;
+            _endDayOfMonth = _faker.Random.Number(29,31);
             _rolloverEndDateOnSmallMonths = _faker.Random.Bool();
-        }
-
-        public MonthlyBookEndedDurationBuilder SetDurationStartDayOfMonth(int? value)
-        {
-            _startDayOfMonth = value.Value;
-            return this;
         }
 
         public MonthlyBookEndedDurationBuilder SetDurationEndDayOfMonth(int? value)
@@ -49,7 +37,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
         
         public BudgetDurationBase Build()
         {
-            return new MonthlyBookEndedDuration(Guid.NewGuid(), _startDayOfMonth, _endDayOfMonth, _rolloverEndDateOnSmallMonths);
+            return new MonthlyBookEndedDuration(Guid.NewGuid(), _endDayOfMonth, _rolloverEndDateOnSmallMonths);
         }
     }
 }

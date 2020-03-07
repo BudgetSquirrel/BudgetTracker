@@ -12,15 +12,6 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     {
         /// <summary>
         /// <p>
-        /// The day in the month that each period starts on. For example, if
-        /// this is 3, then each period will begin on the 3rd day of the month
-        /// like so: (January 3rd, February 3rd, March 3rd and so on).
-        /// </p>
-        /// </summary>
-        public int StartDayOfMonth { get; set; }
-
-        /// <summary>
-        /// <p>
         /// The day in the month that each period ends on. For example, if this
         /// is 28, then each period will begin on the 28th day of the month like
         /// so: (January 28th, February 28th, March 28th and so on).
@@ -45,17 +36,19 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public bool RolloverEndDateOnSmallMonths { get; set; }
 
-        public MonthlyBookEndedDuration(int startDay, int endDay, bool rolloverEndDateOnSmallMonths)
+        public MonthlyBookEndedDuration(int endDay, bool rolloverEndDateOnSmallMonths)
         {
-            StartDayOfMonth = startDay;
+            if (endDay < 1 || endDay > 31)
+                throw new InvalidOperationException("Monthly bookended durations must be a valid date (1 - 31)");
             EndDayOfMonth = endDay;
             RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
         }
 
-        public MonthlyBookEndedDuration(Guid id, int startDay, int endDay, bool rolloverEndDateOnSmallMonths)
+        public MonthlyBookEndedDuration(Guid id, int endDay, bool rolloverEndDateOnSmallMonths)
             : base(id)
         {
-            StartDayOfMonth = startDay;
+            if (endDay < 1 || endDay > 31)
+                throw new InvalidOperationException("Monthly bookended durations must be a valid date (1 - 31)");
             EndDayOfMonth = endDay;
             RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
         }
@@ -66,21 +59,21 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             int month = start.Month;
             int day = EndDayOfMonth;
 
-            bool isNextMonth = StartDayOfMonth >= day;
-            if (isNextMonth)
-                month ++;
-
             if (month > 12)
             {
                 month = 1;
                 year ++;
             }
 
-            bool endDateIsInvalid = DateTime.DaysInMonth(year, month) <= day;
-            if (!endDateIsInvalid && RolloverEndDateOnSmallMonths)
+            bool endDateIsInvalid = DateTime.DaysInMonth(year, month) < day;
+            if (endDateIsInvalid && RolloverEndDateOnSmallMonths)
             {
                 month ++;
                 day = 1;
+            }
+            else if (endDateIsInvalid)
+            {
+                day = DateTime.DaysInMonth(year, month);
             }
 
             return new DateTime(year, month, day);
