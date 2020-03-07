@@ -21,5 +21,10 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         {
             NumberDays = numberDays;
         }
+
+        public override DateTime GetEndDateFromStartDate(DateTime start)
+        {
+            return start.AddDays(NumberDays);
+        }
     }
 }

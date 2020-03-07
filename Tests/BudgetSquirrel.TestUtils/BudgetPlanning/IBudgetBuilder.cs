@@ -8,7 +8,6 @@ namespace BudgetSquirrel.TestUtils.Budgeting
         IBudgetBuilder SetName(string name);
         IBudgetBuilder SetDurationStartDayOfMonth(int value);
         IBudgetBuilder SetDurationEndDayOfMonth(int value);
-        IBudgetBuilder SetDurationRolloverStartDateOnSmallMonths(bool value);
         IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool value);
         IBudgetBuilder SetDurationNumberDays(int value);
         IBudgetBuilder SetFundBalance(decimal fundBalance);

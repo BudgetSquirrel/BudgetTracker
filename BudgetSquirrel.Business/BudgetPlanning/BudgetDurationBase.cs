@@ -12,5 +12,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         }
 
         public BudgetDurationBase() {}
+
+        public abstract DateTime GetEndDateFromStartDate(DateTime start);
     }
 }

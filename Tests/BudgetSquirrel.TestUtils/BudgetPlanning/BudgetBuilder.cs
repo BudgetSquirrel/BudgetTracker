@@ -97,14 +97,6 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             return this;
         }
 
-        public IBudgetBuilder SetDurationRolloverStartDateOnSmallMonths(bool value)
-        {
-            if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))
-                InitRandomDuration(false);
-            ((MonthlyBookEndedDurationBuilder) _durationBuilder).SetDurationRolloverStartDateOnSmallMonths(value);
-            return this;
-        }
-
         public IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool value)
         {
             if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))

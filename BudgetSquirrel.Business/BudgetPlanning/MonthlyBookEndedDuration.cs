@@ -30,23 +30,6 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         /// <summary>
         /// <p>
-        /// Determines whether or not to roll the start date over the remaining
-        /// number of days if the date falls outside of the range of days in the
-        /// current month. If this is false, this will instead be set to the
-        /// last day in the month.
-        /// </p>
-        /// <p>
-        /// For example, if this is true, and the start date is 30 and the month
-        /// is February on a leap year (28 days in the month), then the actual
-        /// start date will be set to March 2nd (2 days remaining after 28th).
-        /// However, in the same scenario, if this is false, then the actual
-        /// start date will simply be set to February 28th.
-        /// </p>
-        /// </summary>
-        public bool RolloverStartDateOnSmallMonths { get; set; }
-
-        /// <summary>
-        /// <p>
         /// Determines whether or not to roll the end date over the remaining
         /// number of days if the date falls outside of the range of days in the
         /// current month. If this is false, this will instead be set to the
@@ -62,21 +45,45 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public bool RolloverEndDateOnSmallMonths { get; set; }
 
-        public MonthlyBookEndedDuration(int startDay, int endDay, bool rolloverStartDateOnSmallMonths, bool rolloverEndDateOnSmallMonths)
+        public MonthlyBookEndedDuration(int startDay, int endDay, bool rolloverEndDateOnSmallMonths)
         {
             StartDayOfMonth = startDay;
             EndDayOfMonth = endDay;
-            RolloverStartDateOnSmallMonths = rolloverStartDateOnSmallMonths;
             RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
         }
 
-        public MonthlyBookEndedDuration(Guid id, int startDay, int endDay, bool rolloverStartDateOnSmallMonths, bool rolloverEndDateOnSmallMonths)
+        public MonthlyBookEndedDuration(Guid id, int startDay, int endDay, bool rolloverEndDateOnSmallMonths)
             : base(id)
         {
             StartDayOfMonth = startDay;
             EndDayOfMonth = endDay;
-            RolloverStartDateOnSmallMonths = rolloverStartDateOnSmallMonths;
             RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
+        }
+
+        public override DateTime GetEndDateFromStartDate(DateTime start)
+        {
+            int year = start.Year;
+            int month = start.Month;
+            int day = EndDayOfMonth;
+
+            bool isNextMonth = StartDayOfMonth >= day;
+            if (isNextMonth)
+                month ++;
+
+            if (month > 12)
+            {
+                month = 1;
+                year ++;
+            }
+
+            bool endDateIsInvalid = DateTime.DaysInMonth(year, month) <= day;
+            if (!endDateIsInvalid && RolloverEndDateOnSmallMonths)
+            {
+                month ++;
+                day = 1;
+            }
+
+            return new DateTime(year, month, day);
         }
     }
 }
