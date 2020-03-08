@@ -17,12 +17,6 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         }
         
         [Fact]
-        public void Test_StuffInLogTransactionCommand()
-        {
-            Assert.True(false);
-        }
-
-        [Fact]
         public void Test_BudgetFundUpdated_WhenTransactionLogged()
         {
             decimal startFund = 35;
