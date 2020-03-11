@@ -28,7 +28,14 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public override DateTime GetEndDateFromStartDate(DateTime start)
         {
-            return start.AddDays(NumberDays);
+            /* add one less because the duration means it lasts that
+             * many days... not that you add that many days.
+             * So if the duration is 4 days and start date is on
+             * the 3rd of a month, then you would only add 3 days
+             * for the end date to get the 6th. This way, the period
+             * spans 4 days; 3, 4, 5, 6.
+             */ 
+            return start.AddDays(NumberDays - 1);
         }
     }
 }
