@@ -8,11 +8,13 @@ namespace GateKeeper.Configuration
 {
     public class ConfigurationReader
     {
+        public const string ConfigurationKey = "GateKeeper";
+        
         public static GateKeeperConfig FromAppConfiguration(IConfiguration config)
         {
-            string saltText = config.GetSection("GateKeeper")["Salt"];
+            string saltText = config.GetSection(ConfigurationKey)["Salt"];
             GateKeeperConfig gateKeeperConfig = new GateKeeperConfig() {
-                EncryptionKey = config.GetSection("GateKeeper")["SecretKey"],
+                EncryptionKey = config.GetSection(ConfigurationKey)["SecretKey"],
                 Salt = Encoding.ASCII.GetBytes(saltText)
             };
             return gateKeeperConfig;
