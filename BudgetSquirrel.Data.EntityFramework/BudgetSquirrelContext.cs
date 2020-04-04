@@ -1,4 +1,5 @@
-﻿using BudgetSqurrel.Data.EntityFramework.Models;
+﻿using System;
+using BudgetSqurrel.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetSquirrel.Data.EntityFramework
