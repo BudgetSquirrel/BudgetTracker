@@ -1,4 +1,4 @@
-﻿using BudgetSqurrel.Data.EntityFramework.Models;
+﻿using BudgetSquirrel.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetSquirrel.Data.EntityFramework

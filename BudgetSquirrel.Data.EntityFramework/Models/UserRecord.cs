@@ -1,6 +1,6 @@
 using System;
 
-namespace BudgetSqurrel.Data.EntityFramework.Models
+namespace BudgetSquirrel.Data.EntityFramework.Models
 {
   public class UserRecord
   {
