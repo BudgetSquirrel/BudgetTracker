@@ -37,7 +37,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories.Implementations
 
         public Task<UserRecord> GetByUsername(string username)
         {
-            return this.dbContext.Users.SingleAsync(u => u.Username == username);
+            return this.dbContext.Users.SingleOrDefaultAsync(u => u.Username == username);
         }
     }
 }

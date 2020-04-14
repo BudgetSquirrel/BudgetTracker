@@ -20,6 +20,7 @@ namespace BudgetSquirrel.Business.Auth
 
         public User(Guid id, string username, string firstname, string lastname, string email)
         {
+            Id = id;
             Username = username;
             FirstName = firstname;
             LastName = lastname;
