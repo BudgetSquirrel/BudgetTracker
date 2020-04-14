@@ -5,11 +5,11 @@ using BudgetSquirrel.Data.EntityFramework.Models;
 
 namespace BudgetSquirrel.Data.EntityFramework.Repositories.Interfaces
 {
-    public interface IAccountRepository
+    public interface IUserRepository
     {
         Task<UserRecord> GetUserById();
-        Task<UserRecord> GetUserByUsername();
-        Task<UserRecord> CreateUser(User user);
+        Task<UserRecord> GetByUsername(string username);
+        Task<UserRecord> SaveUser(User user, string password);
         Task DeleteUser(Guid id);
     }
 }
