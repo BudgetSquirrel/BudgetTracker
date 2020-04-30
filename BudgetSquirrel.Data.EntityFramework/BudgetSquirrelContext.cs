@@ -11,6 +11,7 @@ namespace BudgetSquirrel.Data.EntityFramework
         }
 
         public DbSet<UserRecord> Users { get; set; }
+        public DbSet<BudgetDurationRecord> BudgetDurations { get; set; }
         public DbSet<BudgetRecord> Budgets { get; set; }
     }
 }

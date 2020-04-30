@@ -19,5 +19,9 @@ namespace BudgetSquirrel.Data.EntityFramework.Models
     public Guid UserId { get; set; }
 
     public UserRecord User { get; set; }
+
+    public Guid DurationId { get; set; }
+
+    public BudgetDurationRecord Duration { get; set; }
   }
 }
