@@ -23,17 +23,16 @@ namespace BudgetSquirrel.Business.Tests.Tracking
             decimal transactionAmount = 43;
             decimal expectedFund = 78;
             Budget budget = _builderFactoryFixture.BudgetBuilder.SetFundBalance(startFund).Build();
-            LogTransactionCommand command = new LogTransactionCommand();
-
-            command.LogTransaction(
+            LogTransactionCommand command = new LogTransactionCommand(
                 _faker.Company.CompanyName(),
                 transactionAmount,
                 _faker.Lorem.Sentence(),
                 _faker.Date.Past(),
                 "",
                 _faker.Lorem.Sentence(),
-                budget
-            );
+                budget);
+
+            command.Run();
 
             Assert.Equal(expectedFund, budget.FundBalance);
         }
