@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(BudgetSquirrelContext))]
-    [Migration("20200430115038_AddBudgetDuration")]
-    partial class AddBudgetDuration
+    [Migration("20200502151550_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,9 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ParentBudgetId")
+                        .HasColumnType("TEXT");
+
                     b.Property<double?>("PercentAmount")
                         .HasColumnType("REAL");
 
@@ -68,6 +71,8 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DurationId");
+
+                    b.HasIndex("ParentBudgetId");
 
                     b.HasIndex("UserId");
 
@@ -107,6 +112,10 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         .HasForeignKey("DurationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.BudgetRecord", "ParentBudget")
+                        .WithMany("SubBudgets")
+                        .HasForeignKey("ParentBudgetId");
 
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", "User")
                         .WithMany()

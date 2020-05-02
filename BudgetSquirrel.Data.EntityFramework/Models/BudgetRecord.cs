@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace BudgetSquirrel.Data.EntityFramework.Models
 {
@@ -23,5 +24,11 @@ namespace BudgetSquirrel.Data.EntityFramework.Models
     public Guid DurationId { get; set; }
 
     public BudgetDurationRecord Duration { get; set; }
+
+    public Guid? ParentBudgetId { get; set; }
+
+    public BudgetRecord ParentBudget { get; set; }
+
+    public List<BudgetRecord> SubBudgets { get; set; }
   }
 }
