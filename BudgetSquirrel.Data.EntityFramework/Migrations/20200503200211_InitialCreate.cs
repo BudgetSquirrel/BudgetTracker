@@ -46,10 +46,10 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     PercentAmount = table.Column<double>(nullable: true),
                     SetAmount = table.Column<decimal>(nullable: true),
                     FundBalance = table.Column<decimal>(nullable: false),
-                    BudgetStart = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
                     DurationId = table.Column<Guid>(nullable: false),
-                    ParentBudgetId = table.Column<Guid>(nullable: true)
+                    BudgetStart = table.Column<DateTime>(nullable: false),
+                    ParentBudgetId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {

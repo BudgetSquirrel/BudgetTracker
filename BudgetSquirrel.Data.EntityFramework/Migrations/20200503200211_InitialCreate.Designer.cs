@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(BudgetSquirrelContext))]
-    [Migration("20200502151550_InitialCreate")]
+    [Migration("20200503200211_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,27 +18,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1");
 
-            modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("EndDayOfMonth")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("NumberDays")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool?>("RolloverEndDateOnSmallMonths")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BudgetDurations");
-                });
-
-            modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.BudgetRecord", b =>
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,6 +59,26 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("EndDayOfMonth")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("NumberDays")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("RolloverEndDateOnSmallMonths")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BudgetDurations");
+                });
+
             modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", b =>
                 {
                     b.Property<Guid>("Id")
@@ -105,19 +105,19 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.BudgetRecord", b =>
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
-                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", "Duration")
+                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", null)
                         .WithMany()
                         .HasForeignKey("DurationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.BudgetRecord", "ParentBudget")
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "ParentBudget")
                         .WithMany("SubBudgets")
                         .HasForeignKey("ParentBudgetId");
 
-                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", "User")
+                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using BudgetSquirrel.Business.Auth;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -48,6 +50,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public decimal FundBalance { get; private set; }
 
+        public Guid DurationId { get; set; }
+
         /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
@@ -59,6 +63,14 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public DateTime BudgetStart { get; private set; }
 
+        public Budget ParentBudget { get; set; }
+
+        public Guid UserId { get; set; }
+
+        public User User { get; set; }
+
+        public IEnumerable<Budget> SubBudgets { get; set; }
+
         public bool IsPercentBasedBudget
         {
             get
@@ -66,6 +78,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 return this.PercentAmount != null;
             }
         }
+
+        private Budget() {}
 
         public Budget(string name, decimal fundBalance,
             BudgetDurationBase duration, DateTime budgetStart)

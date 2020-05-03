@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Data.EntityFramework.Converters;
@@ -16,9 +17,13 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories.Implementations
         this.dbContext = dbContext;
     }
 
-    public async Task<BudgetRecord> SaveRootBudget(Budget rootBudget, Guid userId)
+    public IQueryable<Budget> GetBudgets()
     {
-      BudgetRecord record = BudgetConverter.ToDataModel(rootBudget);
+      return this.dbContext.Budgets;
+    }
+
+    public async Task<Budget> SaveRootBudget(Budget record, Guid userId)
+    {
       record.UserId = userId;
       this.dbContext.Add(record);
 
