@@ -5,10 +5,29 @@ namespace BudgetSquirrel.Business.Tracking
 {
   public class LogTransactionCommand
   {
-    public Transaction LogTransaction(string vendorName, decimal amount, string description, DateTime date, string checkNumber, string notes, Budget budget)
+    private string vendorName;
+    private decimal amount;
+    private string description;
+    private DateTime date;
+    private string checkNumber;
+    private string notes;
+    private Budget budget;
+
+    public LogTransactionCommand(string vendorName, decimal amount, string description, DateTime date, string checkNumber, string notes, Budget budget)
     {
-      Transaction transaction = new Transaction(vendorName, amount, description, date, checkNumber, notes, budget);
-      budget.AddToFund(amount);
+      this.vendorName = vendorName;
+      this.amount = amount;
+      this.description = description;
+      this.date = date;
+      this.checkNumber = checkNumber;
+      this.notes = notes;
+      this.budget = budget;
+    }
+
+    public Transaction Run()
+    {
+      Transaction transaction = new Transaction(this.vendorName, this.amount, this.description, this.date, this.checkNumber, this.notes, this.budget);
+      this.budget.AddToFund(this.amount);
       return transaction;
     }
   }
