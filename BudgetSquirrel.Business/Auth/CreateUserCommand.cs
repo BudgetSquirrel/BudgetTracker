@@ -8,6 +8,7 @@ namespace BudgetSquirrel.Business.Auth
     private const string newUserRootBudgetName = "My Budget";
     private const decimal newUserRootBudgetFundBalance = 0;
     private const int newUserRootBudgetDurationEndDate = 31;
+    private const bool newUserRootBudgetDurationShouldRollover = false;
 
     private string userName;
     private string firstName;
@@ -35,7 +36,7 @@ namespace BudgetSquirrel.Business.Auth
 
     private Budget CreateNewUserRootBudget()
     {
-      BudgetDurationBase duration = new MonthlyBookEndedDuration(31, false);
+      BudgetDurationBase duration = new MonthlyBookEndedDuration(newUserRootBudgetDurationEndDate, newUserRootBudgetDurationShouldRollover);
       Budget rootBudget = new Budget(newUserRootBudgetName, newUserRootBudgetFundBalance, duration, DateTime.Now);
 
       return rootBudget;
