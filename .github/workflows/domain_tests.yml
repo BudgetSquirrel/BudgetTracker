@@ -22,5 +22,5 @@ jobs:
     - name: Build
       run: dotnet build
     - name: Test
-      working-directory: Tests/
+      working-directory: Tests/BudgetSquirrel.Business.Tests
       run: dotnet test --no-restore --verbosity normal
