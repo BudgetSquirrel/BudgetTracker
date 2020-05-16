@@ -57,24 +57,21 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("Budgets");
                 });
 
-            modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", b =>
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("EndDayOfMonth")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("NumberDays")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool?>("RolloverEndDateOnSmallMonths")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("BudgetDurations");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BudgetDurationBase");
                 });
 
             modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", b =>
@@ -103,9 +100,32 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.DaySpanDuration", b =>
+                {
+                    b.HasBaseType("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase");
+
+                    b.Property<int>("NumberDays")
+                        .HasColumnType("INTEGER");
+
+                    b.HasDiscriminator().HasValue("DaySpanDuration");
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.MonthlyBookEndedDuration", b =>
+                {
+                    b.HasBaseType("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase");
+
+                    b.Property<int>("EndDayOfMonth")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RolloverEndDateOnSmallMonths")
+                        .HasColumnType("INTEGER");
+
+                    b.HasDiscriminator().HasValue("MonthlyBookEndedDuration");
+                });
+
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
-                    b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.BudgetDurationRecord", null)
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase", "Duration")
                         .WithMany()
                         .HasForeignKey("DurationId")
                         .OnDelete(DeleteBehavior.Cascade)

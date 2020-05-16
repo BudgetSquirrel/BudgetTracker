@@ -65,6 +65,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public Budget ParentBudget { get; set; }
 
+        public Guid? ParentBudgetId { get; set; }
+
         public Guid UserId { get; set; }
 
         public User User { get; set; }

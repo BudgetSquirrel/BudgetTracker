@@ -16,15 +16,15 @@ namespace BudgetSquirrel.Data.EntityFramework.Schema
         .Ignore(b => b.User);
 
       modelBuilder.Entity<Budget>()
-        .HasOne(typeof(BudgetDurationRecord))
+        .HasOne(b => b.Duration)
         .WithMany()
-        .HasForeignKey("DurationId");
-      modelBuilder.Entity<Budget>()
-        .Ignore(b => b.Duration);
+        .HasForeignKey(b => b.DurationId);
 
       modelBuilder.Entity<Budget>()
         .HasOne(b => b.ParentBudget)
-        .WithMany(b => b.SubBudgets);
+        .WithMany(b => b.SubBudgets)
+        .HasForeignKey(b => b.ParentBudgetId)
+        .IsRequired(false);
     }
   }
 }

@@ -25,12 +25,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories.Implementations
     public async Task<Budget> SaveRootBudget(Budget record, Guid userId)
     {
       record.UserId = userId;
-
-      BudgetDurationRecord duration = BudgetDurationConverter.ToDataModel(record.Duration);
-      this.dbContext.Add(duration);
-      await this.dbContext.SaveChangesAsync();
-
-      record.DurationId = duration.Id;
       this.dbContext.Add(record);
       await this.dbContext.SaveChangesAsync();
       return record;

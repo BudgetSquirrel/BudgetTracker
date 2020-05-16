@@ -20,8 +20,9 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
     public Task<Budget> Run()
     {
-      return this.asyncQueryService.SingleOrDefaultAsync(this.allBudgets, b => b.UserId == this.userId &&
-                                                                               b.ParentBudget == null);
+      IQueryable<Budget> rootBudgetAsQueryable = this.asyncQueryService.Include(this.allBudgets, b => b.Duration);
+      return this.asyncQueryService.SingleOrDefaultAsync(rootBudgetAsQueryable, b => b.UserId == this.userId &&
+                                                                                     b.ParentBudget == null);
     }
   }
 }

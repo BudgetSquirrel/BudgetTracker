@@ -12,6 +12,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
                     NumberDays = table.Column<int>(nullable: true),
                     EndDayOfMonth = table.Column<int>(nullable: true),
                     RolloverEndDateOnSmallMonths = table.Column<bool>(nullable: true)

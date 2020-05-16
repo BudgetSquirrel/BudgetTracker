@@ -53,6 +53,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             RolloverEndDateOnSmallMonths = rolloverEndDateOnSmallMonths;
         }
 
+        private MonthlyBookEndedDuration() {}
+
         public override DateTime GetEndDateFromStartDate(DateTime start)
         {
             int year = start.Year;
