@@ -92,7 +92,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
                 _faker.Lorem.Word(),
                 _faker.Random.Decimal(),
                 randomDuration,
-                _faker.Date.Past()
+                _faker.Date.Past(),
+                Guid.NewGuid()
             );
 
             decimal expectedDefaultSetAmount = 0;
@@ -111,7 +112,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
                 _faker.Lorem.Word(),
                 _faker.Random.Decimal(),
                 randomDuration,
-                _faker.Date.Past()
+                _faker.Date.Past(),
+                Guid.NewGuid()
             );
 
             decimal expectedDefaultSetAmount = 0;

@@ -11,6 +11,8 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         private Guid Id;
 
+        private Guid _ownerId;
+
         private string _name;
 
         private double? _percentAmount;
@@ -32,6 +34,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
         private void InitRandomized()
         {
             Id = Guid.NewGuid();
+            _ownerId = Guid.NewGuid();
             _name = _faker.Lorem.Word();
             _budgetStart = DateTime.Now;
 
@@ -55,6 +58,12 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             {
                 _durationBuilder = _budgetDurationBuilderProvider.GetBuilder<MonthlyBookEndedDuration>();
             }
+        }
+
+        public IBudgetBuilder SetOwner(Guid userId)
+        {
+            _ownerId = userId;
+            return this;
         }
 
         public IBudgetBuilder SetName(string name)
@@ -114,7 +123,8 @@ namespace BudgetSquirrel.TestUtils.Budgeting
                 _name,
                 _fundBalance,
                 budgetDuration,
-                _budgetStart
+                _budgetStart,
+                _ownerId
             );
             if (_percentAmount != null)
                 budget.SetPercentAmount(_percentAmount.Value);
