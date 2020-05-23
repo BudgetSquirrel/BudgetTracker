@@ -33,7 +33,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         throw new InvalidOperationException("Unauthorized");
       }
       
-      if (this.newName == null)
+      if (this.newName != null)
       {
         budgetToEdit.Name = this.newName;
       }

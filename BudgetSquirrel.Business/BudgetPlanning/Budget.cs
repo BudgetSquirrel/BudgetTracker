@@ -120,6 +120,15 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.SetAmount = 0;
         }
 
+        public void SetOwner(Guid userId)
+        {
+            if (this.UserId != default(Guid))
+            {
+                throw new InvalidOperationException("This budget already has an owner.");
+            }
+            this.UserId = userId;
+        }
+
         public void SetPercentAmount(double percent)
         {
             if (percent < 0 || percent > 1)
