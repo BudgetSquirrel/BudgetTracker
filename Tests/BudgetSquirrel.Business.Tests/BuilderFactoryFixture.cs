@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.TestUtils.Auth;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,8 @@ namespace BudgetSquirrel.Business.Tests
         {
             services.AddTransient<BudgetDurationBuilderProvider>();
             services.AddTransient<IBudgetBuilder, BudgetBuilder>();
+            
+            services.AddScoped<UserFactory>();
         }
 
         public void Dispose()

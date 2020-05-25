@@ -26,6 +26,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             NumberDays = numberDays;
         }
 
+        private DaySpanDuration() {}
+
         public override DateTime GetEndDateFromStartDate(DateTime start)
         {
             /* add one less because the duration means it lasts that

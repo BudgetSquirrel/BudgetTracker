@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using BudgetSquirrel.Business.Auth;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -12,7 +14,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// <summary>
         /// English, user friendly identifier for this <see cref="Budget" />.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Allows the user to calculate the Set amount based on the Parent
@@ -48,16 +50,28 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public decimal FundBalance { get; private set; }
 
+        public Guid DurationId { get; private set; }
+
         /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
-        public BudgetDurationBase Duration { get; set; }
+        public BudgetDurationBase Duration { get; private set; }
 
         /// <summary>
         /// The last start date of the budget's cycle need to determine when the
         /// current budget will end and the next one will be begin
         /// </summary>
         public DateTime BudgetStart { get; private set; }
+
+        public Budget ParentBudget { get; private set; }
+
+        public Guid? ParentBudgetId { get; private set; }
+
+        public Guid UserId { get; private set; }
+
+        public User User { get; private set; }
+
+        public IEnumerable<Budget> SubBudgets { get; private set; }
 
         public bool IsPercentBasedBudget
         {
@@ -67,25 +81,52 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             }
         }
 
+        private Budget() {}
+
         public Budget(string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart)
+            BudgetDurationBase duration, DateTime budgetStart,
+            User user)
         {
-            Name = name;
-            FundBalance = fundBalance;
-            Duration = duration;
-            BudgetStart = budgetStart;
-            SetAmount = 0;
+            this.Name = name;
+            this.FundBalance = fundBalance;
+            this.Duration = duration;
+            this.BudgetStart = budgetStart;
+            this.User = user;
+            this.SetAmount = 0;
+        }
+
+        public Budget(string name, decimal fundBalance,
+            BudgetDurationBase duration, DateTime budgetStart,
+            Guid userId)
+        {
+            this.Name = name;
+            this.FundBalance = fundBalance;
+            this.Duration = duration;
+            this.BudgetStart = budgetStart;
+            this.UserId = userId;
+            this.SetAmount = 0;
         }
 
         public Budget(Guid id, string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart)
+            BudgetDurationBase duration, DateTime budgetStart,
+            Guid userId)
         {
-            Id = id;
-            Name = name;
-            FundBalance = fundBalance;
-            Duration = duration;
-            BudgetStart = budgetStart;
-            SetAmount = 0;
+            this.Id = id;
+            this.Name = name;
+            this.FundBalance = fundBalance;
+            this.Duration = duration;
+            this.BudgetStart = budgetStart;
+            this.UserId = userId;
+            this.SetAmount = 0;
+        }
+
+        public void SetOwner(Guid userId)
+        {
+            if (this.UserId != default(Guid))
+            {
+                throw new InvalidOperationException("This budget already has an owner.");
+            }
+            this.UserId = userId;
         }
 
         public void SetPercentAmount(double percent)
@@ -107,6 +148,11 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         public void AddToFund(decimal amount)
         {
             this.FundBalance += amount;
+        }
+
+        public bool IsOwnedBy(User user)
+        {
+            return this.UserId == user.Id;
         }
     }
 }

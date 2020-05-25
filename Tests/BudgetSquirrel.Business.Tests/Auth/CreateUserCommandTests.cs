@@ -8,21 +8,25 @@ namespace BudgetSquirrel.Business.Tests.Auth
   public class CreateUserCommandTests : IDisposable
   {
     private BuilderFactoryFixture _builderFactoryFixture;
+    private TestServices _services;
 
     public CreateUserCommandTests()
     {
         _builderFactoryFixture = new BuilderFactoryFixture();
+        _services = new TestServices();
     }
 
     [Fact]
     public void Test_CreateUser_SetsPropertiesCorrectly()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
       string username = "ianmann56";
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       Assert.Equal(userRootBudgetRelationship.User.FirstName, firstName);
       Assert.Equal(userRootBudgetRelationship.User.LastName, lastName);
@@ -33,12 +37,14 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_CreatesRootBudget()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
       string username = "ianmann56";
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       Assert.NotNull(userRootBudgetRelationship.RootBudget);
@@ -47,6 +53,8 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_SetsRootBudgetBalanceTo0()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
@@ -54,7 +62,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
 
       decimal expectedFundBalance = 0;
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       Assert.Equal(userRootBudgetRelationship.RootBudget.FundBalance, expectedFundBalance);
@@ -63,6 +71,8 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_SetsRootBudgetSetAmountTo0()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
@@ -70,7 +80,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
 
       decimal expectedSetAmount = 0;
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       Assert.Equal(userRootBudgetRelationship.RootBudget.SetAmount, expectedSetAmount);
@@ -79,12 +89,14 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_SetsRootBudgetDurationToMonthlyBookEndedDuration()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
       string username = "ianmann56";
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       Assert.IsAssignableFrom<MonthlyBookEndedDuration>(userRootBudgetRelationship.RootBudget.Duration);
@@ -93,6 +105,8 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_SetsRootBudgetDurationToEndOn31st()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
@@ -100,7 +114,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
 
       int expectedDurationEndDay = 31;
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Duration;
@@ -110,6 +124,8 @@ namespace BudgetSquirrel.Business.Tests.Auth
     [Fact]
     public void Test_CreateUser_SetsRootBudgetDurationRolloverToFalse()
     {
+      IAsyncQueryService asyncQueryService = _services.GetService<IAsyncQueryService>();
+
       string firstName = "Ian";
       string lastName = "Kirkpatrick";
       string email = "ianmann56@gmail.com";
@@ -117,7 +133,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
 
       bool expectedDurationRollover = false;
 
-      CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
+      CreateUserCommand command = new CreateUserCommand(asyncQueryService, username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
       MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Duration;

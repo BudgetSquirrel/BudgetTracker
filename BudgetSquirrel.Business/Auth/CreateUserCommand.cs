@@ -5,6 +5,7 @@ namespace BudgetSquirrel.Business.Auth
 {
   public class CreateUserCommand
   {
+    private IAsyncQueryService asyncQueryService;
     private const string newUserRootBudgetName = "My Budget";
     private const decimal newUserRootBudgetFundBalance = 0;
     private const int newUserRootBudgetDurationEndDate = 31;
@@ -15,8 +16,9 @@ namespace BudgetSquirrel.Business.Auth
     private string lastName;
     private string email;
 
-    public CreateUserCommand(string username, string firstName, string lastName, string email)
+    public CreateUserCommand(IAsyncQueryService asyncQueryService, string username, string firstName, string lastName, string email)
     {
+      this.asyncQueryService = asyncQueryService;
       this.userName = username;
       this.firstName = firstName;
       this.lastName = lastName;
@@ -29,15 +31,15 @@ namespace BudgetSquirrel.Business.Auth
                             this.firstName,
                             this.lastName,
                             this.email);
-      Budget rootBudget = CreateNewUserRootBudget();
+      Budget rootBudget = CreateNewUserRootBudget(user);
       UserRootBudgetRelationship userWithBudget = new UserRootBudgetRelationship(user, rootBudget);
       return userWithBudget;
     }
 
-    private Budget CreateNewUserRootBudget()
+    private Budget CreateNewUserRootBudget(User user)
     {
       BudgetDurationBase duration = new MonthlyBookEndedDuration(newUserRootBudgetDurationEndDate, newUserRootBudgetDurationShouldRollover);
-      Budget rootBudget = new Budget(newUserRootBudgetName, newUserRootBudgetFundBalance, duration, DateTime.Now);
+      Budget rootBudget = new Budget(newUserRootBudgetName, newUserRootBudgetFundBalance, duration, DateTime.Now, user);
 
       return rootBudget;
     }
