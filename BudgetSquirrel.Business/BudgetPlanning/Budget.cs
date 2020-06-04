@@ -120,6 +120,17 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.SetAmount = 0;
         }
 
+        public Budget(Budget parentBudget, string name, decimal fundBalance)
+        {
+            this.ParentBudgetId = parentBudget.Id;
+            this.DurationId = parentBudget.DurationId;
+            this.BudgetStart = parentBudget.BudgetStart;
+            this.UserId = parentBudget.UserId;
+            this.Name = name;
+            this.FundBalance = fundBalance;
+            this.SetAmount = 0;
+        }
+
         public void SetOwner(Guid userId)
         {
             if (this.UserId != default(Guid))
