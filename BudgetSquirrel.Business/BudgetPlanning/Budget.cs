@@ -71,7 +71,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public User User { get; private set; }
 
-        public IEnumerable<Budget> SubBudgets { get; private set; }
+        public IEnumerable<Budget> SubBudgets { get; set; }
 
         public bool IsPercentBasedBudget
         {

@@ -7,24 +7,24 @@ namespace BudgetSquirrel.Business.BudgetPlanning
   public class CreateBudgetCommand
   {
     private IUnitOfWork unitOfWork;
-    IRepository<Budget> budgetRepository;
-    private Budget parentBudget;
+    private Guid parentBudgetId;
     private string name;
     private decimal setAmount;
 
-    public CreateBudgetCommand(IUnitOfWork unitOfWork, IRepository<Budget> budgetRepository, Budget parentBudget, string name, decimal setAmount)
+    public CreateBudgetCommand(IUnitOfWork unitOfWork, Guid parentBudgetId, string name, decimal setAmount)
     {
       this.unitOfWork = unitOfWork;
-      this.budgetRepository = budgetRepository;
-      this.parentBudget = parentBudget;
+      this.parentBudgetId = parentBudgetId;
       this.name = name;
       this.setAmount = setAmount;
     }
 
     public async Task<Guid> Run()
     {
-      Budget budget = new Budget(this.parentBudget, this.name, 0);
-      this.budgetRepository.Add(budget);
+      IRepository<Budget> budgetRepo = this.unitOfWork.GetRepository<Budget>();
+      Budget parentBudget = budgetRepo.GetAll().First(b => b.Id == this.parentBudgetId);
+      Budget budget = new Budget(parentBudget, this.name, 0);
+      this.unitOfWork.GetRepository<Budget>().Add(budget);
       await this.unitOfWork.SaveChangesAsync();
       return budget.Id;
     }
