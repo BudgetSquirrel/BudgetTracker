@@ -23,7 +23,10 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     {
       IRepository<Budget> budgetRepo = this.unitOfWork.GetRepository<Budget>();
       Budget parentBudget = budgetRepo.GetAll().First(b => b.Id == this.parentBudgetId);
+
       Budget budget = new Budget(parentBudget, this.name, 0);
+      budget.SetFixedAmount(this.setAmount);
+
       this.unitOfWork.GetRepository<Budget>().Add(budget);
       await this.unitOfWork.SaveChangesAsync();
       return budget.Id;
