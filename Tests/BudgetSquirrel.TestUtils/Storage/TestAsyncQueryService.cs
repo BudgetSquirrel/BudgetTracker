@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -26,14 +27,14 @@ namespace BudgetSquirrel.TestUtils.Storage
       return source;
     }
 
-    public Task SaveChangesAsync()
-    {
-      throw new NotImplementedException();
-    }
-
     public Task<T> SingleOrDefaultAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate)
     {
-      throw new NotImplementedException();
+      return Task.FromResult(source.SingleOrDefault(predicate));
+    }
+
+    public Task<List<T>> ToListAsync<T>(IQueryable<T> source)
+    {
+      return Task.FromResult(source.ToList());
     }
 
     /// <summary>
