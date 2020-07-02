@@ -71,7 +71,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public User User { get; private set; }
 
-        public IEnumerable<Budget> SubBudgets { get; private set; }
+        public IEnumerable<Budget> SubBudgets { get; set; }
 
         public bool IsPercentBasedBudget
         {
@@ -117,6 +117,17 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.Duration = duration;
             this.BudgetStart = budgetStart;
             this.UserId = userId;
+            this.SetAmount = 0;
+        }
+
+        public Budget(Budget parentBudget, string name, decimal fundBalance)
+        {
+            this.ParentBudgetId = parentBudget.Id;
+            this.DurationId = parentBudget.DurationId;
+            this.BudgetStart = parentBudget.BudgetStart;
+            this.UserId = parentBudget.UserId;
+            this.Name = name;
+            this.FundBalance = fundBalance;
             this.SetAmount = 0;
         }
 

@@ -8,16 +8,22 @@ namespace BudgetSquirrel.Business.BudgetPlanning
   public class EditRootBudgetCommand
   {
     private IAsyncQueryService asyncQueryService;
-    private IQueryable<Budget> budgets;
+    private IUnitOfWork unitOfWork;
     private User editor;
     private Guid budgetId;
     private string newName;
     private decimal? newSetAmount;
 
-    public EditRootBudgetCommand(IAsyncQueryService asyncQueryService, IQueryable<Budget> budgets, Guid id, User editor, string name, decimal? setAmount)
+    public EditRootBudgetCommand(
+      IAsyncQueryService asyncQueryService,
+      IUnitOfWork unitOfWork,
+      Guid id,
+      User editor,
+      string name,
+      decimal? setAmount)
     {
       this.asyncQueryService = asyncQueryService;
-      this.budgets = budgets;
+      this.unitOfWork = unitOfWork;
       this.budgetId = id;
       this.editor = editor;
       this.newName = name;
@@ -26,7 +32,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
     public async Task Run()
     {
-      Budget budgetToEdit = await this.asyncQueryService.SingleOrDefaultAsync(this.budgets, b => b.Id == this.budgetId);
+      IQueryable<Budget> budgets = this.unitOfWork.GetRepository<Budget>().GetAll();
+      Budget budgetToEdit = await this.asyncQueryService.SingleOrDefaultAsync(budgets, b => b.Id == this.budgetId);
 
       if (!budgetToEdit.IsOwnedBy(editor))
       {
@@ -42,7 +49,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         budgetToEdit.SetFixedAmount(this.newSetAmount.Value);
       }
 
-      await this.asyncQueryService.SaveChangesAsync();
+      await this.unitOfWork.SaveChangesAsync();
     }
   }
 }
