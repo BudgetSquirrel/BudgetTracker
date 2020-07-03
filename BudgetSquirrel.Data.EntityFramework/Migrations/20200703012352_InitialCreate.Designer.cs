@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(BudgetSquirrelContext))]
-    [Migration("20200516175949_InitialCreate")]
+    [Migration("20200703012352_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,8 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 
                     b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "ParentBudget")
                         .WithMany("SubBudgets")
-                        .HasForeignKey("ParentBudgetId");
+                        .HasForeignKey("ParentBudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()

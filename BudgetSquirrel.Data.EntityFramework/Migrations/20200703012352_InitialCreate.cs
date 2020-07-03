@@ -66,7 +66,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         column: x => x.ParentBudgetId,
                         principalTable: "Budgets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Budgets_Users_UserId",
                         column: x => x.UserId,

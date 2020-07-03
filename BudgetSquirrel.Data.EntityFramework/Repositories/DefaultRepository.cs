@@ -15,6 +15,8 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories
 
     public void Add(TModel instance) => this.context.Add(instance);
 
+    public void Remove(TModel instance) => this.context.Remove(instance);
+
     public IQueryable<TModel> GetAll()
     {
       return this.context.Set<TModel>();

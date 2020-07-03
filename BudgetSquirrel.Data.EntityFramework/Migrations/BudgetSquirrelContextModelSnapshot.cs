@@ -133,7 +133,8 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 
                     b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "ParentBudget")
                         .WithMany("SubBudgets")
-                        .HasForeignKey("ParentBudgetId");
+                        .HasForeignKey("ParentBudgetId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()
