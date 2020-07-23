@@ -26,6 +26,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public async Task Run()
     {
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
+      IRepository<BudgetDurationBase> budgetDurationRepository = this.unitOfWork.GetRepository<BudgetDurationBase>();
       Budget budgetOfInterest = await this.asyncQueryService.SingleOrDefaultAsync(
         this.asyncQueryService.Include(
           budgetRepository.GetAll(), b => b.Duration),
@@ -35,18 +36,27 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       {
         throw new InvalidOperationException("Unauthorized");
       }
-      if (!(budgetOfInterest.Duration is MonthlyBookEndedDuration))
-      {
-        throw new InvalidOperationException("Cannot apply monthly bookended duration edits to a duration of another duration type.");
-      }
       if (this.endDayOfMonth < 1 || this.endDayOfMonth > 31)
       {
         throw new ArgumentException("End day of month for monthly bookended durations must be between 1 and 31 (inclusive)");
       }
 
-      MonthlyBookEndedDuration monthlyBookEndedDuration = (MonthlyBookEndedDuration) budgetOfInterest.Duration;
-      monthlyBookEndedDuration.EndDayOfMonth = this.endDayOfMonth;
-      monthlyBookEndedDuration.RolloverEndDateOnSmallMonths = this.rolloverEndDateOnShortMonths;
+      MonthlyBookEndedDuration monthlyBookEndedDuration;
+      if (!(budgetOfInterest.Duration is MonthlyBookEndedDuration))
+      {
+        budgetDurationRepository.Remove(budgetOfInterest.Duration);
+        await this.unitOfWork.SaveChangesAsync();
+
+        monthlyBookEndedDuration = new MonthlyBookEndedDuration(this.endDayOfMonth, this.rolloverEndDateOnShortMonths);
+        budgetDurationRepository.Add(monthlyBookEndedDuration);
+        budgetOfInterest.DurationId = monthlyBookEndedDuration.Id;
+      }
+      else
+      {
+        monthlyBookEndedDuration = (MonthlyBookEndedDuration) budgetOfInterest.Duration;
+        monthlyBookEndedDuration.EndDayOfMonth = this.endDayOfMonth;
+        monthlyBookEndedDuration.RolloverEndDateOnSmallMonths = this.rolloverEndDateOnShortMonths;
+      }
 
       await this.unitOfWork.SaveChangesAsync();
     }

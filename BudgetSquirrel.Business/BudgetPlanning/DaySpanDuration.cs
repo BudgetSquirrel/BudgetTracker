@@ -9,7 +9,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// Specifies the number of days that this budget will span.
         /// </p>
         /// </summary>
-        public int NumberDays { get; private set; }
+        public int NumberDays { get; set; }
 
         public DaySpanDuration(int numberDays)
         {
