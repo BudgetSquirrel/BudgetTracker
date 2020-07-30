@@ -39,13 +39,15 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       if (!(budgetOfInterest.Duration is DaySpanDuration))
       {
         daySpanDuration = new DaySpanDuration(budgetOfInterest.DurationId, this.numberDays);
-        budgetDurationRepository.Update(daySpanDuration);
         budgetOfInterest.Duration = daySpanDuration;
       }
+      else
+      {
+        daySpanDuration = (DaySpanDuration) budgetOfInterest.Duration;
+        daySpanDuration.NumberDays = this.numberDays;
+      }
 
-      DaySpanDuration monthlyBookEndedDuration = (DaySpanDuration) budgetOfInterest.Duration;
-      monthlyBookEndedDuration.NumberDays = this.numberDays;
-
+      budgetDurationRepository.Update(daySpanDuration);
       await this.unitOfWork.SaveChangesAsync();
     }
   }

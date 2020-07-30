@@ -45,7 +45,6 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       if (!(budgetOfInterest.Duration is MonthlyBookEndedDuration))
       {
         monthlyBookEndedDuration = new MonthlyBookEndedDuration(budgetOfInterest.DurationId, this.endDayOfMonth, this.rolloverEndDateOnShortMonths);
-        budgetDurationRepository.Update(monthlyBookEndedDuration);
         budgetOfInterest.Duration = monthlyBookEndedDuration;
       }
       else
@@ -55,6 +54,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         monthlyBookEndedDuration.RolloverEndDateOnSmallMonths = this.rolloverEndDateOnShortMonths;
       }
 
+      budgetDurationRepository.Update(monthlyBookEndedDuration);
       await this.unitOfWork.SaveChangesAsync();
     }
   }
