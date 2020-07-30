@@ -13,11 +13,13 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories
       this.context = context;
     }
 
-    public void Add(TModel instance) => this.context.Add(instance);
+    public virtual void Add(TModel instance) => this.context.Set<TModel>().Add(instance);
 
-    public void Remove(TModel instance) => this.context.Remove(instance);
+    public virtual void Remove(TModel instance) => this.context.Set<TModel>().Remove(instance);
 
-    public IQueryable<TModel> GetAll()
+    public virtual void Update(TModel instance) => this.context.Set<TModel>().Update(instance);
+
+    public virtual IQueryable<TModel> GetAll()
     {
       return this.context.Set<TModel>();
     }

@@ -55,7 +55,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// <summary>
         /// The duration the budget will be per cycle in months.
         /// </summary>
-        public BudgetDurationBase Duration { get; private set; }
+        public BudgetDurationBase Duration { get; set; }
 
         /// <summary>
         /// The last start date of the budget's cycle need to determine when the

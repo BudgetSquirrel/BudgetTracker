@@ -38,13 +38,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       DaySpanDuration daySpanDuration;
       if (!(budgetOfInterest.Duration is DaySpanDuration))
       {
-        budgetDurationRepository.Remove(budgetOfInterest.Duration);
-        budgetOfInterest.DurationId = default(Guid); // Need to figure a better way to switch sub types.
-
-        await this.unitOfWork.SaveChangesAsync();
-
-        daySpanDuration = new DaySpanDuration(this.numberDays);
-        budgetDurationRepository.Add(daySpanDuration);
+        daySpanDuration = new DaySpanDuration(budgetOfInterest.DurationId, this.numberDays);
+        budgetDurationRepository.Update(daySpanDuration);
         budgetOfInterest.Duration = daySpanDuration;
       }
 
