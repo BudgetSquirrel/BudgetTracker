@@ -24,6 +24,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Schema
         .HasOne(b => b.ParentBudget)
         .WithMany(b => b.SubBudgets)
         .HasForeignKey(b => b.ParentBudgetId)
+        .OnDelete(DeleteBehavior.Cascade)
         .IsRequired(false);
     }
   }
