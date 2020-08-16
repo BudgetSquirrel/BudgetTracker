@@ -9,6 +9,8 @@ namespace BudgetSquirrel.Business
 
     void Remove(TModel instance);
 
+    void Update(TModel instance);
+
     IQueryable<TModel> GetAll();
   }
 }

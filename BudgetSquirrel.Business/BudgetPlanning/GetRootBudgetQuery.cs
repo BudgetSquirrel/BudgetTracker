@@ -30,8 +30,9 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
     private async Task<IEnumerable<Budget>> LoadBudgetTree(Budget root)
     {
-      IQueryable<Budget> subBudgets = this.unitOfWork.GetRepository<Budget>().GetAll()
-                                                               .Where(b => b.ParentBudgetId == root.Id);
+      IQueryable<Budget> budgets = this.unitOfWork.GetRepository<Budget>().GetAll();
+      IQueryable<Budget> subBudgets = this.asyncQueryService.Include(budgets, b => b.Duration)
+                                                            .Where(b => b.ParentBudgetId == root.Id);
       List<Budget> loadedBudgets = await this.asyncQueryService.ToListAsync(subBudgets);
 
       foreach (Budget subBudget in loadedBudgets)

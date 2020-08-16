@@ -32,7 +32,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
     public async Task Run()
     {
-      IQueryable<Budget> budgets = this.unitOfWork.GetRepository<Budget>().GetAll();
+      IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
+      IQueryable<Budget> budgets = budgetRepository.GetAll();
       Budget budgetToEdit = await this.asyncQueryService.SingleOrDefaultAsync(budgets, b => b.Id == this.budgetId);
 
       if (!budgetToEdit.IsOwnedBy(editor))
@@ -49,6 +50,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         budgetToEdit.SetFixedAmount(this.newSetAmount.Value);
       }
 
+      budgetRepository.Update(budgetToEdit);
       await this.unitOfWork.SaveChangesAsync();
     }
   }
