@@ -21,7 +21,7 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         public void Test_CreatedBudget_CorrectEndDate_WhenNextPeriodIsDue()
         {
             int durationLength = 29;
-            BudgetPeriod lastPeriod = new BudgetPeriod(new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
+            BudgetPeriod lastPeriod = new BudgetPeriod(_builderFactoryFixture.BudgetBuilder.Build(), new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
             DateTime dateToTest = lastPeriod.EndDate.AddDays(6);
             DateTime expectedEndDate = lastPeriod.EndDate.AddDays(durationLength);
 
@@ -41,7 +41,7 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         public void Test_CreatedBudget_ReturnsNothing_WhenNextPeriodIsNotDue()
         {
             int durationLength = 29;
-            BudgetPeriod lastPeriod = new BudgetPeriod(new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
+            BudgetPeriod lastPeriod = new BudgetPeriod(_builderFactoryFixture.BudgetBuilder.Build(), new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
             DateTime dateToTest = lastPeriod.StartDate.AddDays(6);
 
             BudgetDurationBase duration = ((DaySpanDurationBuilder) _builderFactoryFixture.GetService<BudgetDurationBuilderProvider>()
@@ -61,7 +61,7 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         {
             int durationLength = 29;
             int expectedNumDurationsCreated = 3;
-            BudgetPeriod lastPeriod = new BudgetPeriod(new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
+            BudgetPeriod lastPeriod = new BudgetPeriod(_builderFactoryFixture.BudgetBuilder.Build(), new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
             DateTime dateToTest = lastPeriod.EndDate.AddDays(durationLength * expectedNumDurationsCreated);
 
             BudgetDurationBase duration = ((DaySpanDurationBuilder) _builderFactoryFixture.GetService<BudgetDurationBuilderProvider>()
@@ -81,7 +81,7 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         {
             int durationLength = 4;
             int expectedNumDurationsCreated = 3;
-            BudgetPeriod lastPeriod = new BudgetPeriod(new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
+            BudgetPeriod lastPeriod = new BudgetPeriod(_builderFactoryFixture.BudgetBuilder.Build(), new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
             DateTime dateToTest = lastPeriod.EndDate.AddDays(durationLength * expectedNumDurationsCreated);
             DateTime secondPeriodExpectedEndDate = lastPeriod.EndDate.AddDays(durationLength * 2);
 
@@ -104,7 +104,7 @@ namespace BudgetSquirrel.Business.Tests.Tracking
         {
             int durationLength = 4;
             int expectedNumDurationsCreated = 3;
-            BudgetPeriod lastPeriod = new BudgetPeriod(new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
+            BudgetPeriod lastPeriod = new BudgetPeriod(_builderFactoryFixture.BudgetBuilder.Build(), new DateTime(2020, 3, 1), new DateTime(2020, 3, 30));
             DateTime dateToTest = lastPeriod.EndDate.AddDays(durationLength * expectedNumDurationsCreated);
             DateTime firstPeriodExpectedEndDate = lastPeriod.EndDate.AddDays(durationLength);
 

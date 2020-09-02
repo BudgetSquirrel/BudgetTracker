@@ -75,6 +75,31 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BudgetPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    BudgetId = table.Column<Guid>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BudgetPeriods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BudgetPeriods_Budgets_BudgetId",
+                        column: x => x.BudgetId,
+                        principalTable: "Budgets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BudgetPeriods_BudgetId",
+                table: "BudgetPeriods",
+                column: "BudgetId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_DurationId",
                 table: "Budgets",
@@ -93,6 +118,9 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BudgetPeriods");
+
             migrationBuilder.DropTable(
                 name: "Budgets");
 

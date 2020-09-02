@@ -59,26 +59,25 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         {
             int year = start.Year;
             int month = start.Month;
-            int day = EndDayOfMonth;
+            int endDay = EndDayOfMonth;
 
-            if (month > 12)
+            if (endDay <= start.Day)
             {
-                month = 1;
-                year ++;
+                month ++;
             }
 
-            bool endDateIsInvalid = DateTime.DaysInMonth(year, month) < day;
+            bool endDateIsInvalid = DateTime.DaysInMonth(year, month) < endDay;
             if (endDateIsInvalid && RolloverEndDateOnSmallMonths)
             {
                 month ++;
-                day = 1;
+                endDay = 1;
             }
             else if (endDateIsInvalid)
             {
-                day = DateTime.DaysInMonth(year, month);
+                endDay = DateTime.DaysInMonth(year, month);
             }
 
-            return new DateTime(year, month, day);
+            return new DateTime(year, month, endDay);
         }
     }
 }
