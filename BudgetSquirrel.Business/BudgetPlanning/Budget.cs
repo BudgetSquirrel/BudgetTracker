@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BudgetSquirrel.Business.Auth;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
@@ -30,7 +31,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// can be assumed to have a calculated balance of the sum of all of
         /// it's direct sub-balances (which may also have calculated balances).
         /// </summary>
-        public decimal? SetAmount { get; private set; }
+        public decimal SetAmount { get; private set; }
 
         /// <summary>
         /// The amount that is currently available in the fund attached to this
@@ -80,6 +81,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 return this.PercentAmount != null;
             }
         }
+
+        public decimal SubBudgetTotalPlannedAmount => this.SubBudgets.Sum(b => b.SetAmount);
 
         private Budget() {}
 
@@ -138,14 +141,6 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 throw new InvalidOperationException("This budget already has an owner.");
             }
             this.UserId = userId;
-        }
-
-        public void SetPercentAmount(double percent)
-        {
-            if (percent < 0 || percent > 1)
-                throw new InvalidOperationException("Can only set percent amount of budget to a number between 0 and 1 inclusive.");
-            SetAmount = null;
-            PercentAmount = percent;
         }
 
         public void SetFixedAmount(decimal amount)
