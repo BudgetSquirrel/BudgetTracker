@@ -143,6 +143,14 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.UserId = userId;
         }
 
+        public void SetPercentAmount(double percent)
+        {
+            if (percent < 0 || percent > 1)
+                throw new InvalidOperationException("Can only set percent amount of budget to a number between 0 and 1 inclusive.");
+            PercentAmount = percent;
+            this.SetAmount = ((decimal)percent) * this.ParentBudget.SetAmount;
+        }
+
         public void SetFixedAmount(decimal amount)
         {
             if (amount < 0)
