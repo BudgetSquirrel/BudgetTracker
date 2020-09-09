@@ -5,6 +5,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 {
     public interface IBudgetBuilder
     {
+        IBudgetBuilder SetParentBudget(Budget parentBudget);
         IBudgetBuilder SetOwner(Guid userId);
         IBudgetBuilder SetName(string name);
         IBudgetBuilder SetDurationEndDayOfMonth(int value);
