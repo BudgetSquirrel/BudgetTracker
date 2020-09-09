@@ -1,25 +1,23 @@
 using System;
+using BudgetSquirrel.Business.BudgetPlanning;
 
 namespace BudgetSquirrel.Business.Tracking
 {
     public class BudgetPeriod
     {
         public Guid Id { get; private set; }
-
+        public Guid BudgetId { get; private set; }
+        public Budget Budget { get; private set; }
         public DateTime StartDate { get; private set; }
-
         public DateTime EndDate { get; private set; }
 
-        public BudgetPeriod(DateTime startDate, DateTime endDate)
+        public BudgetPeriod(Budget budget, DateTime startDate, DateTime endDate)
         {
-            StartDate = startDate;
-            EndDate = endDate;
+            this.Budget = budget;
+            this.StartDate = startDate;
+            this.EndDate = endDate;
         }
 
-        public BudgetPeriod(Guid id, DateTime startDate, DateTime endDate)
-            : this(startDate, endDate)
-        {
-            Id = id;
-        }
+        private BudgetPeriod() {}
     }
 }

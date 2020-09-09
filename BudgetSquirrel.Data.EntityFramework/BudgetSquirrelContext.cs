@@ -1,3 +1,4 @@
+using BudgetSquirrel.Business.Tracking;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Data.EntityFramework.Models;
 using BudgetSquirrel.Data.EntityFramework.Schema;
@@ -16,6 +17,7 @@ namespace BudgetSquirrel.Data.EntityFramework
         public DbSet<BudgetDurationBase> BudgetDurations { get; set; }
         public DbSet<MonthlyBookEndedDuration> MonthlyBookEndedDurations { get; set; }
         public DbSet<DaySpanDuration> DaySpanDurations { get; set; }
+        public DbSet<BudgetPeriod> BudgetPeriods { get; set; }
         public DbSet<Budget> Budgets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

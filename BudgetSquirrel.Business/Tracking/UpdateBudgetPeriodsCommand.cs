@@ -16,7 +16,7 @@ namespace BudgetSquirrel.Business.Tracking
             {
                 DateTime newStartDate = lastPeriod?.EndDate.AddDays(1) ?? date;
                 DateTime newEndDate = duration.GetEndDateFromStartDate(newStartDate);
-                BudgetPeriod nextPeriod = new BudgetPeriod(newStartDate, newEndDate);
+                BudgetPeriod nextPeriod = new BudgetPeriod(lastPeriod.Budget, newStartDate, newEndDate);
                 periods.Add(nextPeriod);
 
                 IEnumerable<BudgetPeriod> periodsUpToDate = Run(nextPeriod, duration, date);

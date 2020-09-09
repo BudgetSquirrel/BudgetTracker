@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.Business.Tracking;
 using BudgetSquirrel.Business.BudgetPlanning;
 
 namespace BudgetSquirrel.Business.Auth
@@ -31,17 +32,18 @@ namespace BudgetSquirrel.Business.Auth
                             this.firstName,
                             this.lastName,
                             this.email);
-      Budget rootBudget = CreateNewUserRootBudget(user);
-      UserRootBudgetRelationship userWithBudget = new UserRootBudgetRelationship(user, rootBudget);
+      (Budget rootBudget, BudgetPeriod firstPeriod) budgetWithPeriod = CreateNewUserRootBudget(user);
+      UserRootBudgetRelationship userWithBudget = new UserRootBudgetRelationship(user, budgetWithPeriod.rootBudget, budgetWithPeriod.firstPeriod);
       return userWithBudget;
     }
 
-    private Budget CreateNewUserRootBudget(User user)
+    private (Budget, BudgetPeriod) CreateNewUserRootBudget(User user)
     {
       BudgetDurationBase duration = new MonthlyBookEndedDuration(newUserRootBudgetDurationEndDate, newUserRootBudgetDurationShouldRollover);
       Budget rootBudget = new Budget(newUserRootBudgetName, newUserRootBudgetFundBalance, duration, DateTime.Now, user);
+      BudgetPeriod firstBudgetPeriod = new BudgetPeriod(rootBudget, rootBudget.BudgetStart, duration.GetEndDateFromStartDate(rootBudget.BudgetStart));
 
-      return rootBudget;
+      return (rootBudget, firstBudgetPeriod);
     }
   }
 }

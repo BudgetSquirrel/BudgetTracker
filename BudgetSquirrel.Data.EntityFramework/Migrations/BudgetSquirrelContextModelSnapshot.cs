@@ -16,6 +16,28 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1");
 
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPeriods.BudgetPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.ToTable("BudgetPeriods");
+                });
+
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
                     b.Property<Guid>("Id")
@@ -121,6 +143,15 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("MonthlyBookEndedDuration");
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPeriods.BudgetPeriod", b =>
+                {
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "Budget")
+                        .WithMany()
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
