@@ -13,6 +13,8 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         private Guid _ownerId;
 
+        private Budget _parentBudget;
+
         private string _name;
 
         private double? _percentAmount;
@@ -58,6 +60,12 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             {
                 _durationBuilder = _budgetDurationBuilderProvider.GetBuilder<MonthlyBookEndedDuration>();
             }
+        }
+
+        public IBudgetBuilder SetParentBudget(Budget parentBudget)
+        {
+            _parentBudget = parentBudget;
+            return this;
         }
 
         public IBudgetBuilder SetOwner(Guid userId)
@@ -116,19 +124,27 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         public Budget Build()
         {
-            BudgetDurationBase budgetDuration = _durationBuilder.Build();
-
-            Budget budget = new Budget(
-                Guid.NewGuid(),
-                _name,
-                _fundBalance,
-                budgetDuration,
-                _budgetStart,
-                _ownerId
-            );
-            if (_percentAmount != null)
-                budget.SetPercentAmount(_percentAmount.Value);
+            Budget budget = null;
+            if (_parentBudget != null)
+            {
+                budget = new Budget(_parentBudget, _name, _fundBalance);
+                budget.LoadParentBudget(_parentBudget);
+                if (_percentAmount != null)
+                    budget.SetPercentAmount(_percentAmount.Value);
+            }
             else
+            {
+                BudgetDurationBase budgetDuration = _durationBuilder.Build();
+                budget = new Budget(
+                    Guid.NewGuid(),
+                    _name,
+                    _fundBalance,
+                    budgetDuration,
+                    _budgetStart,
+                    _ownerId
+                );
+            }
+            if (_setAmount != null)
                 budget.SetFixedAmount(_setAmount.Value);
             
             return budget;

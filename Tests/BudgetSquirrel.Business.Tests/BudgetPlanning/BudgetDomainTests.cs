@@ -25,6 +25,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsTrue_WhenPercentAmountSet()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
+                                .SetParentBudget(
+                                    _builderFactoryFixture.BudgetBuilder.Build())
                                 .SetPercentAmount(0.25)
                                 .Build();
             Assert.True(subject.IsPercentBasedBudget);
@@ -43,7 +45,10 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsTrue_WhenChangedFromFixedAmount()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
-                                .SetFixedAmount(10)
+                                .SetParentBudget(
+                                    _builderFactoryFixture.BudgetBuilder
+                                    .SetFixedAmount(10)
+                                    .Build())
                                 .Build();
             subject.SetPercentAmount(0.3);
 
@@ -54,6 +59,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsFalse_WhenChangedFromPercentAmount()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
+                                .SetParentBudget(
+                                    _builderFactoryFixture.BudgetBuilder.Build())
                                 .SetPercentAmount(0.25)
                                 .Build();
             subject.SetFixedAmount(3);

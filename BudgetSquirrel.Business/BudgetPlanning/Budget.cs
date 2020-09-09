@@ -168,5 +168,12 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         {
             return this.UserId == user.Id;
         }
+
+        public void LoadParentBudget(Budget parentBudget)
+        {
+            if (parentBudget.Id != this.ParentBudgetId)
+                throw new InvalidOperationException("Parent budget id doesn't match that on this budget.");
+            this.ParentBudget = parentBudget;
+        }
     }
 }
