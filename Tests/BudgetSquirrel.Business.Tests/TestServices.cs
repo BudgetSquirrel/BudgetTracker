@@ -18,7 +18,6 @@ namespace BudgetSquirrel.Business.Tests
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddTransient<FakeDbContext>();
-        services.AddTransient<IAsyncQueryService, TestAsyncQueryService>();
     }
     
     public void Dispose()

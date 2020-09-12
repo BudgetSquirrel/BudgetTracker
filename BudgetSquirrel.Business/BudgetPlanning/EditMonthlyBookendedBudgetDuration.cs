@@ -1,22 +1,21 @@
 using System;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.Infrastructure;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
   public class EditMonthlyBookendedBudgetDuration
   {
     private IUnitOfWork unitOfWork;
-    private IAsyncQueryService asyncQueryService;
     private Guid budgetId;
     private User editor;
     private int endDayOfMonth;
     private bool rolloverEndDateOnShortMonths;
 
-    public EditMonthlyBookendedBudgetDuration(IUnitOfWork unitOfWork, IAsyncQueryService asyncQueryService, Guid budgetId, User editor, int endDayOfMonth, bool rolloverEndDateOnShortMonths)
+    public EditMonthlyBookendedBudgetDuration(IUnitOfWork unitOfWork, Guid budgetId, User editor, int endDayOfMonth, bool rolloverEndDateOnShortMonths)
     {
       this.unitOfWork = unitOfWork;
-      this.asyncQueryService = asyncQueryService;
       this.budgetId = budgetId;
       this.editor = editor;
       this.endDayOfMonth = endDayOfMonth;
@@ -27,10 +26,9 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     {
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
       IRepository<BudgetDurationBase> budgetDurationRepository = this.unitOfWork.GetRepository<BudgetDurationBase>();
-      Budget budgetOfInterest = await this.asyncQueryService.SingleOrDefaultAsync(
-        this.asyncQueryService.Include(
-          budgetRepository.GetAll(), b => b.Duration),
-        b => b.Id == budgetId);
+      Budget budgetOfInterest = await budgetRepository.GetAll()
+                                                      .Include(b => b.Duration)
+                                                      .SingleOrDefaultAsync(b => b.Id == budgetId);
 
       if (!budgetOfInterest.IsOwnedBy(this.editor))
       {

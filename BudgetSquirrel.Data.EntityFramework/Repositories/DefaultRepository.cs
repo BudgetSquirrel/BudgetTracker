@@ -1,6 +1,6 @@
 using System.Linq;
-using System.Threading.Tasks;
-using BudgetSquirrel.Business;
+using BudgetSquirrel.Business.Infrastructure;
+using BudgetSquirrel.Data.EntityFramework.Infrastructure;
 
 namespace BudgetSquirrel.Data.EntityFramework.Repositories
 {
@@ -19,9 +19,9 @@ namespace BudgetSquirrel.Data.EntityFramework.Repositories
 
     public virtual void Update(TModel instance) => this.context.Set<TModel>().Update(instance);
 
-    public virtual IQueryable<TModel> GetAll()
+    public virtual IIncludableQuerySet<TModel> GetAll()
     {
-      return this.context.Set<TModel>();
+      return new EFIncludableQuerySet<TModel>(this.context.Set<TModel>());
     }
   }
 }

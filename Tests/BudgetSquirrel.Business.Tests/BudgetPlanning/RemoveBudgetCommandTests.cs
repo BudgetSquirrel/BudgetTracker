@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business.Infrastructure;
 using BudgetSquirrel.TestUtils.Auth;
+using BudgetSquirrel.TestUtils.Infrastructure;
 using Moq;
 using Xunit;
 
@@ -25,21 +27,19 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     [Fact]
     public async Task Test_BudgetNoLongerExists_WhenRemoveCommandCalled()
     {
-      Mock<IAsyncQueryService> asyncQueryService = new Mock<IAsyncQueryService>();
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
-      Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
+      Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
+      UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
-      asyncQueryService.Setup(s => s.SingleOrDefaultAsync(budgets, It.IsAny<Expression<Func<Budget, bool>>>()))
-                       .Returns(Task.FromResult(rootBudget));
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
       unitOfWork.Setup(u => u.GetRepository<Budget>()).Returns(budgetRepo.Object);
 
-      RemoveBudgetCommand command = new RemoveBudgetCommand(unitOfWork.Object, asyncQueryService.Object, rootBudget.Id, user);
+      RemoveBudgetCommand command = new RemoveBudgetCommand(unitOfWork.Object, rootBudget.Id, user);
       await command.Run();
 
       budgetRepo.Verify(r => r.Remove(rootBudget), Times.Once);
@@ -48,21 +48,18 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     [Fact]
     public async Task Test_ExceptionThrown_WhenRemoveCommandCalled_ByUserThatDoesntOwnIt()
     {
-      Mock<IAsyncQueryService> asyncQueryService = new Mock<IAsyncQueryService>();
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
       User unauthorizedUser = userFactory.NewUser();
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
-
-      asyncQueryService.Setup(s => s.SingleOrDefaultAsync(budgets, It.IsAny<Expression<Func<Budget, bool>>>()))
-                       .Returns(Task.FromResult(rootBudget));
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
+      
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
       unitOfWork.Setup(u => u.GetRepository<Budget>()).Returns(budgetRepo.Object);
 
-      RemoveBudgetCommand command = new RemoveBudgetCommand(unitOfWork.Object, asyncQueryService.Object, rootBudget.Id, unauthorizedUser);
+      RemoveBudgetCommand command = new RemoveBudgetCommand(unitOfWork.Object, rootBudget.Id, unauthorizedUser);
       
       await Assert.ThrowsAsync<InvalidOperationException>(() => command.Run());
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BudgetSquirrel.Business.Infrastructure;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -22,7 +23,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public async Task<Guid> Run()
     {
       IRepository<Budget> budgetRepo = this.unitOfWork.GetRepository<Budget>();
-      Budget parentBudget = budgetRepo.GetAll().First(b => b.Id == this.parentBudgetId);
+      Budget parentBudget = await budgetRepo.GetAll().SingleAsync(b => b.Id == this.parentBudgetId);
 
       Budget budget = new Budget(parentBudget, this.name, 0);
       budget.SetFixedAmount(this.setAmount);

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business.Infrastructure;
 using BudgetSquirrel.TestUtils.Auth;
+using BudgetSquirrel.TestUtils.Infrastructure;
 using Moq;
 using Xunit;
 
@@ -32,7 +34,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       budgetRepo.Setup(r => r.Add(It.IsAny<Budget>())).Callback((Budget budget) => {
@@ -58,7 +60,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       budgetRepo.Setup(r => r.Add(It.IsAny<Budget>())).Callback((Budget budget) => {
@@ -85,7 +87,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       budgetRepo.Setup(r => r.Add(It.IsAny<Budget>())).Callback((Budget budget) => {

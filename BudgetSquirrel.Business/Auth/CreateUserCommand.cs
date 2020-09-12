@@ -6,7 +6,6 @@ namespace BudgetSquirrel.Business.Auth
 {
   public class CreateUserCommand
   {
-    private IAsyncQueryService asyncQueryService;
     private const string newUserRootBudgetName = "My Budget";
     private const decimal newUserRootBudgetFundBalance = 0;
     private const int newUserRootBudgetDurationEndDate = 31;
@@ -17,9 +16,8 @@ namespace BudgetSquirrel.Business.Auth
     private string lastName;
     private string email;
 
-    public CreateUserCommand(IAsyncQueryService asyncQueryService, string username, string firstName, string lastName, string email)
+    public CreateUserCommand(string username, string firstName, string lastName, string email)
     {
-      this.asyncQueryService = asyncQueryService;
       this.userName = username;
       this.firstName = firstName;
       this.lastName = lastName;

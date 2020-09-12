@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business.Infrastructure;
 using BudgetSquirrel.TestUtils.Auth;
+using BudgetSquirrel.TestUtils.Infrastructure;
 using Moq;
 using Xunit;
 
@@ -25,7 +27,6 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     [Fact]
     public async Task Test_NameIsCorrect_WhenNameChanged()
     {
-      Mock<IAsyncQueryService> asyncQueryService = new Mock<IAsyncQueryService>();
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
@@ -34,15 +35,13 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
-      asyncQueryService.Setup(s => s.SingleOrDefaultAsync(budgets, It.IsAny<Expression<Func<Budget, bool>>>()))
-                       .Returns(Task.FromResult(rootBudget));
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
       unitOfWork.Setup(u => u.GetRepository<Budget>()).Returns(budgetRepo.Object);
 
-      EditRootBudgetCommand command = new EditRootBudgetCommand(asyncQueryService.Object, unitOfWork.Object, rootBudget.Id, user, expectedNewName, null);
+      EditRootBudgetCommand command = new EditRootBudgetCommand(unitOfWork.Object, rootBudget.Id, user, expectedNewName, null);
       await command.Run();
 
       Assert.Equal(expectedNewName, rootBudget.Name);
@@ -51,7 +50,6 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     [Fact]
     public async Task Test_SetAmountIsCorrect_WhenAmountChanged()
     {
-      Mock<IAsyncQueryService> asyncQueryService = new Mock<IAsyncQueryService>();
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
@@ -60,15 +58,13 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetFixedAmount(4).Build();
       User user = userFactory.NewUser(rootBudget.UserId);
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
-      asyncQueryService.Setup(s => s.SingleOrDefaultAsync(budgets, It.IsAny<Expression<Func<Budget, bool>>>()))
-                       .Returns(Task.FromResult(rootBudget));
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
       unitOfWork.Setup(u => u.GetRepository<Budget>()).Returns(budgetRepo.Object);
 
-      EditRootBudgetCommand command = new EditRootBudgetCommand(asyncQueryService.Object, unitOfWork.Object, rootBudget.Id, user, null, expectedAmount);
+      EditRootBudgetCommand command = new EditRootBudgetCommand(unitOfWork.Object, rootBudget.Id, user, null, expectedAmount);
       await command.Run();
 
       Assert.Equal(expectedAmount, rootBudget.SetAmount);
@@ -77,7 +73,6 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     [Fact]
     public async Task Test_ThrowsInvalidOperation_WhenUserIsNotOwner()
     {
-      Mock<IAsyncQueryService> asyncQueryService = new Mock<IAsyncQueryService>();
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
@@ -87,15 +82,13 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       User wrongUser = userFactory.NewUser(wrongUserId);
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetOwner(correctUserId).Build();
-      IQueryable<Budget> budgets = new List<Budget>() { rootBudget }.AsQueryable();
+      IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
-      asyncQueryService.Setup(s => s.SingleOrDefaultAsync(budgets, It.IsAny<Expression<Func<Budget, bool>>>()))
-                       .Returns(Task.FromResult(rootBudget));
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
       unitOfWork.Setup(u => u.SaveChangesAsync()).Returns(Task.CompletedTask);
       unitOfWork.Setup(u => u.GetRepository<Budget>()).Returns(budgetRepo.Object);
 
-      EditRootBudgetCommand command = new EditRootBudgetCommand(asyncQueryService.Object, unitOfWork.Object, rootBudget.Id, wrongUser, "Test", null);
+      EditRootBudgetCommand command = new EditRootBudgetCommand(unitOfWork.Object, rootBudget.Id, wrongUser, "Test", null);
       await Assert.ThrowsAsync<InvalidOperationException>(() => command.Run());
     }
   }

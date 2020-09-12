@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.Infrastructure;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
   public class EditRootBudgetCommand
   {
-    private IAsyncQueryService asyncQueryService;
     private IUnitOfWork unitOfWork;
     private User editor;
     private Guid budgetId;
@@ -15,14 +15,12 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     private decimal? newSetAmount;
 
     public EditRootBudgetCommand(
-      IAsyncQueryService asyncQueryService,
       IUnitOfWork unitOfWork,
       Guid id,
       User editor,
       string name,
       decimal? setAmount)
     {
-      this.asyncQueryService = asyncQueryService;
       this.unitOfWork = unitOfWork;
       this.budgetId = id;
       this.editor = editor;
@@ -33,8 +31,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public async Task Run()
     {
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
-      IQueryable<Budget> budgets = budgetRepository.GetAll();
-      Budget budgetToEdit = await this.asyncQueryService.SingleOrDefaultAsync(budgets, b => b.Id == this.budgetId);
+      Budget budgetToEdit = await budgetRepository.GetAll().SingleAsync(b => b.Id == this.budgetId);
 
       if (!budgetToEdit.IsOwnedBy(editor))
       {
