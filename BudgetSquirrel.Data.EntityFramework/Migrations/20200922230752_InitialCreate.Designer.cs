@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(BudgetSquirrelContext))]
-    [Migration("20200830124002_InitialCreate")]
+    [Migration("20200922230752_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,28 +17,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1");
-
-            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPeriods.BudgetPeriod", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("BudgetId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BudgetId");
-
-                    b.ToTable("BudgetPeriods");
-                });
 
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
@@ -64,7 +42,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.Property<double?>("PercentAmount")
                         .HasColumnType("REAL");
 
-                    b.Property<decimal?>("SetAmount")
+                    b.Property<decimal>("SetAmount")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
@@ -96,6 +74,31 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("BudgetDurations");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("BudgetDurationBase");
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.BudgetPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateFinalized")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.ToTable("BudgetPeriods");
                 });
 
             modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", b =>
@@ -147,15 +150,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasDiscriminator().HasValue("MonthlyBookEndedDuration");
                 });
 
-            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPeriods.BudgetPeriod", b =>
-                {
-                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "Budget")
-                        .WithMany()
-                        .HasForeignKey("BudgetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
                     b.HasOne("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase", "Duration")
@@ -172,6 +166,15 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.BudgetPeriod", b =>
+                {
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "Budget")
+                        .WithMany()
+                        .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

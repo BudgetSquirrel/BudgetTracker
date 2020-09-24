@@ -45,7 +45,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PercentAmount = table.Column<double>(nullable: true),
-                    SetAmount = table.Column<decimal>(nullable: true),
+                    SetAmount = table.Column<decimal>(nullable: false),
                     FundBalance = table.Column<decimal>(nullable: false),
                     DurationId = table.Column<Guid>(nullable: false),
                     BudgetStart = table.Column<DateTime>(nullable: false),
@@ -81,6 +81,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     BudgetId = table.Column<Guid>(nullable: false),
+                    DateFinalized = table.Column<DateTime>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false)
                 },

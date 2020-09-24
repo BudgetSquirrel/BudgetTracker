@@ -81,7 +81,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 return this.PercentAmount != null;
             }
         }
-
+    
         public decimal SubBudgetTotalPlannedAmount => this.SubBudgets.Sum(b => b.SetAmount);
 
         private Budget() {}
@@ -174,6 +174,18 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             if (parentBudget.Id != this.ParentBudgetId)
                 throw new InvalidOperationException("Parent budget id doesn't match that on this budget.");
             this.ParentBudget = parentBudget;
+        }
+
+        public decimal GetAllSetAmountRecursive()
+        {
+            var amount = this.SetAmount;
+
+            foreach (var budget in this.SubBudgets)
+            {
+                amount = budget.GetAllSetAmountRecursive();
+            }
+
+            return amount;
         }
     }
 }
