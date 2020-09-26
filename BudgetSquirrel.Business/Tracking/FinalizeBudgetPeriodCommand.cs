@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business.Infrastructure;
 
 namespace BudgetSquirrel.Business.Tracking
 {
@@ -22,16 +24,18 @@ namespace BudgetSquirrel.Business.Tracking
         {
             IRepository<BudgetPeriod> budgetPeriodRepository = this.unitOfWork.GetRepository<BudgetPeriod>();
 
-            var budgetPeriods = budgetPeriodRepository.GetAll();
+            BudgetPeriod budgetPeriod = await budgetPeriodRepository.GetAll().SingleOrDefaultAsync(y => y.BudgetId == budgetId);
 
-            BudgetPeriod budgetPeriod = budgetPeriods.Where(x => x.BudgetId == budgetId).FirstOrDefault();
+            GetRootBudgetQuery rootBudgetQuery = new GetRootBudgetQuery(unitOfWork, currentUser.Id);
 
-            if (!budgetPeriod.Budget.IsOwnedBy(this.currentUser))
+            Budget rootBudget = await rootBudgetQuery.Run();
+
+            if (!rootBudget.IsOwnedBy(this.currentUser))
             {
                 throw new InvalidOperationException("Unauthorized");
             }        
 
-            if (!CanBudgetBeFinalized(budgetPeriod))
+            if (!CanBudgetBeFinalized(rootBudget))
             {
                 throw new InvalidOperationException("Budget can't not be finalized be review your budget again.");
             }
@@ -42,13 +46,23 @@ namespace BudgetSquirrel.Business.Tracking
             await this.unitOfWork.SaveChangesAsync();
         }
 
-        private bool CanBudgetBeFinalized(BudgetPeriod budgetPeriod)
+        private bool CanBudgetBeFinalized(Budget budget)
         {
-            var rootBudgetSetAmount = budgetPeriod.Budget.SetAmount;
+            // Check it root budget is set
+            if (budget.SetAmount != budget.SubBudgetTotalPlannedAmount && budget.SubBudgets.Count() != 0)
+            {
+                return false;
+            }
 
-            var amountToMatch = budgetPeriod.Budget.GetAllSetAmountRecursive();
+            foreach (Budget subBudget in budget.SubBudgets)
+            {
+                if (!this.CanBudgetBeFinalized(subBudget))
+                {
+                    return false;
+                }
+            }
 
-            return rootBudgetSetAmount == amountToMatch;
+            return true;
         }
     }
 }

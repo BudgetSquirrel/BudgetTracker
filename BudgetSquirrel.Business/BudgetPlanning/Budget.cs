@@ -175,17 +175,5 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 throw new InvalidOperationException("Parent budget id doesn't match that on this budget.");
             this.ParentBudget = parentBudget;
         }
-
-        public decimal GetAllSetAmountRecursive()
-        {
-            var amount = this.SetAmount;
-
-            foreach (var budget in this.SubBudgets)
-            {
-                amount = budget.GetAllSetAmountRecursive();
-            }
-
-            return amount;
-        }
     }
 }
