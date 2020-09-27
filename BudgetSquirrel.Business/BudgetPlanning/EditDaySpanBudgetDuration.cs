@@ -25,23 +25,24 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
       IRepository<BudgetDurationBase> budgetDurationRepository = this.unitOfWork.GetRepository<BudgetDurationBase>();
       Budget budgetOfInterest = await budgetRepository.GetAll()
-                                                      .Include(b => b.Duration)
+                                                      .Include(b => b.Fund)
+                                                      .ThenInclude(c => c.Duration)
                                                       .SingleOrDefaultAsync(b => b.Id == budgetId);
 
-      if (!budgetOfInterest.IsOwnedBy(this.editor))
+      if (!budgetOfInterest.Fund.IsOwnedBy(this.editor))
       {
         throw new InvalidOperationException("Unauthorized");
       }
       
       DaySpanDuration daySpanDuration;
-      if (!(budgetOfInterest.Duration is DaySpanDuration))
+      if (!(budgetOfInterest.Fund.Duration is DaySpanDuration))
       {
-        daySpanDuration = new DaySpanDuration(budgetOfInterest.DurationId, this.numberDays);
-        budgetOfInterest.Duration = daySpanDuration;
+        daySpanDuration = new DaySpanDuration(budgetOfInterest.Fund.DurationId, this.numberDays);
+        budgetOfInterest.Fund.Duration = daySpanDuration;
       }
       else
       {
-        daySpanDuration = (DaySpanDuration) budgetOfInterest.Duration;
+        daySpanDuration = (DaySpanDuration) budgetOfInterest.Fund.Duration;
         daySpanDuration.NumberDays = this.numberDays;
       }
 

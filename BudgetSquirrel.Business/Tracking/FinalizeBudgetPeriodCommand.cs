@@ -28,41 +28,22 @@ namespace BudgetSquirrel.Business.Tracking
 
             GetRootBudgetQuery rootBudgetQuery = new GetRootBudgetQuery(unitOfWork, currentUser.Id);
 
-            Budget rootBudget = await rootBudgetQuery.Run();
+            Fund rootFund = await rootBudgetQuery.Run();
 
-            if (!rootBudget.IsOwnedBy(this.currentUser))
+            if (!rootFund.IsOwnedBy(this.currentUser))
             {
                 throw new InvalidOperationException("Unauthorized");
             }        
 
-            if (!CanBudgetBeFinalized(rootBudget))
+            if (!rootFund.CurrentBudget.IsFullyAllocated)
             {
-                throw new InvalidOperationException("Budget can't not be finalized be review your budget again.");
+                throw new InvalidOperationException("Budget can't not be finalized please review your budgets again.");
             }
 
             budgetPeriod.SetFinalizedDate();
             budgetPeriodRepository.Update(budgetPeriod);
 
             await this.unitOfWork.SaveChangesAsync();
-        }
-
-        private bool CanBudgetBeFinalized(Budget budget)
-        {
-            // Check it root budget is set
-            if (budget.SetAmount != budget.SubBudgetTotalPlannedAmount && budget.SubBudgets.Count() != 0)
-            {
-                return false;
-            }
-
-            foreach (Budget subBudget in budget.SubBudgets)
-            {
-                if (!this.CanBudgetBeFinalized(subBudget))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

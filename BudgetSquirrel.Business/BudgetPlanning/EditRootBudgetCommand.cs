@@ -31,16 +31,19 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public async Task Run()
     {
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
-      Budget budgetToEdit = await budgetRepository.GetAll().SingleAsync(b => b.Id == this.budgetId);
+      Budget budgetToEdit = await budgetRepository.GetAll()
+                                                  .Include(b => b.Fund)
+                                                  .ThenInclude(c => c.Duration)
+                                                  .SingleAsync(b => b.Id == this.budgetId);
 
-      if (!budgetToEdit.IsOwnedBy(editor))
+      if (!budgetToEdit.Fund.IsOwnedBy(editor))
       {
         throw new InvalidOperationException("Unauthorized");
       }
       
       if (this.newName != null)
       {
-        budgetToEdit.Name = this.newName;
+        budgetToEdit.Fund.Name = this.newName;
       }
       if (this.newSetAmount.HasValue)
       {

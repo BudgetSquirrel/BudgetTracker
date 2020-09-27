@@ -27,10 +27,11 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
       IRepository<BudgetDurationBase> budgetDurationRepository = this.unitOfWork.GetRepository<BudgetDurationBase>();
       Budget budgetOfInterest = await budgetRepository.GetAll()
-                                                      .Include(b => b.Duration)
+                                                      .Include(b => b.Fund)
+                                                      .ThenInclude(c => c.Duration)
                                                       .SingleOrDefaultAsync(b => b.Id == budgetId);
 
-      if (!budgetOfInterest.IsOwnedBy(this.editor))
+      if (!budgetOfInterest.Fund.IsOwnedBy(this.editor))
       {
         throw new InvalidOperationException("Unauthorized");
       }
@@ -40,14 +41,14 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       }
 
       MonthlyBookEndedDuration monthlyBookEndedDuration;
-      if (!(budgetOfInterest.Duration is MonthlyBookEndedDuration))
+      if (!(budgetOfInterest.Fund.Duration is MonthlyBookEndedDuration))
       {
-        monthlyBookEndedDuration = new MonthlyBookEndedDuration(budgetOfInterest.DurationId, this.endDayOfMonth, this.rolloverEndDateOnShortMonths);
-        budgetOfInterest.Duration = monthlyBookEndedDuration;
+        monthlyBookEndedDuration = new MonthlyBookEndedDuration(budgetOfInterest.Fund.DurationId, this.endDayOfMonth, this.rolloverEndDateOnShortMonths);
+        budgetOfInterest.Fund.Duration = monthlyBookEndedDuration;
       }
       else
       {
-        monthlyBookEndedDuration = (MonthlyBookEndedDuration) budgetOfInterest.Duration;
+        monthlyBookEndedDuration = (MonthlyBookEndedDuration) budgetOfInterest.Fund.Duration;
         monthlyBookEndedDuration.EndDayOfMonth = this.endDayOfMonth;
         monthlyBookEndedDuration.RolloverEndDateOnSmallMonths = this.rolloverEndDateOnShortMonths;
       }

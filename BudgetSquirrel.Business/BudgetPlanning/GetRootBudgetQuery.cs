@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Infrastructure;
+using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -17,30 +18,47 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       this.userId = userId;
     }
 
-    public async Task<Budget> Run()
+    /// <summary>
+    /// Loads the full tree of funds and budgets
+    /// </summary>
+    public async Task<Fund> Run()
     {
-      Budget root = await this.unitOfWork.GetRepository<Budget>()
+      Fund root = await this.unitOfWork.GetRepository<Fund>()
                                                   .GetAll()
-                                                  .Include(b => b.Duration)
                                                   .SingleOrDefaultAsync(b => b.UserId == this.userId &&
-                                                                             b.ParentBudget == null);
-      root.SubBudgets = await LoadBudgetTree(root);
+                                                                             b.ParentFund == null);
+      DateTime currentTime = DateTime.Now;
+      Budget currentRootBudget = await this.unitOfWork.GetRepository<Budget>()
+                                                  .GetAll()
+                                                  .Include(b => b.BudgetPeriod)
+                                                  .SingleOrDefaultAsync(b => b.FundId == root.Id && 
+                                                                            (b.BudgetPeriod.StartDate <= currentTime && b.BudgetPeriod.EndDate >= currentTime));
+
+      root.SubFunds = await LoadFundTree(root, currentRootBudget);
       return root;
     }
 
-    private async Task<IEnumerable<Budget>> LoadBudgetTree(Budget root)
+    private async Task<IEnumerable<Fund>> LoadFundTree(Fund root, Budget budget)
     {
-      IEnumerable<Budget> loadedSubBudgets = await this.unitOfWork.GetRepository<Budget>()
-                                                  .GetAll()
-                                                  .Include(b => b.Duration)
-                                                  .Where(b => b.ParentBudgetId == root.Id)
+      IEnumerable<Fund> loadedSubFunds = await this.unitOfWork.GetRepository<Fund>()
+                                                  .GetAll()                                          
+                                                  .Where(b => b.ParentFundId == root.Id)
                                                   .ToListAsync();
 
-      foreach (Budget subBudget in loadedSubBudgets)
+      IEnumerable<Guid> loadedSubFundsIds = loadedSubFunds.Select(x => x.Id);
+
+      IEnumerable<Budget> budgets = await this.unitOfWork.GetRepository<Budget>()
+                                                         .GetAll()
+                                                         .Where(b => loadedSubFundsIds.Contains(b.FundId))
+                                                         .Where(b => b)
+                                                         .ToListAsync();
+
+      // TODO: Need to figure out how to load the subBudgets
+      foreach (Fund subFunds in loadedSubFunds)
       {
-        subBudget.SubBudgets = await LoadBudgetTree(subBudget);
+        subFunds.SubFunds = await LoadFundTree(subFunds, budgetPeriod);
       }
-      return loadedSubBudgets;
+      return loadedSubFunds;
     }
   }
 }
