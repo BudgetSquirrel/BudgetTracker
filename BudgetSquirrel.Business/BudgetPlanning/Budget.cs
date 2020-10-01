@@ -5,6 +5,7 @@ using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
+    // TODO: Move to roo BudgetSquirrel.Business namespace
     public class Budget
     {
         /// <summary>
@@ -85,9 +86,17 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     
         public decimal SubBudgetTotalPlannedAmount => this.SubBudgets.Sum(b => b.SetAmount);
 
-        public Budget(Fund fund, decimal setAmount = 0)
+        public Budget(Fund fund, BudgetPeriod period, decimal setAmount = 0)
         {
             this.Fund = fund;
+            this.BudgetPeriod = period;
+            this.SetAmount = setAmount;
+        }
+
+        public Budget(Fund fund, Guid periodId, decimal setAmount = 0)
+        {
+            this.Fund = fund;
+            this.BudgetPeriodId = periodId;
             this.SetAmount = setAmount;
         }
 

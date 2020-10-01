@@ -27,7 +27,7 @@ namespace BudgetSquirrel.Business.Tracking
     public Transaction Run()
     {
       Transaction transaction = new Transaction(this.vendorName, this.amount, this.description, this.date, this.checkNumber, this.notes, this.budget);
-      this.budget.AddToFund(this.amount);
+      this.budget.Fund.AddToFund(this.amount);
       return transaction;
     }
   }

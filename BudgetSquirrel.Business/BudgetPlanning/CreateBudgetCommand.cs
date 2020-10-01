@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Infrastructure;
+using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -30,7 +31,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       Budget parentBudget = await budgetRepo.GetAll().Include(b => b.Fund).SingleAsync(b => b.Id == this.parentBudgetId);
 
       Fund fund = new Fund(parentBudget.Fund, this.name, 0);
-      Budget budget = new Budget(fund, this.setAmount);
+      Budget budget = new Budget(fund, parentBudget.BudgetPeriodId, this.setAmount);
       
       budgetRepo.Add(budget);
       await this.unitOfWork.SaveChangesAsync();

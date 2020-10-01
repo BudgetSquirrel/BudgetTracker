@@ -22,9 +22,9 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public async Task Run()
     {
       IRepository<Budget> budgetRepository = this.unitOfWork.GetRepository<Budget>();
-      Budget budgetToRemove = await budgetRepository.GetAll().SingleOrDefaultAsync(b => b.Id == this.budgetId);
+      Budget budgetToRemove = await budgetRepository.GetAll().Include(b => b.Fund).SingleOrDefaultAsync(b => b.Id == this.budgetId);
 
-      if (!budgetToRemove.IsOwnedBy(this.remover))
+      if (!budgetToRemove.Fund.IsOwnedBy(this.remover))
       {
         throw new InvalidOperationException("Unauthorized");
       }

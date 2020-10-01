@@ -5,6 +5,7 @@ using BudgetSquirrel.Business.Auth;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
+    // TODO: Move to roo BudgetSquirrel.Business namespace
     public class Fund
     {
         public Guid Id { get; set; }
@@ -27,7 +28,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public IEnumerable<Budget> Budgets { get; set; }
 
-        public Guid ParentFundId { get; set; }
+        public Guid? ParentFundId { get; set; }
 
         public Fund ParentFund { get; set; }
 
@@ -60,7 +61,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         public decimal FundBalance { get; private set; }
 
         public Fund(string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart,
+            BudgetDurationBase duration,
             Guid userId)
         {
             this.Name = name;
@@ -70,7 +71,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         }
 
         public Fund(Guid id, string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart,
+            BudgetDurationBase duration,
             Guid userId)
         {
             this.Id = id;

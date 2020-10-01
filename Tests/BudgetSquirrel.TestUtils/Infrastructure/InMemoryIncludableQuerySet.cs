@@ -47,6 +47,11 @@ namespace BudgetSquirrel.TestUtils.Infrastructure
       return Task.FromResult(this.data.ToList());
     }
 
+    public IQueryable<TModel> AsQueryable()
+    {
+      return this.data.AsQueryable();
+    }
+
     public IQuerySet<TModel> Where(Expression<Func<TModel, bool>> clause)
     {
       return new InMemoryQuerySet<TModel>(this.data.Where(clause.Compile()));

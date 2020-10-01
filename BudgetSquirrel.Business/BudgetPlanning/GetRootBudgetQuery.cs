@@ -34,11 +34,11 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                   .SingleOrDefaultAsync(b => b.FundId == root.Id && 
                                                                             (b.BudgetPeriod.StartDate <= currentTime && b.BudgetPeriod.EndDate >= currentTime));
 
-      root.SubFunds = await LoadFundTree(root, currentRootBudget);
+      root.SubFunds = await LoadFundTree(root, currentRootBudget.BudgetPeriod);
       return root;
     }
 
-    private async Task<IEnumerable<Fund>> LoadFundTree(Fund root, Budget budget)
+    private async Task<IEnumerable<Fund>> LoadFundTree(Fund root, BudgetPeriod budgetPeriod)
     {
       IEnumerable<Fund> loadedSubFunds = await this.unitOfWork.GetRepository<Fund>()
                                                   .GetAll()                                          
@@ -49,11 +49,24 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
       IEnumerable<Budget> budgets = await this.unitOfWork.GetRepository<Budget>()
                                                          .GetAll()
+                                                         .Include(b => b.BudgetPeriod)
                                                          .Where(b => loadedSubFundsIds.Contains(b.FundId))
-                                                         .Where(b => b)
+                                                         .Where(b => b.BudgetPeriod.StartDate == budgetPeriod.StartDate &&
+                                                                     b.BudgetPeriod.EndDate == budgetPeriod.EndDate)
                                                          .ToListAsync();
 
-      // TODO: Need to figure out how to load the subBudgets
+      // Put the budgets on their corresponding fund. This is equivelant to:
+      // loadedSubFunds = loadedSubFunds inner join budgets on budget.FundId = fund.Id
+      // There should only be one budget per fund, otherwise, this will bug out.
+      loadedSubFunds = loadedSubFunds.Join(
+        budgets,
+        f => f.Id,
+        b => b.FundId,
+        (f, b) => {
+          f.Budgets = new List<Budget>() { b };
+          return f;
+        });
+
       foreach (Fund subFunds in loadedSubFunds)
       {
         subFunds.SubFunds = await LoadFundTree(subFunds, budgetPeriod);
