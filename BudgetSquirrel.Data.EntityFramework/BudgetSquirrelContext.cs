@@ -19,6 +19,7 @@ namespace BudgetSquirrel.Data.EntityFramework
         public DbSet<DaySpanDuration> DaySpanDurations { get; set; }
         public DbSet<BudgetPeriod> BudgetPeriods { get; set; }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Fund> Funds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
