@@ -33,8 +33,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
       string expectedNewName = "New Name";
 
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
-      User user = userFactory.NewUser(rootBudget.UserId);
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
+      User user = userFactory.NewUser(rootBudget.Fund.UserId);
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -44,7 +44,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       EditRootBudgetCommand command = new EditRootBudgetCommand(unitOfWork.Object, rootBudget.Id, user, expectedNewName, null);
       await command.Run();
 
-      Assert.Equal(expectedNewName, rootBudget.Name);
+      Assert.Equal(expectedNewName, rootBudget.Fund.Name);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       decimal expectedAmount = (decimal)5.67;
 
       Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetFixedAmount(4).Build();
-      User user = userFactory.NewUser(rootBudget.UserId);
+      User user = userFactory.NewUser(rootBudget.Fund.UserId);
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -81,7 +81,10 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       Guid wrongUserId = Guid.NewGuid();
       User wrongUser = userFactory.NewUser(wrongUserId);
 
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetOwner(correctUserId).Build();
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder
+                                                   .SetFund(f =>
+                                                      f.SetOwner(correctUserId))
+                                                   .Build();
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);

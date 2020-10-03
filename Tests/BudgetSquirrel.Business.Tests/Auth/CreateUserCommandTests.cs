@@ -59,7 +59,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
       CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
-      Assert.Equal(userRootBudgetRelationship.RootBudget.FundBalance, expectedFundBalance);
+      Assert.Equal(userRootBudgetRelationship.RootBudget.Fund.FundBalance, expectedFundBalance);
     }
 
     [Fact]
@@ -89,7 +89,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
       CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
-      Assert.IsAssignableFrom<MonthlyBookEndedDuration>(userRootBudgetRelationship.RootBudget.Duration);
+      Assert.IsAssignableFrom<MonthlyBookEndedDuration>(userRootBudgetRelationship.RootBudget.Fund.Duration);
     }
 
     [Fact]
@@ -105,7 +105,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
       CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
-      MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Duration;
+      MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Fund.Duration;
       Assert.Equal(duration.EndDayOfMonth, expectedDurationEndDay);
     }
 
@@ -122,7 +122,7 @@ namespace BudgetSquirrel.Business.Tests.Auth
       CreateUserCommand command = new CreateUserCommand(username, firstName, lastName, email);
       UserRootBudgetRelationship userRootBudgetRelationship = command.Run();
       
-      MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Duration;
+      MonthlyBookEndedDuration duration = (MonthlyBookEndedDuration) userRootBudgetRelationship.RootBudget.Fund.Duration;
       Assert.Equal(duration.RolloverEndDateOnSmallMonths, expectedDurationRollover);
     }
 

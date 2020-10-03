@@ -31,8 +31,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
-      User user = userFactory.NewUser(rootBudget.UserId);
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
+      User user = userFactory.NewUser(rootBudget.Fund.UserId);
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -51,7 +51,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
       User unauthorizedUser = userFactory.NewUser();
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
       

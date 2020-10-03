@@ -32,8 +32,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
-      User user = userFactory.NewUser(rootBudget.UserId);
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -53,13 +52,12 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
     public async Task Test_CorrectParentBudgetSet_WhenSubBudgetCreated()
     {
       Budget createdBudget = null;
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
 
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
-      User user = userFactory.NewUser(rootBudget.UserId);
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -72,21 +70,20 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       CreateBudgetCommand command = new CreateBudgetCommand(unitOfWork.Object, rootBudget.Id, "", 12);
       await command.Run();
 
-      Assert.Equal(rootBudget.Id, createdBudget.ParentBudgetId);
+      Assert.Equal(rootBudget.Id, createdBudget.ParentBudget.Id);
     }
 
     [Fact]
     public async Task Test_FundBalanceIs0_WhenBudgetCreated()
     {
       Budget createdBudget = null;
-      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.SetName("Test Budget").Build();
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder.Build();
       decimal expectedFundBalance = 0;
 
       Mock<IUnitOfWork> unitOfWork = new Mock<IUnitOfWork>();
       Mock<IRepository<Budget>> budgetRepo = new Mock<IRepository<Budget>>();
       UserFactory userFactory = this.buildersAndFactories.GetService<UserFactory>();
 
-      User user = userFactory.NewUser(rootBudget.UserId);
       IIncludableQuerySet<Budget> budgets = new InMemoryIncludableQuerySet<Budget>(new List<Budget>() { rootBudget });
 
       budgetRepo.Setup(r => r.GetAll()).Returns(budgets);
@@ -99,7 +96,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       CreateBudgetCommand command = new CreateBudgetCommand(unitOfWork.Object, rootBudget.Id, "", 12);
       await command.Run();
 
-      Assert.Equal(expectedFundBalance, createdBudget.FundBalance);
+      Assert.Equal(expectedFundBalance, createdBudget.Fund.FundBalance);
     }
   }
 }

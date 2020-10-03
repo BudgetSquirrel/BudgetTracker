@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.TestUtils;
 using BudgetSquirrel.TestUtils.Auth;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,8 @@ namespace BudgetSquirrel.Business.Tests
 
         public IBudgetBuilder BudgetBuilder => GetService<IBudgetBuilder>();
 
+        public IFundBuilder FundBuilder => GetService<IFundBuilder>();
+
         public BuilderFactoryFixture()
         {
             ServiceCollection services = new ServiceCollection();
@@ -21,6 +24,7 @@ namespace BudgetSquirrel.Business.Tests
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<BudgetDurationBuilderProvider>();
+            services.AddTransient<IFundBuilder, FundBuilder>();
             services.AddTransient<IBudgetBuilder, BudgetBuilder>();
             
             services.AddScoped<UserFactory>();

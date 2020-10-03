@@ -5,13 +5,9 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 {
     public interface IBudgetBuilder
     {
-        IBudgetBuilder SetParentBudget(Budget parentBudget);
-        IBudgetBuilder SetOwner(Guid userId);
-        IBudgetBuilder SetName(string name);
-        IBudgetBuilder SetDurationEndDayOfMonth(int value);
-        IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool value);
-        IBudgetBuilder SetDurationNumberDays(int value);
-        IBudgetBuilder SetFundBalance(decimal fundBalance);
+        IBudgetBuilder SetFund(Func<IFundBuilder, IFundBuilder> fundBuilder);
+
+        IBudgetBuilder SetParentBudget(Budget budget);
 
         /// <summary>
         /// Set the percent amount for this budget. If you set the percentAmount,
