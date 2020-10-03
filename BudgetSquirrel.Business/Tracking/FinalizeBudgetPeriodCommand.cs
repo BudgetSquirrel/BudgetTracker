@@ -10,12 +10,14 @@ namespace BudgetSquirrel.Business.Tracking
     public class FinalizeBudgetPeriodCommand
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly BudgetLoader budgetLoader;
         private readonly Guid budgetId;
         private readonly User currentUser;
 
-        public FinalizeBudgetPeriodCommand(IUnitOfWork unitOfWork, Guid budgetId, User currentUser)
+        public FinalizeBudgetPeriodCommand(IUnitOfWork unitOfWork, BudgetLoader budgetLoader, Guid budgetId, User currentUser)
         {
             this.unitOfWork = unitOfWork;
+            this.budgetLoader = budgetLoader;
             this.budgetId = budgetId;
             this.currentUser = currentUser;
         }
@@ -28,7 +30,7 @@ namespace BudgetSquirrel.Business.Tracking
 
             // TODO: We need a way to get the full tree by budget id rather than user id. If we ever
             // allow mutliple trees per user, this might not get the right tree.
-            GetRootBudgetQuery rootBudgetQuery = new GetRootBudgetQuery(unitOfWork, currentUser.Id);
+            GetRootBudgetQuery rootBudgetQuery = new GetRootBudgetQuery(unitOfWork, this.budgetLoader, currentUser.Id);
             Fund rootFund = await rootBudgetQuery.Run();
 
             if (!rootFund.IsOwnedBy(this.currentUser))

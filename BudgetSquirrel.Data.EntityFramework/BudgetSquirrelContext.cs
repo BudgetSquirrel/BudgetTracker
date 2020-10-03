@@ -23,6 +23,7 @@ namespace BudgetSquirrel.Data.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            FundSchema.ApplySchema(modelBuilder);
             BudgetSchema.ApplySchema(modelBuilder);
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
@@ -26,7 +27,12 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public BudgetDurationBase Duration { get; set; }
 
-        public IEnumerable<Budget> Budgets { get; set; }
+        public IEnumerable<Budget> HistoricalBudgets { get; set; }
+
+        public Budget GetHistoricalBudgetForPeriod(BudgetPeriod period)
+        {
+            return this.HistoricalBudgets.SingleOrDefault(b => b.BudgetPeriod.StartDate == period.StartDate);
+        }
 
         public Guid? ParentFundId { get; set; }
 
@@ -38,7 +44,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         { 
             get
             {                
-                return this.Budgets.Where(b => b.BudgetPeriod.StartDate < DateTime.Now && b.BudgetPeriod.EndDate > DateTime.Now).SingleOrDefault();
+                return this.HistoricalBudgets.Where(b => b.BudgetPeriod.StartDate < DateTime.Now && b.BudgetPeriod.EndDate > DateTime.Now).SingleOrDefault();
             }
         }
         
@@ -60,6 +66,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public decimal FundBalance { get; private set; }
 
+        private Fund() {}
+
         public Fund(string name, decimal fundBalance,
             BudgetDurationBase duration,
             Guid userId)
@@ -68,6 +76,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.FundBalance = fundBalance;
             this.Duration = duration;
             this.UserId = userId;
+            this.SubFunds = new List<Fund>();
         }
 
         public Fund(Guid id, string name, decimal fundBalance,
@@ -79,6 +88,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.FundBalance = fundBalance;
             this.Duration = duration;
             this.UserId = userId;
+            this.SubFunds = new List<Fund>();
         }
 
         public Fund(Fund parentFund, string name, decimal fundBalance)
@@ -88,6 +98,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.UserId = parentFund.UserId;
             this.Name = name;
             this.FundBalance = fundBalance;
+            this.SubFunds = new List<Fund>();
         }
 
         public void SetOwner(Guid userId)

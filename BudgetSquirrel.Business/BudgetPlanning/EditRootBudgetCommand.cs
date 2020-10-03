@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Auth;
@@ -35,6 +36,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                   .Include(b => b.Fund)
                                                   .ThenInclude(c => c.Duration)
                                                   .SingleAsync(b => b.Id == this.budgetId);
+
+      budgetToEdit.Fund.HistoricalBudgets = new List<Budget>() { budgetToEdit };
 
       if (!budgetToEdit.Fund.IsOwnedBy(editor))
       {

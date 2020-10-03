@@ -31,29 +31,19 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public Guid FundId { get; private set; }
 
-        public Fund Fund { get; private set; }
+        public Fund Fund { get; set; }
 
         public Guid BudgetPeriodId { get; set; }
 
         public BudgetPeriod BudgetPeriod { get; set; }
 
-        public IEnumerable<Budget> SubBudgets 
-        { 
-            get
-            {
-                // TODO
-                throw new NotImplementedException();      
-            } 
-        }
+        public IEnumerable<Budget> SubBudgets =>
+            this.Fund.SubFunds.Select(f =>
+                f.GetHistoricalBudgetForPeriod(this.BudgetPeriod));
         
-        public Budget ParentBudget
-        {
-            get
-            {
-                // TODO
-                throw new NotImplementedException();
-            }
-        }
+        public Budget ParentBudget =>
+            this.Fund.ParentFund.GetHistoricalBudgetForPeriod(
+                this.BudgetPeriod);
 
         /// <summary>
         /// The date in which the user finalized their budget 
@@ -85,6 +75,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         }
     
         public decimal SubBudgetTotalPlannedAmount => this.SubBudgets.Sum(b => b.SetAmount);
+
+        private Budget() {}
 
         public Budget(Fund fund, BudgetPeriod period, decimal setAmount = 0)
         {

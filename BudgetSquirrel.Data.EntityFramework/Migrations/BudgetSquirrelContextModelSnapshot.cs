@@ -22,19 +22,16 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("BudgetStart")
+                    b.Property<Guid?>("BudgetId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("DurationId")
+                    b.Property<Guid>("BudgetPeriodId")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("FundBalance")
+                    b.Property<DateTime?>("DateFinalizedTo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("ParentBudgetId")
+                    b.Property<Guid>("FundId")
                         .HasColumnType("TEXT");
 
                     b.Property<double?>("PercentAmount")
@@ -43,16 +40,13 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.Property<decimal>("SetAmount")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("DurationId");
+                    b.HasIndex("BudgetId");
 
-                    b.HasIndex("ParentBudgetId");
+                    b.HasIndex("BudgetPeriodId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FundId");
 
                     b.ToTable("Budgets");
                 });
@@ -74,16 +68,42 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("BudgetDurationBase");
                 });
 
-            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.BudgetPeriod", b =>
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Fund", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("BudgetId")
+                    b.Property<Guid>("DurationId")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DateFinalized")
+                    b.Property<decimal>("FundBalance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("ParentFundId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DurationId");
+
+                    b.HasIndex("ParentFundId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Funds");
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.BudgetPeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("EndDate")
@@ -93,8 +113,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BudgetId");
 
                     b.ToTable("BudgetPeriods");
                 });
@@ -150,29 +168,39 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 
             modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Budget", b =>
                 {
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", null)
+                        .WithMany("SubBudgets")
+                        .HasForeignKey("BudgetId");
+
+                    b.HasOne("BudgetSquirrel.Business.Tracking.BudgetPeriod", "BudgetPeriod")
+                        .WithMany()
+                        .HasForeignKey("BudgetPeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Fund", "Fund")
+                        .WithMany()
+                        .HasForeignKey("FundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Fund", b =>
+                {
                     b.HasOne("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase", "Duration")
                         .WithMany()
                         .HasForeignKey("DurationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "ParentBudget")
-                        .WithMany("SubBudgets")
-                        .HasForeignKey("ParentBudgetId")
+                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Fund", "ParentFund")
+                        .WithMany("SubFunds")
+                        .HasForeignKey("ParentFundId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.BudgetPeriod", b =>
-                {
-                    b.HasOne("BudgetSquirrel.Business.BudgetPlanning.Budget", "Budget")
-                        .WithMany()
-                        .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

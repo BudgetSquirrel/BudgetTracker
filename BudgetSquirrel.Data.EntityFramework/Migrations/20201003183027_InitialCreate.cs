@@ -23,6 +23,19 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BudgetPeriods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BudgetPeriods", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -39,36 +52,33 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Budgets",
+                name: "Funds",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    PercentAmount = table.Column<double>(nullable: true),
-                    SetAmount = table.Column<decimal>(nullable: false),
-                    FundBalance = table.Column<decimal>(nullable: false),
                     DurationId = table.Column<Guid>(nullable: false),
-                    BudgetStart = table.Column<DateTime>(nullable: false),
-                    ParentBudgetId = table.Column<Guid>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false),
+                    ParentFundId = table.Column<Guid>(nullable: true),
+                    FundBalance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Budgets", x => x.Id);
+                    table.PrimaryKey("PK_Funds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Budgets_BudgetDurations_DurationId",
+                        name: "FK_Funds_BudgetDurations_DurationId",
                         column: x => x.DurationId,
                         principalTable: "BudgetDurations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Budgets_Budgets_ParentBudgetId",
-                        column: x => x.ParentBudgetId,
-                        principalTable: "Budgets",
+                        name: "FK_Funds_Funds_ParentFundId",
+                        column: x => x.ParentFundId,
+                        principalTable: "Funds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Budgets_Users_UserId",
+                        name: "FK_Funds_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -76,54 +86,81 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BudgetPeriods",
+                name: "Budgets",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    BudgetId = table.Column<Guid>(nullable: false),
-                    DateFinalized = table.Column<DateTime>(nullable: true),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false)
+                    PercentAmount = table.Column<double>(nullable: true),
+                    SetAmount = table.Column<decimal>(nullable: false),
+                    FundId = table.Column<Guid>(nullable: false),
+                    BudgetPeriodId = table.Column<Guid>(nullable: false),
+                    DateFinalizedTo = table.Column<DateTime>(nullable: true),
+                    BudgetId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BudgetPeriods", x => x.Id);
+                    table.PrimaryKey("PK_Budgets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BudgetPeriods_Budgets_BudgetId",
+                        name: "FK_Budgets_Budgets_BudgetId",
                         column: x => x.BudgetId,
                         principalTable: "Budgets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Budgets_BudgetPeriods_BudgetPeriodId",
+                        column: x => x.BudgetPeriodId,
+                        principalTable: "BudgetPeriods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Budgets_Funds_FundId",
+                        column: x => x.FundId,
+                        principalTable: "Funds",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BudgetPeriods_BudgetId",
-                table: "BudgetPeriods",
+                name: "IX_Budgets_BudgetId",
+                table: "Budgets",
                 column: "BudgetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Budgets_DurationId",
+                name: "IX_Budgets_BudgetPeriodId",
                 table: "Budgets",
+                column: "BudgetPeriodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Budgets_FundId",
+                table: "Budgets",
+                column: "FundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Funds_DurationId",
+                table: "Funds",
                 column: "DurationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Budgets_ParentBudgetId",
-                table: "Budgets",
-                column: "ParentBudgetId");
+                name: "IX_Funds_ParentFundId",
+                table: "Funds",
+                column: "ParentFundId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Budgets_UserId",
-                table: "Budgets",
+                name: "IX_Funds_UserId",
+                table: "Funds",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Budgets");
+
+            migrationBuilder.DropTable(
                 name: "BudgetPeriods");
 
             migrationBuilder.DropTable(
-                name: "Budgets");
+                name: "Funds");
 
             migrationBuilder.DropTable(
                 name: "BudgetDurations");
