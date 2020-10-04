@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.Infrastructure;
@@ -29,6 +30,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       IRepository<Budget> budgetRepo = this.unitOfWork.GetRepository<Budget>();
       IRepository<Fund> fundRepo = this.unitOfWork.GetRepository<Fund>();
       Budget parentBudget = await budgetRepo.GetAll().Include(b => b.Fund).SingleAsync(b => b.Id == this.parentBudgetId);
+      parentBudget.Fund.HistoricalBudgets = new List<Budget>() { parentBudget };
 
       Fund fund = new Fund(parentBudget.Fund, this.name, 0);
       Budget budget = new Budget(fund, parentBudget.BudgetPeriodId, this.setAmount);

@@ -26,9 +26,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsTrue_WhenPercentAmountSet()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
-                                .SetFund(fundBuilder => 
-                                    fundBuilder.SetParentFund(
-                                        _builderFactoryFixture.FundBuilder.Build()))
+                                .SetParentBudget(_builderFactoryFixture.BudgetBuilder.Build())
                                 .SetPercentAmount(0.25)
                                 .Build();
             Assert.True(subject.IsPercentBasedBudget);

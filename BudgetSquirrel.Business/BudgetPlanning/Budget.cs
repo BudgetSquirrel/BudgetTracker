@@ -42,7 +42,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 f.GetHistoricalBudgetForPeriod(this.BudgetPeriod));
         
         public Budget ParentBudget =>
-            this.Fund.ParentFund.GetHistoricalBudgetForPeriod(
+            this.Fund.ParentFund?.GetHistoricalBudgetForPeriod(
                 this.BudgetPeriod);
 
         /// <summary>

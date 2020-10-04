@@ -70,7 +70,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
       CreateBudgetCommand command = new CreateBudgetCommand(unitOfWork.Object, rootBudget.Id, "", 12);
       await command.Run();
 
-      Assert.Equal(rootBudget.Id, createdBudget.ParentBudget.Id);
+      Assert.Equal(rootBudget.Fund.Id, createdBudget.Fund.ParentFundId);
     }
 
     [Fact]

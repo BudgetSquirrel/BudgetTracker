@@ -2,6 +2,7 @@ using Bogus;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Business.Tracking;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BudgetSquirrel.TestUtils.Budgeting
@@ -33,11 +34,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
         {
             Id = Guid.NewGuid();
 
-            bool isPercentBased = _faker.Random.Bool();
-            if (isPercentBased)
-                _percentAmount = _faker.Random.Double();
-            else
-                _setAmount = _faker.Finance.Amount();
+            _setAmount = _faker.Finance.Amount();
 
             this.fund = this._fundBuilder.Build();
 
@@ -66,13 +63,16 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         public Budget Build()
         {
-            if (this.fund.ParentFund != null || this.parentBudget != null)
+            if (this.parentBudget != null)
             {
-                this.fund.ParentFund.HistoricalBudgets = this.fund.ParentFund.HistoricalBudgets.Append(this.parentBudget);
-                this.parentBudget.Fund = this.fund.ParentFund;
+                this.fund.ParentFund = this.parentBudget.Fund;
             }
+
             Budget budget = null;
             budget = new Budget(this.fund, this.budgetPeriod);
+            budget.Fund = this.fund;
+            this.fund.HistoricalBudgets = new List<Budget>() { budget };
+            
             if (_percentAmount.HasValue)
                 budget.SetPercentAmount(_percentAmount.Value);
             else
