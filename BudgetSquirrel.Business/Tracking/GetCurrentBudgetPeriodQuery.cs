@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BudgetSquirrel.Business.BudgetPlanning;
-using BudgetSquirrel.Business.Infrastructure;
 
 namespace BudgetSquirrel.Business.Tracking
 {

@@ -1,13 +1,12 @@
 using Bogus;
+using BudgetSquirrel.Business;
 using BudgetSquirrel.Business.BudgetPlanning;
-using BudgetSquirrel.Business.Tracking;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BudgetSquirrel.TestUtils.Budgeting
 {
-    public class BudgetBuilder : IBudgetBuilder
+  public class BudgetBuilder : IBudgetBuilder
     {
         private Faker _faker = new Faker();
         private IFundBuilder _fundBuilder;

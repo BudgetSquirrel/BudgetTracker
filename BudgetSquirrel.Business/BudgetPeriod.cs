@@ -1,7 +1,7 @@
 using System;
 using BudgetSquirrel.Business.BudgetPlanning;
 
-namespace BudgetSquirrel.Business.Tracking
+namespace BudgetSquirrel.Business
 {
     public class BudgetPeriod
     {

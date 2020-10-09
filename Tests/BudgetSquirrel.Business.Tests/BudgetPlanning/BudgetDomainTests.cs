@@ -1,13 +1,13 @@
 using System;
 using Bogus;
 using BudgetSquirrel.Business.BudgetPlanning;
-using BudgetSquirrel.Business.Tracking;
+using BudgetSquirrel.TestUtils;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Xunit;
 
 namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 {
-    public class BudgetDomainTests : IDisposable
+  public class BudgetDomainTests : IDisposable
     {
         private Faker _faker = new Faker();
         private BuilderFactoryFixture _builderFactoryFixture;
