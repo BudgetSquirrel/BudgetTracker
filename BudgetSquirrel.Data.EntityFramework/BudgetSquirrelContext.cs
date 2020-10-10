@@ -3,6 +3,7 @@ using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Data.EntityFramework.Models;
 using BudgetSquirrel.Data.EntityFramework.Schema;
 using Microsoft.EntityFrameworkCore;
+using BudgetSquirrel.Business;
 
 namespace BudgetSquirrel.Data.EntityFramework
 {

@@ -43,6 +43,7 @@ namespace BudgetSquirrel.Business.Auth
       DateTime endDate = duration.GetEndDateFromStartDate(startDate);
       BudgetPeriod firstBudgetPeriod = new BudgetPeriod(startDate, endDate);
       Budget firstRootBudget = new Budget(rootFund, firstBudgetPeriod);
+      firstBudgetPeriod.RootBudget = firstRootBudget;
 
       return (firstRootBudget, firstBudgetPeriod);
     }
