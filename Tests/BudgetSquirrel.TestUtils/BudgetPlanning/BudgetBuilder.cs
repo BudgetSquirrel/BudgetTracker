@@ -17,7 +17,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         private BudgetPeriod budgetPeriod;
 
-        private Guid Id;
+        private Guid _id;
 
         private double? _percentAmount;
 
@@ -31,7 +31,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
         private void InitRandomized()
         {
-            Id = Guid.NewGuid();
+            _id = Guid.NewGuid();
 
             _setAmount = _faker.Finance.Amount();
 
@@ -68,7 +68,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             }
 
             Budget budget = null;
-            budget = new Budget(this.fund, this.budgetPeriod);
+            budget = new Budget(this._id, this.fund, this.budgetPeriod);
             budget.Fund = this.fund;
             this.fund.HistoricalBudgets = new List<Budget>() { budget };
             

@@ -85,6 +85,14 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             this.SetAmount = setAmount;
         }
 
+        public Budget(Guid id, Fund fund, BudgetPeriod period, decimal setAmount = 0)
+        {
+            this.Id = id;
+            this.Fund = fund;
+            this.BudgetPeriod = period;
+            this.SetAmount = setAmount;
+        }
+
         public Budget(Fund fund, Guid periodId, decimal setAmount = 0)
         {
             this.Fund = fund;

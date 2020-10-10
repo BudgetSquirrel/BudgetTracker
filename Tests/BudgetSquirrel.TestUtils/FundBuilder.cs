@@ -1,5 +1,6 @@
 using System;
 using Bogus;
+using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.TestUtils.Budgeting;
 
@@ -10,9 +11,11 @@ namespace BudgetSquirrel.TestUtils
     private Faker _faker = new Faker();
     private BudgetDurationBuilderProvider _budgetDurationBuilderProvider;
 
-    private Guid Id;
+    private Guid _id;
 
     private Guid _ownerId;
+
+    private User _owner;
 
     private Fund _parentFund;
 
@@ -30,7 +33,7 @@ namespace BudgetSquirrel.TestUtils
 
     private void InitRandomized()
     {
-        Id = Guid.NewGuid();
+        _id = Guid.NewGuid();
         _ownerId = Guid.NewGuid();
         _name = _faker.Lorem.Word();
         
@@ -60,6 +63,14 @@ namespace BudgetSquirrel.TestUtils
     public IFundBuilder SetOwner(Guid userId)
     {
         _ownerId = userId;
+        _owner = null;
+        return this;
+    }
+
+    public IFundBuilder SetOwner(User user)
+    {
+        _ownerId = user.Id;
+        _owner = user;
         return this;
     }
 
@@ -105,17 +116,23 @@ namespace BudgetSquirrel.TestUtils
         {
             fund = new Fund(_parentFund, _name, _fundBalance);
             fund.ParentFund = _parentFund;
+            fund.Id = _id;
         }
         else
         {
             BudgetDurationBase budgetDuration = _durationBuilder.Build();
             fund = new Fund(
-                Guid.NewGuid(),
+                _id,
                 _name,
                 _fundBalance,
                 budgetDuration,
                 _ownerId
             );
+        }
+
+        if (_owner != null)
+        {
+            fund.User = _owner;
         }
         
         return fund;

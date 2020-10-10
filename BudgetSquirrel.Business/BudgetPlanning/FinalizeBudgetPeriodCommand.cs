@@ -5,7 +5,7 @@ using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Business.Infrastructure;
 
-namespace BudgetSquirrel.Business.Tracking
+namespace BudgetSquirrel.Business.BudgetPlanning
 {
     public class FinalizeBudgetPeriodCommand
     {

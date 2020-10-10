@@ -20,7 +20,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
 
         public Guid UserId { get; private set; }
 
-        public User User { get; private set; }
+        public User User { get; set; }
 
         /// <summary>
         /// The duration the budget will be per cycle in months.

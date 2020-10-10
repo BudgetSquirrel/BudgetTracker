@@ -37,7 +37,7 @@ namespace BudgetSquirrel.TestUtils
                 throw new InvalidOperationException("You must set the duration using ForDuration(BudgetDurationBase) before building the period");
             }
             DateTime endDate = this.duration.GetEndDateFromStartDate(this.startDate);
-            BudgetPeriod period = new BudgetPeriod(this.startDate, endDate);
+            BudgetPeriod period = new BudgetPeriod(Guid.NewGuid(), this.startDate, endDate);
             return period;
         }
     }

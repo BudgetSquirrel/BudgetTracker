@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
 
 namespace BudgetSquirrel.TestUtils
@@ -7,6 +8,7 @@ namespace BudgetSquirrel.TestUtils
     {
         IFundBuilder SetParentFund(Fund parentFund);
         IFundBuilder SetOwner(Guid userId);
+        IFundBuilder SetOwner(User user);
         IFundBuilder SetName(string name);
         IFundBuilder SetDurationEndDayOfMonth(int value);
         IFundBuilder SetDurationRolloverEndDateOnSmallMonths(bool value);
