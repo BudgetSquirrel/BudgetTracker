@@ -40,7 +40,7 @@ namespace BudgetSquirrel.Business.Tracking
 
             if (!rootFund.CurrentBudget.IsFullyAllocated)
             {
-                throw new InvalidOperationException("Budget can't not be finalized please review your budgets again.");
+                throw new InvalidOperationException("NOT_FULLY_ALLOCATED");
             }
 
             // TODO: I'm not sure how I feel about setting the finalized date on the root budget only
