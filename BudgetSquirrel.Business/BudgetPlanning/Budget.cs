@@ -29,7 +29,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public decimal SetAmount { get; private set; }
 
-        public Guid FundId { get; private set; }
+        public Guid FundId { get; set; }
 
         public Fund Fund { get; set; }
 

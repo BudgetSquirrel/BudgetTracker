@@ -28,13 +28,13 @@ namespace BudgetSquirrel.Business.BudgetPlanning
       Fund root = await this.unitOfWork.GetRepository<Fund>()
                                                   .GetAll()
                                                   .Include(f => f.Duration)
-                                                  .SingleOrDefaultAsync(b => b.UserId == this.userId &&
+                                                  .SingleAsync(b => b.UserId == this.userId &&
                                                                              b.ParentFund == null);
       DateTime currentTime = DateTime.Now;
       Budget currentRootBudget = await this.unitOfWork.GetRepository<Budget>()
                                                   .GetAll()
                                                   .Include(b => b.BudgetPeriod)
-                                                  .SingleOrDefaultAsync(b => b.FundId == root.Id && 
+                                                  .SingleAsync(b => b.FundId == root.Id && 
                                                                             (b.BudgetPeriod.StartDate <= currentTime && b.BudgetPeriod.EndDate >= currentTime));
       
       currentRootBudget.Fund = root;
