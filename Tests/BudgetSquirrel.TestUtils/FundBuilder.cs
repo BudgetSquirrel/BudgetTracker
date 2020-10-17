@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
@@ -115,7 +117,10 @@ namespace BudgetSquirrel.TestUtils
         if (_parentFund != null)
         {
             fund = new Fund(_parentFund, _name, _fundBalance);
+            fund.Duration = _parentFund.Duration;
+            fund.User = _parentFund.User;
             fund.ParentFund = _parentFund;
+            _parentFund.SubFunds = _parentFund.SubFunds?.Append(fund) ?? new List<Fund>() { fund };
             fund.Id = _id;
         }
         else

@@ -69,7 +69,7 @@ namespace BudgetSquirrel.TestUtils.Budgeting
 
             Budget budget = null;
             budget = new Budget(this._id, this.fund, this.budgetPeriod);
-            budget.Fund = this.fund;
+            budget.BudgetPeriodId = this.budgetPeriod.Id;
             budget.FundId = this.fund.Id;
             this.fund.HistoricalBudgets = new List<Budget>() { budget };
             
