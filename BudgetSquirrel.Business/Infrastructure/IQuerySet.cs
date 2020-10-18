@@ -16,6 +16,8 @@ namespace BudgetSquirrel.Business.Infrastructure
 
     Task<List<T>> ToListAsync();
 
+    IQueryable<T> AsQueryable();
+
     IQuerySet<T> Where(Expression<Func<T, bool>> clause);
   }
 }

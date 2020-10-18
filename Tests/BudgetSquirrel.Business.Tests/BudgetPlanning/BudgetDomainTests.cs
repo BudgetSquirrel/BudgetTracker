@@ -1,12 +1,13 @@
 using System;
 using Bogus;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.TestUtils;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Xunit;
 
 namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 {
-    public class BudgetDomainTests : IDisposable
+  public class BudgetDomainTests : IDisposable
     {
         private Faker _faker = new Faker();
         private BuilderFactoryFixture _builderFactoryFixture;
@@ -25,8 +26,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsTrue_WhenPercentAmountSet()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
-                                .SetParentBudget(
-                                    _builderFactoryFixture.BudgetBuilder.Build())
+                                .SetParentBudget(_builderFactoryFixture.BudgetBuilder.Build())
                                 .SetPercentAmount(0.25)
                                 .Build();
             Assert.True(subject.IsPercentBasedBudget);
@@ -46,9 +46,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
                                 .SetParentBudget(
-                                    _builderFactoryFixture.BudgetBuilder
-                                    .SetFixedAmount(10)
-                                    .Build())
+                                    _builderFactoryFixture.BudgetBuilder.SetFixedAmount(10).Build())
                                 .Build();
             subject.SetPercentAmount(0.3);
 
@@ -59,8 +57,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         public void Test_IsPercentBasedBudget_IsFalse_WhenChangedFromPercentAmount()
         {
             Budget subject = _builderFactoryFixture.BudgetBuilder
-                                .SetParentBudget(
-                                    _builderFactoryFixture.BudgetBuilder.Build())
+                                .SetParentBudget(_builderFactoryFixture.BudgetBuilder.Build())
                                 .SetPercentAmount(0.25)
                                 .Build();
             subject.SetFixedAmount(3);
@@ -94,33 +91,12 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         {
             IBudgetDurationBuilder durationBuilder = _builderFactoryFixture.GetService<BudgetDurationBuilderProvider>().GetBuilder<MonthlyBookEndedDuration>();
             BudgetDurationBase randomDuration = durationBuilder.Build();
+            Fund fund = _builderFactoryFixture.FundBuilder.Build();
+            DateTime now = DateTime.Now;
 
             Budget subject = new Budget(
-                _faker.Lorem.Word(),
-                _faker.Random.Decimal(),
-                randomDuration,
-                _faker.Date.Past(),
-                Guid.NewGuid()
-            );
-
-            decimal expectedDefaultSetAmount = 0;
-
-            Assert.Equal(expectedDefaultSetAmount, subject.SetAmount);
-        }
-
-        [Fact]
-        public void Test_SetAmountDefaultsTo0_WhenCreatingBudget_WithId()
-        {
-            IBudgetDurationBuilder durationBuilder = _builderFactoryFixture.GetService<BudgetDurationBuilderProvider>().GetBuilder<MonthlyBookEndedDuration>();
-            BudgetDurationBase randomDuration = durationBuilder.Build();
-
-            Budget subject = new Budget(
-                Guid.NewGuid(),
-                _faker.Lorem.Word(),
-                _faker.Random.Decimal(),
-                randomDuration,
-                _faker.Date.Past(),
-                Guid.NewGuid()
+                fund,
+                new BudgetPeriod(now, fund.Duration.GetEndDateFromStartDate(now))
             );
 
             decimal expectedDefaultSetAmount = 0;
@@ -133,11 +109,14 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         [InlineData(11, -45, -34)]
         public void Test_FundBalanceCorrect_WhenAddToFundCalled(decimal startBalance, decimal add, decimal expected)
         {
-            Budget subject = _builderFactoryFixture.BudgetBuilder.SetFundBalance(startBalance).Build();
+            Budget subject = _builderFactoryFixture.BudgetBuilder
+                                .SetFund(fundBuilder =>
+                                    fundBuilder.SetFundBalance(startBalance))
+                                .Build();
 
-            subject.AddToFund(add);
+            subject.Fund.AddToFund(add);
 
-            Assert.Equal(expected, subject.FundBalance);
+            Assert.Equal(expected, subject.Fund.FundBalance);
         }
     }
 }

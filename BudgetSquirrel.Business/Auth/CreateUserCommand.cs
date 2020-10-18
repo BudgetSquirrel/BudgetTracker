@@ -6,8 +6,8 @@ namespace BudgetSquirrel.Business.Auth
 {
   public class CreateUserCommand
   {
-    private const string newUserRootBudgetName = "My Budget";
-    private const decimal newUserRootBudgetFundBalance = 0;
+    private const string newUserRootFundName = "My Budget";
+    private const decimal newUserRootFundBalance = 0;
     private const int newUserRootBudgetDurationEndDate = 31;
     private const bool newUserRootBudgetDurationShouldRollover = false;
 
@@ -38,10 +38,14 @@ namespace BudgetSquirrel.Business.Auth
     private (Budget, BudgetPeriod) CreateNewUserRootBudget(User user)
     {
       BudgetDurationBase duration = new MonthlyBookEndedDuration(newUserRootBudgetDurationEndDate, newUserRootBudgetDurationShouldRollover);
-      Budget rootBudget = new Budget(newUserRootBudgetName, newUserRootBudgetFundBalance, duration, DateTime.Now, user);
-      BudgetPeriod firstBudgetPeriod = new BudgetPeriod(rootBudget, rootBudget.BudgetStart, duration.GetEndDateFromStartDate(rootBudget.BudgetStart));
+      Fund rootFund = new Fund(newUserRootFundName, newUserRootFundBalance, duration, user.Id);
+      DateTime startDate = DateTime.Now;
+      DateTime endDate = duration.GetEndDateFromStartDate(startDate);
+      BudgetPeriod firstBudgetPeriod = new BudgetPeriod(startDate, endDate);
+      Budget firstRootBudget = new Budget(rootFund, firstBudgetPeriod);
+      firstBudgetPeriod.RootBudget = firstRootBudget;
 
-      return (rootBudget, firstBudgetPeriod);
+      return (firstRootBudget, firstBudgetPeriod);
     }
   }
 }

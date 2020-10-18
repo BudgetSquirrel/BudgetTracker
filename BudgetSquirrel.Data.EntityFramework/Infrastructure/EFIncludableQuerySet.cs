@@ -44,6 +44,11 @@ namespace BudgetSquirrel.Data.EntityFramework.Infrastructure
       return this.queryable.ToListAsync();
     }
 
+    public IQueryable<TEntity> AsQueryable()
+    {
+      return this.queryable;
+    }
+
     public IQuerySet<TEntity> Where(Expression<Func<TEntity, bool>> clause)
     {
       return new EFQuerySet<TEntity>(this.queryable.Where(clause));

@@ -9,23 +9,8 @@ namespace BudgetSquirrel.Data.EntityFramework.Schema
     public static void ApplySchema(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Budget>()
-        .HasOne(typeof(UserRecord))
-        .WithMany()
-        .HasForeignKey("UserId");
-      modelBuilder.Entity<Budget>()
-        .Ignore(b => b.User);
-
-      modelBuilder.Entity<Budget>()
-        .HasOne(b => b.Duration)
-        .WithMany()
-        .HasForeignKey(b => b.DurationId);
-
-      modelBuilder.Entity<Budget>()
-        .HasOne(b => b.ParentBudget)
-        .WithMany(b => b.SubBudgets)
-        .HasForeignKey(b => b.ParentBudgetId)
-        .OnDelete(DeleteBehavior.Cascade)
-        .IsRequired(false);
+        .Ignore(b => b.SubBudgets)
+        .Ignore(b => b.ParentBudget);
     }
   }
 }

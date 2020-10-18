@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.Business.BudgetPlanning
 {
+    // TODO: Move to roo BudgetSquirrel.Business namespace
     public class Budget
     {
         /// <summary>
         /// Unique numeric identifier for this <see cref="Budget" />.
         /// </summary>
         public Guid Id { get; private set; }
-
-        /// <summary>
-        /// English, user friendly identifier for this <see cref="Budget" />.
-        /// </summary>
-        public string Name { get; set; }
 
         /// <summary>
         /// Allows the user to calculate the Set amount based on the Parent
@@ -33,46 +29,27 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         /// </summary>
         public decimal SetAmount { get; private set; }
 
-        /// <summary>
-        /// The amount that is currently available in the fund attached to this
-        /// budget for the budget planner to spend. Each time a transaction is
-        /// applied to this budget, this balance will be modified to reflect that
-        /// transaction.
-        /// It is important to note that this number is agnostic of the budget
-        /// amounts (PercentAmount/SetAmount). Those are planned amount that the
-        /// user will put into the budget fund every budget period. This is the
-        /// amount that stores that planned amount along with any rollover from
-        /// previous months.
-        /// For example, a user may put $50 into this budget every budget period,
-        /// but after 3 budget periods, if they don't spend anything, this fund
-        /// balance will have a value of $150 (3 budget periods worth of saving
-        /// $50 each period). If they then go and log a transaction against this
-        /// budget of $37, this fund balance will then only be $113 (150 - 137).
-        /// </summary>
-        public decimal FundBalance { get; private set; }
+        public Guid FundId { get; set; }
 
-        public Guid DurationId { get; private set; }
+        public Fund Fund { get; set; }
+
+        public Guid BudgetPeriodId { get; set; }
+
+        public BudgetPeriod BudgetPeriod { get; set; }
+
+        public IEnumerable<Budget> SubBudgets =>
+            this.Fund.SubFunds.Select(f =>
+                f.GetHistoricalBudgetForPeriod(this.BudgetPeriod));
+        
+        public Budget ParentBudget =>
+            this.Fund.ParentFund?.GetHistoricalBudgetForPeriod(
+                this.BudgetPeriod);
 
         /// <summary>
-        /// The duration the budget will be per cycle in months.
+        /// The date in which the user finalized their budget 
+        /// unable to edit any values until the edit period comes available.
         /// </summary>
-        public BudgetDurationBase Duration { get; set; }
-
-        /// <summary>
-        /// The last start date of the budget's cycle need to determine when the
-        /// current budget will end and the next one will be begin
-        /// </summary>
-        public DateTime BudgetStart { get; private set; }
-
-        public Budget ParentBudget { get; private set; }
-
-        public Guid? ParentBudgetId { get; private set; }
-
-        public Guid UserId { get; private set; }
-
-        public User User { get; private set; }
-
-        public IEnumerable<Budget> SubBudgets { get; set; }
+        public DateTime? DateFinalizedTo { get; private set; }
 
         public bool IsPercentBasedBudget
         {
@@ -82,65 +59,50 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             }
         }
 
+        public bool IsFullyAllocated
+        {
+            get
+            {
+                if (this.SetAmount != this.SubBudgetTotalPlannedAmount && this.SubBudgets.Count() != 0)
+                    return false;
+
+                foreach (Budget subBudget in this.SubBudgets)
+                    if (!subBudget.IsFullyAllocated)
+                        return false;
+
+                return true;
+            }
+        }
+    
         public decimal SubBudgetTotalPlannedAmount => this.SubBudgets.Sum(b => b.SetAmount);
 
         private Budget() {}
 
-        public Budget(string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart,
-            User user)
+        public Budget(Fund fund, BudgetPeriod period, decimal setAmount = 0)
         {
-            this.Name = name;
-            this.FundBalance = fundBalance;
-            this.Duration = duration;
-            this.BudgetStart = budgetStart;
-            this.User = user;
-            this.SetAmount = 0;
+            this.Fund = fund;
+            this.BudgetPeriod = period;
+            this.SetAmount = setAmount;
         }
 
-        public Budget(string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart,
-            Guid userId)
-        {
-            this.Name = name;
-            this.FundBalance = fundBalance;
-            this.Duration = duration;
-            this.BudgetStart = budgetStart;
-            this.UserId = userId;
-            this.SetAmount = 0;
-        }
-
-        public Budget(Guid id, string name, decimal fundBalance,
-            BudgetDurationBase duration, DateTime budgetStart,
-            Guid userId)
+        public Budget(Guid id, Fund fund, BudgetPeriod period, decimal setAmount = 0)
         {
             this.Id = id;
-            this.Name = name;
-            this.FundBalance = fundBalance;
-            this.Duration = duration;
-            this.BudgetStart = budgetStart;
-            this.UserId = userId;
-            this.SetAmount = 0;
+            this.Fund = fund;
+            this.BudgetPeriod = period;
+            this.SetAmount = setAmount;
         }
 
-        public Budget(Budget parentBudget, string name, decimal fundBalance)
+        public Budget(Fund fund, Guid periodId, decimal setAmount = 0)
         {
-            this.ParentBudgetId = parentBudget.Id;
-            this.DurationId = parentBudget.DurationId;
-            this.BudgetStart = parentBudget.BudgetStart;
-            this.UserId = parentBudget.UserId;
-            this.Name = name;
-            this.FundBalance = fundBalance;
-            this.SetAmount = 0;
+            this.Fund = fund;
+            this.BudgetPeriodId = periodId;
+            this.SetAmount = setAmount;
         }
 
-        public void SetOwner(Guid userId)
+        public void SetFinalizedDate()
         {
-            if (this.UserId != default(Guid))
-            {
-                throw new InvalidOperationException("This budget already has an owner.");
-            }
-            this.UserId = userId;
+            this.DateFinalizedTo = DateTime.Now;
         }
 
         public void SetPercentAmount(double percent)
@@ -157,23 +119,6 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                 throw new InvalidOperationException("Fixed amount of budget must not be less than 0.");
             PercentAmount = null;
             SetAmount = amount;
-        }
-
-        public void AddToFund(decimal amount)
-        {
-            this.FundBalance += amount;
-        }
-
-        public bool IsOwnedBy(User user)
-        {
-            return this.UserId == user.Id;
-        }
-
-        public void LoadParentBudget(Budget parentBudget)
-        {
-            if (parentBudget.Id != this.ParentBudgetId)
-                throw new InvalidOperationException("Parent budget id doesn't match that on this budget.");
-            this.ParentBudget = parentBudget;
         }
     }
 }

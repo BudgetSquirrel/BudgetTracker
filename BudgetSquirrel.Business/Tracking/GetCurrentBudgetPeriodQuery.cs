@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using BudgetSquirrel.Business.Infrastructure;
+using BudgetSquirrel.Business.BudgetPlanning;
 
 namespace BudgetSquirrel.Business.Tracking
 {
@@ -18,13 +19,15 @@ namespace BudgetSquirrel.Business.Tracking
         public async Task<BudgetPeriod> Run()
         {
         DateTime now = DateTime.Now;
-        IQuerySet<BudgetPeriod> budgetPeriods = this.unitOfWork.GetRepository<BudgetPeriod>()
-                                                                .GetAll()
-                                                                .Include(period => period.Budget);
-        BudgetPeriod current = await budgetPeriods.SingleOrDefaultAsync(period => period.Budget.UserId == this.userId &&
-                                                                                  period.StartDate <= now &&
-                                                                                  period.EndDate > now);
-        return current;
+        Budget currentRootBudget = await this.unitOfWork.GetRepository<Budget>()
+                                                            .GetAll()
+                                                            .Include(b => b.Fund)
+                                                            .Include(b => b.BudgetPeriod)
+                                                            .SingleAsync(b => b.Fund.ParentFundId == null &&
+                                                                         b.Fund.UserId == this.userId &&
+                                                                         b.BudgetPeriod.StartDate <= now &&
+                                                                         b.BudgetPeriod.EndDate > now);
+        return currentRootBudget.BudgetPeriod;
         }
     }
 }

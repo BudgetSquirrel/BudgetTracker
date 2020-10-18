@@ -1,82 +1,49 @@
 using Bogus;
+using BudgetSquirrel.Business;
 using BudgetSquirrel.Business.BudgetPlanning;
 using System;
+using System.Collections.Generic;
 
 namespace BudgetSquirrel.TestUtils.Budgeting
 {
-    public class BudgetBuilder : IBudgetBuilder
+  public class BudgetBuilder : IBudgetBuilder
     {
         private Faker _faker = new Faker();
-        private BudgetDurationBuilderProvider _budgetDurationBuilderProvider;
+        private IFundBuilder _fundBuilder;
 
-        private Guid Id;
+        private Fund fund;
 
-        private Guid _ownerId;
+        private Budget parentBudget;
 
-        private Budget _parentBudget;
+        private BudgetPeriod budgetPeriod;
 
-        private string _name;
+        private Guid _id;
 
         private double? _percentAmount;
 
         private decimal? _setAmount;
 
-        private decimal _fundBalance;
-
-        private IBudgetDurationBuilder _durationBuilder;
-
-        private DateTime _budgetStart;
-
-        public BudgetBuilder(BudgetDurationBuilderProvider budgetDurationBuilderProvider)
+        public BudgetBuilder(IFundBuilder fundBuilder)
         {
-            _budgetDurationBuilderProvider = budgetDurationBuilderProvider;
+            _fundBuilder = fundBuilder;
             InitRandomized();
         }
 
         private void InitRandomized()
         {
-            Id = Guid.NewGuid();
-            _ownerId = Guid.NewGuid();
-            _name = _faker.Lorem.Word();
-            _budgetStart = DateTime.Now;
+            _id = Guid.NewGuid();
 
-            bool isPercentBased = _faker.Random.Bool();
-            if (isPercentBased)
-                _percentAmount = _faker.Random.Double();
-            else
-                _setAmount = _faker.Finance.Amount();
-            InitRandomDuration();
+            _setAmount = _faker.Finance.Amount();
+
+            this.fund = this._fundBuilder.Build();
+
+            DateTime now = DateTime.Now;
+            this.budgetPeriod = new BudgetPeriod(now, this.fund.Duration.GetEndDateFromStartDate(now));
         }
 
-        private void InitRandomDuration(bool? isDaySpanDuration=null)
+        public IBudgetBuilder SetFund(Func<IFundBuilder, IFundBuilder> fundOptions)
         {
-            isDaySpanDuration = isDaySpanDuration ?? _faker.Random.Bool();
-
-            if (isDaySpanDuration == true)
-            {
-                _durationBuilder = _budgetDurationBuilderProvider.GetBuilder<DaySpanDuration>();
-            }
-            else
-            {
-                _durationBuilder = _budgetDurationBuilderProvider.GetBuilder<MonthlyBookEndedDuration>();
-            }
-        }
-
-        public IBudgetBuilder SetParentBudget(Budget parentBudget)
-        {
-            _parentBudget = parentBudget;
-            return this;
-        }
-
-        public IBudgetBuilder SetOwner(Guid userId)
-        {
-            _ownerId = userId;
-            return this;
-        }
-
-        public IBudgetBuilder SetName(string name)
-        {
-            _name = name;
+            this.fund = fundOptions(this._fundBuilder).Build();
             return this;
         }
 
@@ -93,61 +60,38 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             return this;
         }
 
-        public IBudgetBuilder SetFundBalance(decimal fundBalance) {
-            _fundBalance = fundBalance;
-            return this;
-        }
-
-        public IBudgetBuilder SetDurationEndDayOfMonth(int value)
+        public IBudgetBuilder SetBudgetPeriod(BudgetPeriod budgetPeriod)
         {
-            if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))
-                InitRandomDuration(false);
-            ((MonthlyBookEndedDurationBuilder) _durationBuilder).SetDurationEndDayOfMonth(value);
-            return this;
-        }
-
-        public IBudgetBuilder SetDurationRolloverEndDateOnSmallMonths(bool value)
-        {
-            if (_durationBuilder == null || !(_durationBuilder is MonthlyBookEndedDurationBuilder))
-                InitRandomDuration(false);
-            ((MonthlyBookEndedDurationBuilder) _durationBuilder).SetDurationRolloverEndDateOnSmallMonths(value);
-            return this;
-        }
-
-        public IBudgetBuilder SetDurationNumberDays(int value)
-        {
-            if (_durationBuilder == null || !(_durationBuilder is DaySpanDurationBuilder))
-                InitRandomDuration(true);
-            ((DaySpanDurationBuilder) _durationBuilder).SetNumberDays(value);
+            this.budgetPeriod = budgetPeriod;
             return this;
         }
 
         public Budget Build()
         {
             Budget budget = null;
-            if (_parentBudget != null)
+            budget = new Budget(this._id, this.fund, this.budgetPeriod);
+            budget.BudgetPeriodId = this.budgetPeriod.Id;
+            budget.FundId = this.fund.Id;
+            this.fund.HistoricalBudgets = new List<Budget>() { budget };
+
+            if (this.parentBudget != null)
             {
-                budget = new Budget(_parentBudget, _name, _fundBalance);
-                budget.LoadParentBudget(_parentBudget);
-                if (_percentAmount != null)
-                    budget.SetPercentAmount(_percentAmount.Value);
+                budget.Fund.ParentFund = this.parentBudget.Fund;
             }
+
+            if (_percentAmount.HasValue)
+                budget.SetPercentAmount(_percentAmount.Value);
             else
-            {
-                BudgetDurationBase budgetDuration = _durationBuilder.Build();
-                budget = new Budget(
-                    Guid.NewGuid(),
-                    _name,
-                    _fundBalance,
-                    budgetDuration,
-                    _budgetStart,
-                    _ownerId
-                );
-            }
-            if (_setAmount != null)
                 budget.SetFixedAmount(_setAmount.Value);
             
             return budget;
         }
-    }
+
+        public IBudgetBuilder SetParentBudget(Budget budget)
+        {
+            this.parentBudget = budget;
+            this.parentBudget.BudgetPeriod = this.budgetPeriod;
+            return this;
+        }
+  }
 }

@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.TestUtils.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +18,9 @@ namespace BudgetSquirrel.Business.Tests
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddTransient<FakeDbContext>();
+      IUnitOfWork unitOfWork = new InMemoryUnitOfWork();
+      services.AddSingleton<IUnitOfWork>(unitOfWork);
+      services.AddTransient<BudgetLoader>();
     }
     
     public void Dispose()

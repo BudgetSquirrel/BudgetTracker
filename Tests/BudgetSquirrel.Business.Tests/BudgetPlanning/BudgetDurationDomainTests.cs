@@ -1,5 +1,6 @@
 using System;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.TestUtils;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Xunit;
 
