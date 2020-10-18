@@ -60,19 +60,25 @@ namespace BudgetSquirrel.TestUtils.Budgeting
             return this;
         }
 
+        public IBudgetBuilder SetBudgetPeriod(BudgetPeriod budgetPeriod)
+        {
+            this.budgetPeriod = budgetPeriod;
+            return this;
+        }
+
         public Budget Build()
         {
-            if (this.parentBudget != null)
-            {
-                this.fund.ParentFund = this.parentBudget.Fund;
-            }
-
             Budget budget = null;
             budget = new Budget(this._id, this.fund, this.budgetPeriod);
             budget.BudgetPeriodId = this.budgetPeriod.Id;
             budget.FundId = this.fund.Id;
             this.fund.HistoricalBudgets = new List<Budget>() { budget };
-            
+
+            if (this.parentBudget != null)
+            {
+                budget.Fund.ParentFund = this.parentBudget.Fund;
+            }
+
             if (_percentAmount.HasValue)
                 budget.SetPercentAmount(_percentAmount.Value);
             else

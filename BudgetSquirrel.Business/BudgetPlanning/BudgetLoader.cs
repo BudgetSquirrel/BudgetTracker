@@ -22,9 +22,11 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                          .GetAll()
                                                          .Include(b => b.BudgetPeriod)
                                                          .Where(b => loadedFundsIds.Contains(b.FundId))
-                                                         .Where(b => b.BudgetPeriod.StartDate.Date == budgetPeriod.StartDate.Date &&
-                                                                     b.BudgetPeriod.EndDate.Date == budgetPeriod.EndDate.Date)
                                                          .ToListAsync();
+
+      budgets = budgets.Where(b => b.BudgetPeriod.StartDate.Date == budgetPeriod.StartDate.Date &&
+                                                                     b.BudgetPeriod.EndDate.Date == budgetPeriod.EndDate.Date);
+                                                        //  .ToListAsync();
 
       // Put the budgets on their corresponding fund. This is equivelant to:
       // loadedSubFunds = loadedSubFunds inner join budgets on budget.FundId = fund.Id

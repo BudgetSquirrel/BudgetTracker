@@ -37,30 +37,108 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
                                                .SetFund(fund => fund.SetParentFund(rootBudget.Fund)
                                                                     .SetOwner(user))
                                                .SetFixedAmount(100)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
                                                .Build();
 
       Budget budgetAA = this.buildersAndFactories.BudgetBuilder
                                                .SetFund(fund => fund.SetParentFund(budgetA.Fund)
                                                                     .SetOwner(user))
                                                .SetFixedAmount(50)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
                                                .Build();
 
       Budget budgetB = this.buildersAndFactories.BudgetBuilder
                                                .SetFund(fund => fund.SetParentFund(rootBudget.Fund)
                                                                     .SetOwner(user))
                                                .SetFixedAmount(200)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
                                                .Build();
 
       Budget budgetBA = this.buildersAndFactories.BudgetBuilder
                                                .SetFund(fund => fund.SetParentFund(budgetB.Fund)
                                                                     .SetOwner(user))
                                                .SetFixedAmount(75)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
                                                .Build();
 
       Budget budgetBB = this.buildersAndFactories.BudgetBuilder
                                                .SetFund(fund => fund.SetParentFund(budgetB.Fund)
                                                                     .SetOwner(user))
                                                .SetFixedAmount(125)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
+                                               .Build();
+
+      IUnitOfWork unitOfWork = this.services.GetService<IUnitOfWork>();
+      BudgetLoader budgetLoader = this.services.GetService<BudgetLoader>();
+
+      var budgetRepository = unitOfWork.GetRepository<Budget>();
+      budgetRepository.Add(rootBudget);
+      budgetRepository.Add(budgetA);
+      budgetRepository.Add(budgetAA);
+      budgetRepository.Add(budgetB);
+      budgetRepository.Add(budgetBA);
+      budgetRepository.Add(budgetBB);
+      var fundRepository = unitOfWork.GetRepository<Fund>();
+      fundRepository.Add(rootBudget.Fund);
+      fundRepository.Add(budgetA.Fund);
+      fundRepository.Add(budgetAA.Fund);
+      fundRepository.Add(budgetB.Fund);
+      fundRepository.Add(budgetBA.Fund);
+      fundRepository.Add(budgetBB.Fund);
+      var userRepository = unitOfWork.GetRepository<User>();
+      userRepository.Add(rootBudget.Fund.User);
+      var periodRepository = unitOfWork.GetRepository<BudgetPeriod>();
+      periodRepository.Add(rootBudget.BudgetPeriod);
+      var durationRepository = unitOfWork.GetRepository<BudgetDurationBase>();
+      durationRepository.Add(rootBudget.Fund.Duration);
+
+      FinalizeBudgetPeriodCommand command = new FinalizeBudgetPeriodCommand(unitOfWork, budgetLoader, rootBudget.Id, rootBudget.Fund.User);
+      await Assert.ThrowsAsync<InvalidOperationException>(() => command.Run());
+    }
+
+    [Fact]
+    public async Task Test_FinalizeBudget_Succeeds_WhenBudgetsValid()
+    {
+      User user = this.buildersAndFactories.GetService<UserFactory>().NewUser();
+
+      Budget rootBudget = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetOwner(user))
+                                               .SetFixedAmount(300)
+                                               .Build();
+
+      Budget budgetA = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetParentFund(rootBudget.Fund)
+                                                                    .SetOwner(user))
+                                               .SetFixedAmount(100)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
+                                               .Build();
+
+      Budget budgetAA = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetParentFund(budgetA.Fund)
+                                                                    .SetOwner(user))
+                                               .SetFixedAmount(100)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
+                                               .Build();
+
+      Budget budgetB = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetParentFund(rootBudget.Fund)
+                                                                    .SetOwner(user))
+                                               .SetFixedAmount(200)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
+                                               .Build();
+
+      Budget budgetBA = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetParentFund(budgetB.Fund)
+                                                                    .SetOwner(user))
+                                               .SetFixedAmount(75)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
+                                               .Build();
+
+      Budget budgetBB = this.buildersAndFactories.BudgetBuilder
+                                               .SetFund(fund => fund.SetParentFund(budgetB.Fund)
+                                                                    .SetOwner(user))
+                                               .SetFixedAmount(125)
+                                               .SetBudgetPeriod(rootBudget.BudgetPeriod)
                                                .Build();
 
       IUnitOfWork unitOfWork = this.services.GetService<IUnitOfWork>();
@@ -89,6 +167,8 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
 
       FinalizeBudgetPeriodCommand command = new FinalizeBudgetPeriodCommand(unitOfWork, budgetLoader, rootBudget.Id, rootBudget.Fund.User);
       await command.Run();
+
+      Assert.NotNull(rootBudget.DateFinalizedTo);
     }
   }
 }

@@ -1,4 +1,5 @@
 using System;
+using BudgetSquirrel.Business;
 using BudgetSquirrel.Business.BudgetPlanning;
 
 namespace BudgetSquirrel.TestUtils.Budgeting
@@ -24,6 +25,8 @@ namespace BudgetSquirrel.TestUtils.Budgeting
         /// cases of calculation.
         /// </summary>
         IBudgetBuilder SetFixedAmount(decimal? setAmount);
+
+        IBudgetBuilder SetBudgetPeriod(BudgetPeriod budgetPeriod);
 
         Budget Build();
     }
