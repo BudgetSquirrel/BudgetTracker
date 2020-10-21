@@ -25,10 +25,12 @@ namespace BudgetSquirrel.TestUtils
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<BuilderFactoryFixture>(this);
             services.AddTransient<BudgetDurationBuilderProvider>();
             services.AddTransient<IFundBuilder, FundBuilder>();
             services.AddTransient<IBudgetBuilder, BudgetBuilder>();
             services.AddTransient<IBudgetPeriodBuilder, BudgetPeriodBuilder>();
+            services.AddTransient<BudgetTreeBuilder>();
             
             services.AddScoped<UserFactory>();
         }
