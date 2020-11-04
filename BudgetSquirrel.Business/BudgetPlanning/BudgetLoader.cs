@@ -14,6 +14,23 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     {
       this.unitOfWork = unitOfWork;
     }
+
+    public async Task<IEnumerable<Fund>> LoadFundTree(Fund root, BudgetPeriod budgetPeriod)
+    {
+      IEnumerable<Fund> loadedSubFunds = await this.unitOfWork.GetRepository<Fund>()
+                                                  .GetAll()
+                                                  .Include(f => f.Duration)
+                                                  .Where(b => b.ParentFundId == root.Id)
+                                                  .ToListAsync();
+
+      loadedSubFunds = await this.LoadCurrentBudgetForFunds(loadedSubFunds, budgetPeriod);
+
+      foreach (Fund subFunds in loadedSubFunds)
+      {
+        subFunds.SubFunds = await LoadFundTree(subFunds, budgetPeriod);
+      }
+      return loadedSubFunds;
+    }
     
     public async Task<IEnumerable<Fund>> LoadCurrentBudgetForFunds(IEnumerable<Fund> funds, BudgetPeriod budgetPeriod)
     {

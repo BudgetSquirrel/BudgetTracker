@@ -1,6 +1,6 @@
 using System;
 using BudgetSquirrel.Business.Auth;
-using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business;
 
 namespace BudgetSquirrel.TestUtils
 {
