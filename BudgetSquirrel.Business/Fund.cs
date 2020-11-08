@@ -44,7 +44,7 @@ namespace BudgetSquirrel.Business
         public Budget CurrentBudget 
         { 
             get
-            {                
+            {
                 return this.HistoricalBudgets.Where(b => b.BudgetPeriod.StartDate < DateTime.Now && b.BudgetPeriod.EndDate > DateTime.Now).SingleOrDefault();
             }
         }

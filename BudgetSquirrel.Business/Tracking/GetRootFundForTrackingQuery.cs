@@ -39,7 +39,7 @@ namespace BudgetSquirrel.Business.Tracking
                                                             .Where(p => p.RootBudget.FundId == rootFund.Id);
       BudgetPeriod currentPeriod = await BudgetPeriodQueryUtils.GetForDate(usersBudgetPeriods, this.date);
 
-      rootFund.SubFunds= await this.budgetLoader.LoadFundTree(rootFund, currentPeriod);
+      rootFund = await this.budgetLoader.LoadFundTree(rootFund, currentPeriod);
 
       return rootFund;
     }

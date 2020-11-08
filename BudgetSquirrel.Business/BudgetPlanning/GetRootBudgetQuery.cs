@@ -31,16 +31,16 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                   .SingleAsync(b => b.UserId == this.userId &&
                                                                              b.ParentFund == null);
       DateTime currentTime = DateTime.Now;
-      Budget currentRootBudget = await this.unitOfWork.GetRepository<Budget>()
+      IQuerySet<Budget> rootBudgets = this.unitOfWork.GetRepository<Budget>()
                                                   .GetAll()
                                                   .Include(b => b.BudgetPeriod)
-                                                  .SingleAsync(b => b.FundId == root.Id && 
-                                                                            (b.BudgetPeriod.StartDate <= currentTime && b.BudgetPeriod.EndDate >= currentTime));
+                                                  .Where(b => b.FundId == root.Id);
+      Budget currentRootBudget = await BudgetPeriodQueryUtils.GetForDate(rootBudgets, DateTime.Now);
       
       currentRootBudget.Fund = root;
       root.HistoricalBudgets = new List<Budget>() { currentRootBudget };
 
-      root.SubFunds = await this.budgetLoader.LoadFundTree(root, currentRootBudget.BudgetPeriod);
+      root = await this.budgetLoader.LoadFundTree(root, currentRootBudget.BudgetPeriod);
       return root;
     }
   }
