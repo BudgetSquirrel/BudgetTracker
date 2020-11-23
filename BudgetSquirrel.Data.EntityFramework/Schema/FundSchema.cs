@@ -1,3 +1,4 @@
+using BudgetSquirrel.Business;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;

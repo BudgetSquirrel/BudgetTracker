@@ -14,6 +14,13 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     {
       this.unitOfWork = unitOfWork;
     }
+
+    public async Task<Fund> LoadFundTree(Fund root, BudgetPeriod budgetPeriod)
+    {
+      Fund rootWBudget = (await this.LoadCurrentBudgetForFunds(new Fund[] { root }, budgetPeriod)).First();
+      rootWBudget.SubFunds = await this.LoadFundTreeRecursive(root, budgetPeriod);
+      return rootWBudget;
+    }
     
     public async Task<IEnumerable<Fund>> LoadCurrentBudgetForFunds(IEnumerable<Fund> funds, BudgetPeriod budgetPeriod)
     {
@@ -25,7 +32,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                          .ToListAsync();
 
       budgets = budgets.Where(b => b.BudgetPeriod.StartDate.Date == budgetPeriod.StartDate.Date &&
-                                                                     b.BudgetPeriod.EndDate.Date == budgetPeriod.EndDate.Date);
+                                   b.BudgetPeriod.EndDate.Date == budgetPeriod.EndDate.Date);
                                                         //  .ToListAsync();
 
       // Put the budgets on their corresponding fund. This is equivelant to:
@@ -42,6 +49,23 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         });
 
       return funds;
+    }
+
+    private async Task<IEnumerable<Fund>> LoadFundTreeRecursive(Fund root, BudgetPeriod budgetPeriod)
+    {
+      IEnumerable<Fund> loadedSubFunds = await this.unitOfWork.GetRepository<Fund>()
+                                                  .GetAll()
+                                                  .Include(f => f.Duration)
+                                                  .Where(b => b.ParentFundId == root.Id)
+                                                  .ToListAsync();
+
+      loadedSubFunds = await this.LoadCurrentBudgetForFunds(loadedSubFunds, budgetPeriod);
+
+      foreach (Fund subFund in loadedSubFunds)
+      {
+        subFund.SubFunds = await LoadFundTreeRecursive(subFund, budgetPeriod);
+      }
+      return loadedSubFunds;
     }
   }
 }

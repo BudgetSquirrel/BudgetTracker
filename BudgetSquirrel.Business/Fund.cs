@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BudgetSquirrel.Business.Auth;
+using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Business.Tracking;
 
-namespace BudgetSquirrel.Business.BudgetPlanning
+namespace BudgetSquirrel.Business
 {
     // TODO: Move to roo BudgetSquirrel.Business namespace
     public class Fund
@@ -43,7 +44,7 @@ namespace BudgetSquirrel.Business.BudgetPlanning
         public Budget CurrentBudget 
         { 
             get
-            {                
+            {
                 return this.HistoricalBudgets.Where(b => b.BudgetPeriod.StartDate < DateTime.Now && b.BudgetPeriod.EndDate > DateTime.Now).SingleOrDefault();
             }
         }

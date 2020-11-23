@@ -31,34 +31,17 @@ namespace BudgetSquirrel.Business.BudgetPlanning
                                                   .SingleAsync(b => b.UserId == this.userId &&
                                                                              b.ParentFund == null);
       DateTime currentTime = DateTime.Now;
-      Budget currentRootBudget = await this.unitOfWork.GetRepository<Budget>()
+      IQuerySet<Budget> rootBudgets = this.unitOfWork.GetRepository<Budget>()
                                                   .GetAll()
                                                   .Include(b => b.BudgetPeriod)
-                                                  .SingleAsync(b => b.FundId == root.Id && 
-                                                                            (b.BudgetPeriod.StartDate <= currentTime && b.BudgetPeriod.EndDate >= currentTime));
+                                                  .Where(b => b.FundId == root.Id);
+      Budget currentRootBudget = await BudgetPeriodQueryUtils.GetForDate(rootBudgets, DateTime.Now);
       
       currentRootBudget.Fund = root;
       root.HistoricalBudgets = new List<Budget>() { currentRootBudget };
 
-      root.SubFunds = await LoadFundTree(root, currentRootBudget.BudgetPeriod);
+      root = await this.budgetLoader.LoadFundTree(root, currentRootBudget.BudgetPeriod);
       return root;
-    }
-
-    private async Task<IEnumerable<Fund>> LoadFundTree(Fund root, BudgetPeriod budgetPeriod)
-    {
-      IEnumerable<Fund> loadedSubFunds = await this.unitOfWork.GetRepository<Fund>()
-                                                  .GetAll()
-                                                  .Include(f => f.Duration)
-                                                  .Where(b => b.ParentFundId == root.Id)
-                                                  .ToListAsync();
-
-      loadedSubFunds = await this.budgetLoader.LoadCurrentBudgetForFunds(loadedSubFunds, budgetPeriod);
-
-      foreach (Fund subFunds in loadedSubFunds)
-      {
-        subFunds.SubFunds = await LoadFundTree(subFunds, budgetPeriod);
-      }
-      return loadedSubFunds;
     }
   }
 }
