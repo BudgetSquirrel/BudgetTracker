@@ -116,9 +116,10 @@ namespace BudgetSquirrel.Business
             return this.UserId == user.Id;
         }
 
-        public void AddToFund(decimal amount)
+        public void ApplyTransaction(Transaction transaction)
         {
-            this.FundBalance += amount;
+            this.FundBalance += transaction.Amount;
+            this.ParentFund.ApplyTransaction(transaction);
         }
     }
 }

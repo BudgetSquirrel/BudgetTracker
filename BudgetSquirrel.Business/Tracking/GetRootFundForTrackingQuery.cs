@@ -9,7 +9,7 @@ namespace BudgetSquirrel.Business.Tracking
 {
   public class GetRootFundForTrackingQuery
   {
-    BudgetLoader budgetLoader;
+    FundLoader budgetLoader;
     private IUnitOfWork unitOfWork;
 
     private Guid userId;
@@ -17,7 +17,7 @@ namespace BudgetSquirrel.Business.Tracking
 
     public GetRootFundForTrackingQuery(
       IUnitOfWork unitOfWork,
-      BudgetLoader budgetLoader,
+      FundLoader budgetLoader,
       Guid userId,
       DateTime date)
     {

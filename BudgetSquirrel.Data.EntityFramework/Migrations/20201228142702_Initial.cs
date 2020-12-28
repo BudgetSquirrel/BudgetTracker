@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -94,18 +94,11 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     SetAmount = table.Column<decimal>(nullable: false),
                     FundId = table.Column<Guid>(nullable: false),
                     BudgetPeriodId = table.Column<Guid>(nullable: false),
-                    DateFinalizedTo = table.Column<DateTime>(nullable: true),
-                    BudgetId = table.Column<Guid>(nullable: true)
+                    DateFinalizedTo = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Budgets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Budgets_Budgets_BudgetId",
-                        column: x => x.BudgetId,
-                        principalTable: "Budgets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Budgets_BudgetPeriods_BudgetPeriodId",
                         column: x => x.BudgetPeriodId,
@@ -120,15 +113,35 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Budgets_BudgetId",
-                table: "Budgets",
-                column: "BudgetId");
+            migrationBuilder.CreateTable(
+                name: "Transactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Summary = table.Column<string>(nullable: true),
+                    Vendor = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    CheckNumber = table.Column<string>(nullable: true),
+                    Notes = table.Column<string>(nullable: true),
+                    FundId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Transactions_Funds_FundId",
+                        column: x => x.FundId,
+                        principalTable: "Funds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_BudgetPeriodId",
                 table: "Budgets",
-                column: "BudgetPeriodId");
+                column: "BudgetPeriodId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_FundId",
@@ -149,12 +162,20 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                 name: "IX_Funds_UserId",
                 table: "Funds",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transactions_FundId",
+                table: "Transactions",
+                column: "FundId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Budgets");
+
+            migrationBuilder.DropTable(
+                name: "Transactions");
 
             migrationBuilder.DropTable(
                 name: "BudgetPeriods");

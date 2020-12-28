@@ -2,17 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Business.Tracking;
 
-namespace BudgetSquirrel.Business.BudgetPlanning
+namespace BudgetSquirrel.Business
 {
-  public class BudgetLoader
+  public class FundLoader
   {
     private IUnitOfWork unitOfWork;
 
-    public BudgetLoader(IUnitOfWork unitOfWork)
+    public FundLoader(IUnitOfWork unitOfWork)
     {
       this.unitOfWork = unitOfWork;
+    }
+
+    /// <summary>
+    /// Loads all funds of which this fund is a descendant. this will return the root fund of the
+    /// tree in which the fund exists. The given fund and each loaded ancestor fund will have it's
+    /// parent fund property loaded into memory in the <see cref="Fund.ParentFund" /> property.
+    /// </summary>
+    public async Task<Fund> LoadAncestorFunds(Fund fund)
+    {
+      Fund currentParent = fund;
+      while (currentParent.ParentFundId.HasValue)
+      {
+        currentParent = await this.unitOfWork.GetRepository<Fund>().GetAll().SingleAsync(f => f.Id == currentParent.ParentFundId);
+      }
+      return currentParent;
     }
 
     public async Task<Fund> LoadFundTree(Fund root, BudgetPeriod budgetPeriod)

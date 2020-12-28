@@ -10,11 +10,11 @@ namespace BudgetSquirrel.Business.BudgetPlanning
     public class FinalizeBudgetPeriodCommand
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly BudgetLoader budgetLoader;
+        private readonly FundLoader budgetLoader;
         private readonly Guid budgetId;
         private readonly User currentUser;
 
-        public FinalizeBudgetPeriodCommand(IUnitOfWork unitOfWork, BudgetLoader budgetLoader, Guid budgetId, User currentUser)
+        public FinalizeBudgetPeriodCommand(IUnitOfWork unitOfWork, FundLoader budgetLoader, Guid budgetId, User currentUser)
         {
             this.unitOfWork = unitOfWork;
             this.budgetLoader = budgetLoader;
@@ -51,6 +51,8 @@ namespace BudgetSquirrel.Business.BudgetPlanning
             budgetRepository.Update(budget);
 
             await this.unitOfWork.SaveChangesAsync();
+
+            // TODO: Now go update the budgets with their new planned amount using the CreateTransactionCommand.
         }
     }
 }

@@ -10,10 +10,10 @@ namespace BudgetSquirrel.Business.BudgetPlanning
   public class GetRootBudgetQuery
   {
     private IUnitOfWork unitOfWork;
-    private BudgetLoader budgetLoader;
+    private FundLoader budgetLoader;
     private Guid userId;
 
-    public GetRootBudgetQuery(IUnitOfWork unitOfWork, BudgetLoader budgetLoader, Guid userId)
+    public GetRootBudgetQuery(IUnitOfWork unitOfWork, FundLoader budgetLoader, Guid userId)
     {
       this.unitOfWork = unitOfWork;
       this.budgetLoader = budgetLoader;

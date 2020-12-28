@@ -29,5 +29,13 @@ namespace BudgetSquirrel.Business
         }
 
         private BudgetPeriod() {}
+
+        /// <summary>
+        /// Whether or not the given date is within this <see cref="BudgetPeriod" />
+        /// </summary>
+        public bool IsPeriodForDate(DateTime date)
+        {
+            return this.StartDate <= date && this.EndDate >= date;
+        }
     }
 }

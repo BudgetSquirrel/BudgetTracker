@@ -21,6 +21,7 @@ namespace BudgetSquirrel.Data.EntityFramework
         public DbSet<BudgetPeriod> BudgetPeriods { get; set; }
         public DbSet<Budget> Budgets { get; set; }
         public DbSet<Fund> Funds { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
