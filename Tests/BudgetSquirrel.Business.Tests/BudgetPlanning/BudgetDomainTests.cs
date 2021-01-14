@@ -1,6 +1,7 @@
 using System;
 using Bogus;
 using BudgetSquirrel.Business.BudgetPlanning;
+using BudgetSquirrel.Business.Tracking;
 using BudgetSquirrel.TestUtils;
 using BudgetSquirrel.TestUtils.Budgeting;
 using Xunit;
@@ -114,7 +115,16 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
                                     fundBuilder.SetFundBalance(startBalance))
                                 .Build();
 
-            subject.Fund.AddToFund(add);
+            Transaction transaction = new Transaction(
+                _faker.Lorem.Word(),
+                _faker.Lorem.Word(),
+                _faker.Date.Recent(),
+                add,
+                _faker.Lorem.Word(),
+                _faker.Lorem.Sentence(),
+                subject.FundId);
+
+            subject.Fund.ApplyTransaction(transaction);
 
             Assert.Equal(expected, subject.Fund.FundBalance);
         }

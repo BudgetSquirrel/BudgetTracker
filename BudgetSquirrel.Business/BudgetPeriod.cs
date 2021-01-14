@@ -21,9 +21,9 @@ namespace BudgetSquirrel.Business
             this.EndDate = endDate;
         }
 
-        public BudgetPeriod(Guid id, DateTime startDate, DateTime endDate)
+        public BudgetPeriod(Budget rootBudget, DateTime startDate, DateTime endDate)
         {
-            this.Id = id;
+            this.RootBudget = rootBudget;
             this.StartDate = startDate;
             this.EndDate = endDate;
         }

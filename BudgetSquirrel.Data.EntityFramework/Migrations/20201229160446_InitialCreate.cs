@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BudgetSquirrel.Data.EntityFramework.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -140,8 +140,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_BudgetPeriodId",
                 table: "Budgets",
-                column: "BudgetPeriodId",
-                unique: true);
+                column: "BudgetPeriodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Budgets_FundId",

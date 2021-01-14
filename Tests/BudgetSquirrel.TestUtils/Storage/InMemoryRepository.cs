@@ -8,6 +8,8 @@ namespace BudgetSquirrel.TestUtils.Storage
 {
   public class InMemoryRepository<TModel> : IRepository<TModel> where TModel : class
   {
+    private string primaryKeyName = "Id";
+    
     private IEnumerable<TModel> collection;
 
     public InMemoryRepository(IEnumerable<TModel> collection)
@@ -15,8 +17,15 @@ namespace BudgetSquirrel.TestUtils.Storage
       this.collection = collection;
     }
 
+    public InMemoryRepository(IEnumerable<TModel> collection, string primaryKeyName)
+    {
+      this.collection = collection;
+      this.primaryKeyName = primaryKeyName;
+    }
+
     public void Add(TModel instance)
     {
+      this.Remove(instance);
       this.collection = this.collection.Append(instance);
     }
 
@@ -27,10 +36,10 @@ namespace BudgetSquirrel.TestUtils.Storage
 
     public void Remove(TModel instance)
     {
-      if (typeof(TModel).GetProperties().Any(p => p.Name == "Id"))
+      if (typeof(TModel).GetProperties().Any(p => p.Name == this.primaryKeyName))
       {
-        PropertyInfo idProperty = typeof(TModel).GetProperty("Id");
-        this.collection = this.collection.Where(x => idProperty.GetValue(x) != idProperty.GetValue(instance));
+        PropertyInfo idProperty = typeof(TModel).GetProperty(this.primaryKeyName);
+        this.collection = this.collection.Where(x => !idProperty.GetValue(x).Equals(idProperty.GetValue(instance)));
       }
       else
       {

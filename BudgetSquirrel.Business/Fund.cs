@@ -119,7 +119,10 @@ namespace BudgetSquirrel.Business
         public void ApplyTransaction(Transaction transaction)
         {
             this.FundBalance += transaction.Amount;
-            this.ParentFund.ApplyTransaction(transaction);
+            if (this.ParentFundId.HasValue)
+            {
+                this.ParentFund.ApplyTransaction(transaction);
+            }
         }
     }
 }

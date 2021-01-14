@@ -5,6 +5,7 @@ using BudgetSquirrel.Business;
 using BudgetSquirrel.Business.Auth;
 using BudgetSquirrel.Business.BudgetPlanning;
 using BudgetSquirrel.Business.Infrastructure;
+using BudgetSquirrel.Business.Tracking;
 
 namespace BudgetSquirrel.TestUtils.Storage
 {
@@ -15,6 +16,7 @@ namespace BudgetSquirrel.TestUtils.Storage
     public IRepository<Fund> FundRepo { get; private set; } = new InMemoryRepository<Fund>(new Fund[] {});
     public IRepository<Budget> BudgetRepo { get; private set; } = new InMemoryRepository<Budget>(new Budget[] {});
     public IRepository<BudgetPeriod> BudgetPeriodRepo { get; private set; } = new InMemoryRepository<BudgetPeriod>(new BudgetPeriod[] {});
+    public IRepository<Transaction> TransactionRepo { get; private set; } = new InMemoryRepository<Transaction>(new Transaction[] {});
 
     public IRepository<T> GetRepository<T>() where T : class
     {
@@ -37,6 +39,10 @@ namespace BudgetSquirrel.TestUtils.Storage
       else if (typeof(T) == typeof(User))
       {
         return (IRepository<T>) this.UserRepo;
+      }
+      else if (typeof(T) == typeof(Transaction))
+      {
+        return (IRepository<T>) this.TransactionRepo;
       }
       else
       {

@@ -6,7 +6,7 @@ namespace BudgetSquirrel.TestUtils
 {
     public class BudgetPeriodBuilder : IBudgetPeriodBuilder
     {
-        private BudgetDurationBase duration;
+        private Budget rootBudget;
 
         private DateTime startDate;
 
@@ -19,25 +19,26 @@ namespace BudgetSquirrel.TestUtils
             this.startDate = DateTime.Now;
         }
 
-        public IBudgetPeriodBuilder ForDuration(BudgetDurationBase duration)
+        public IBudgetPeriodBuilder ForRootBudget(Budget rootBudget)
         {
-            this.duration = duration;
+            this.rootBudget = rootBudget;
             return this;
         }
 
         public IBudgetPeriodBuilder SetStartDate(DateTime startDate)
         {
-            throw new NotImplementedException();
+            this.startDate = startDate;
+            return this;
         }
 
         public BudgetPeriod Build()
         {
-            if (this.duration == null)
+            if (this.rootBudget == null)
             {
-                throw new InvalidOperationException("You must set the duration using ForDuration(BudgetDurationBase) before building the period");
+                throw new InvalidOperationException("You must set the Budget using ForRootBudget(Budget) before building the period");
             }
-            DateTime endDate = this.duration.GetEndDateFromStartDate(this.startDate);
-            BudgetPeriod period = new BudgetPeriod(Guid.NewGuid(), this.startDate, endDate);
+            DateTime endDate = this.rootBudget.Fund.Duration.GetEndDateFromStartDate(this.startDate);
+            BudgetPeriod period = new BudgetPeriod(this.rootBudget, this.startDate, endDate);
             return period;
         }
     }

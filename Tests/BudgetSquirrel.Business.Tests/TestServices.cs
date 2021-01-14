@@ -20,7 +20,7 @@ namespace BudgetSquirrel.Business.Tests
     {
       IUnitOfWork unitOfWork = new InMemoryUnitOfWork();
       services.AddSingleton<IUnitOfWork>(unitOfWork);
-      services.AddTransient<BudgetLoader>();
+      services.AddTransient<FundLoader>();
     }
     
     public void Dispose()

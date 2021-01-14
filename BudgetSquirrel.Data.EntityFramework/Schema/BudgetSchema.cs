@@ -11,6 +11,10 @@ namespace BudgetSquirrel.Data.EntityFramework.Schema
       modelBuilder.Entity<Budget>()
         .Ignore(b => b.SubBudgets)
         .Ignore(b => b.ParentBudget);
+      
+      modelBuilder.Entity<Budget>()
+        .HasIndex(b => b.BudgetPeriodId)
+        .IsUnique(false);
     }
   }
 }

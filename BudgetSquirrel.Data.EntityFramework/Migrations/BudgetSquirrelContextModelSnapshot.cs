@@ -56,8 +56,7 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BudgetPeriodId")
-                        .IsUnique();
+                    b.HasIndex("BudgetPeriodId");
 
                     b.HasIndex("FundId");
 
@@ -79,40 +78,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.ToTable("BudgetDurations");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("BudgetDurationBase");
-                });
-
-            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Transaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CheckNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("FundId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Summary")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Vendor")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FundId");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BudgetSquirrel.Business.Fund", b =>
@@ -145,6 +110,40 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Funds");
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CheckNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("FundId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Vendor")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FundId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", b =>
@@ -211,15 +210,6 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BudgetSquirrel.Business.BudgetPlanning.Transaction", b =>
-                {
-                    b.HasOne("BudgetSquirrel.Business.Fund", "Fund")
-                        .WithMany()
-                        .HasForeignKey("FundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BudgetSquirrel.Business.Fund", b =>
                 {
                     b.HasOne("BudgetSquirrel.Business.BudgetPlanning.BudgetDurationBase", "Duration")
@@ -236,6 +226,15 @@ namespace BudgetSquirrel.Data.EntityFramework.Migrations
                     b.HasOne("BudgetSquirrel.Data.EntityFramework.Models.UserRecord", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BudgetSquirrel.Business.Tracking.Transaction", b =>
+                {
+                    b.HasOne("BudgetSquirrel.Business.Fund", "Fund")
+                        .WithMany()
+                        .HasForeignKey("FundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

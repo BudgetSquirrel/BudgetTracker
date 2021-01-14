@@ -39,7 +39,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         .BuildTree();
 
       IUnitOfWork unitOfWork = this.services.GetService<IUnitOfWork>();
-      BudgetLoader budgetLoader = this.services.GetService<BudgetLoader>();
+      FundLoader budgetLoader = this.services.GetService<FundLoader>();
 
       var budgetRepository = unitOfWork.GetRepository<Budget>();
       var fundRepository = unitOfWork.GetRepository<Fund>();
@@ -78,7 +78,7 @@ namespace BudgetSquirrel.Business.Tests.BudgetPlanning
         .BuildTree();
 
       IUnitOfWork unitOfWork = this.services.GetService<IUnitOfWork>();
-      BudgetLoader budgetLoader = this.services.GetService<BudgetLoader>();
+      FundLoader budgetLoader = this.services.GetService<FundLoader>();
 
       var budgetRepository = unitOfWork.GetRepository<Budget>();
       var fundRepository = unitOfWork.GetRepository<Fund>();

@@ -6,7 +6,7 @@ namespace BudgetSquirrel.TestUtils
 {
     public interface IBudgetPeriodBuilder
     {
-        IBudgetPeriodBuilder ForDuration(BudgetDurationBase duration);
+        IBudgetPeriodBuilder ForRootBudget(Budget rootBudget);
 
         IBudgetPeriodBuilder SetStartDate(DateTime startDate);
 
